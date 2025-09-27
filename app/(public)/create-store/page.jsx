@@ -5,6 +5,9 @@ import Image from "next/image"
 import toast from "react-hot-toast"
 import Loading from "@/components/Loading"
 
+// Prevent pre-rendering on server due to Redux in layout
+export const dynamic = 'force-dynamic';
+
 export default function CreateStore() {
 
     const [alreadySubmitted, setAlreadySubmitted] = useState(false)

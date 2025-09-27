@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import OrderItem from "@/components/OrderItem";
 import { orderDummyData } from "@/assets/assets";
 
+// Prevent pre-rendering on server due to Redux in layout
+export const dynamic = 'force-dynamic';
+
 export default function Orders() {
 
     const [orders, setOrders] = useState([]);

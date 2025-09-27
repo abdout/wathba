@@ -7,6 +7,9 @@ import Loading from "@/components/Loading"
 import Image from "next/image"
 import { dummyStoreData, productDummyData } from "@/assets/assets"
 
+// Prevent pre-rendering on server due to Redux in layout
+export const dynamic = 'force-dynamic';
+
 export default function StoreShop() {
 
     const { username } = useParams()
