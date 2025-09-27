@@ -11,7 +11,7 @@ const OrderItem = ({ order }) => {
 
     const [ratingModal, setRatingModal] = useState(null);
 
-    const { ratings } = useSelector(state => state.rating);
+    const { ratings } = useSelector(state => state?.rating || { ratings: [] });
 
     return (
         <>

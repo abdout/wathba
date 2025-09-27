@@ -12,8 +12,8 @@ import CurrencyIcon from "@/components/CurrencyIcon";
 export default function Cart() {
 
     
-    const { cartItems } = useSelector(state => state.cart);
-    const products = useSelector(state => state.product.list);
+    const { cartItems } = useSelector(state => state?.cart || { cartItems: {} });
+    const products = useSelector(state => state?.product?.list || []);
 
     const dispatch = useDispatch();
 

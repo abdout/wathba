@@ -15,7 +15,7 @@ const NavbarWithTranslations = ({ dict, lang }) => {
     const { isRTL } = useLocale();
 
     const [search, setSearch] = useState('')
-    const cartCount = useSelector(state => state.cart.total)
+    const cartCount = useSelector(state => state?.cart?.total || 0)
 
     const handleSearch = (e) => {
         e.preventDefault()

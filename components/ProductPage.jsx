@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 export default function ProductPage({ dict, lang }) {
     const { productId } = useParams();
     const [product, setProduct] = useState();
-    const products = useSelector(state => state.product.list);
+    const products = useSelector(state => state?.product?.list || []);
     const isRTL = lang === 'ar';
 
     const fetchProduct = async () => {

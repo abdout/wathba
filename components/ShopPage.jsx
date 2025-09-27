@@ -9,7 +9,7 @@ function ShopContent({ dict, lang }) {
     const searchParams = useSearchParams()
     const search = searchParams.get('search')
     const router = useRouter()
-    const products = useSelector(state => state.product.list)
+    const products = useSelector(state => state?.product?.list || [])
     const isRTL = lang === 'ar';
 
     const filteredProducts = search

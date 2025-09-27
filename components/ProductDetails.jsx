@@ -13,7 +13,7 @@ const ProductDetails = ({ product, dict, lang }) => {
 
     const productId = product.id;
 
-    const cart = useSelector(state => state.cart.cartItems);
+    const cart = useSelector(state => state?.cart?.cartItems || {});
     const dispatch = useDispatch();
 
     const router = useRouter()

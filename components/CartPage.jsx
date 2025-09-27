@@ -10,8 +10,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function CartPage({ dict, lang }) {
-    const { cartItems } = useSelector(state => state.cart);
-    const products = useSelector(state => state.product.list);
+    const { cartItems } = useSelector(state => state?.cart || { cartItems: {} });
+    const products = useSelector(state => state?.product?.list || []);
     const dispatch = useDispatch();
 
     const [cartArray, setCartArray] = useState([]);
