@@ -5,6 +5,9 @@ import { MoveLeftIcon } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useSelector } from "react-redux"
 
+// Prevent pre-rendering on server
+export const dynamic = 'force-dynamic';
+
  function ShopContent() {
 
     // get query params ?search=abc

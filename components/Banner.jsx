@@ -30,7 +30,7 @@ export default function Banner({ dict, lang }) {
                             {dict?.banner?.claimOffer || 'Claim Offer'}
                         </button>
                     </div>
-                    <button onClick={() => setIsOpen(false)} type="button" className={`absolute ${lang === 'ar' ? 'left-4' : 'right-4'} font-normal text-white p-2.5 rounded-full hover:bg-white/10 transition-colors z-10`}>
+                    <button onClick={() => setIsOpen(false)} type="button" className={`absolute ${lang === 'ar' ? 'left-6' : 'right-6'} font-normal text-white p-3 rounded-full hover:bg-white/10 transition-colors z-10`}>
                         <svg width="10" height="10" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect y="12.532" width="17.498" height="2.1" rx="1.05" transform="rotate(-45.74 0 12.532)" fill="#fff" />
                             <rect x="12.533" y="13.915" width="17.498" height="2.1" rx="1.05" transform="rotate(-135.74 12.533 13.915)" fill="#fff" />

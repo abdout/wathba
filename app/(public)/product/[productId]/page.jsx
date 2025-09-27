@@ -5,6 +5,9 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+// Prevent pre-rendering on server
+export const dynamic = 'force-dynamic';
+
 export default function Product() {
 
     const { productId } = useParams();
