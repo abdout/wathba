@@ -6,6 +6,9 @@ import LatestProducts from "@/components/LatestProducts";
 import PublicLayoutWithTranslations from "@/components/PublicLayoutWithTranslations";
 import { getDictionary } from "@/components/internationalization/dictionaries";
 
+// Prevent pre-rendering on server due to Redux in layout
+export const dynamic = 'force-dynamic';
+
 export default async function Home({ params }) {
     const { lang } = await params;
     const dict = await getDictionary(lang);

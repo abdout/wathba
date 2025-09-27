@@ -4,6 +4,9 @@ import { getDictionary } from "@/components/internationalization/dictionaries";
 import whoImage from "@/assets/who.jpg";
 import whyImage from "@/assets/why.jpg";
 
+// Prevent pre-rendering on server due to Redux in layout
+export const dynamic = 'force-dynamic';
+
 export default async function AboutPage({ params }) {
     const { lang } = await params;
     const dict = await getDictionary(lang);
