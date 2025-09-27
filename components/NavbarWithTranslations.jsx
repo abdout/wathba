@@ -1,5 +1,5 @@
 'use client'
-import { Search, ShoppingCart } from "lucide-react";
+import { Search, ShoppingCart, User, Store as StoreIcon, Shield } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
@@ -8,14 +8,21 @@ import { useLocale } from "@/components/internationalization/use-locale";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { useUser, UserButton, SignInButton } from "@clerk/nextjs";
 
 const NavbarWithTranslations = ({ dict, lang }) => {
     const router = useRouter();
     const pathname = usePathname();
     const { isRTL } = useLocale();
+    const { user, isLoaded, isSignedIn } = useUser();
 
     const [search, setSearch] = useState('')
     const cartCount = useSelector(state => state?.cart?.total || 0)
+
+    const userRole = user?.publicMetadata?.role;
+    const isAdmin = userRole === 'admin';
+    const isVendor = userRole === 'vendor';
+    const storeApproved = user?.publicMetadata?.storeApproved;
 
     const handleSearch = (e) => {
         e.preventDefault()
@@ -68,9 +75,45 @@ const NavbarWithTranslations = ({ dict, lang }) => {
 
                         <LanguageSwitcher currentLocale={lang} />
 
-                        <button className="px-8 py-2 bg-[#1D77B6] hover:bg-[#1a6aa3] transition text-white rounded-full">
-                            {dict.navigation.login}
-                        </button>
+                        {isLoaded && (
+                            <>
+                                {isSignedIn ? (
+                                    <div className="flex items-center gap-4">
+                                        {/* Admin Dashboard Link */}
+                                        {isAdmin && (
+                                            <Link href="/admin" className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                                                <Shield size={16} />
+                                                <span className="hidden lg:inline">Admin</span>
+                                            </Link>
+                                        )}
+
+                                        {/* Vendor Dashboard Link */}
+                                        {isVendor && storeApproved && (
+                                            <Link href="/store" className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                                                <StoreIcon size={16} />
+                                                <span className="hidden lg:inline">My Store</span>
+                                            </Link>
+                                        )}
+
+                                        {/* User Account Button */}
+                                        <UserButton
+                                            afterSignOutUrl="/"
+                                            appearance={{
+                                                elements: {
+                                                    avatarBox: "h-9 w-9",
+                                                },
+                                            }}
+                                        />
+                                    </div>
+                                ) : (
+                                    <SignInButton mode="modal">
+                                        <button className="px-8 py-2 bg-[#1D77B6] hover:bg-[#1a6aa3] transition text-white rounded-full">
+                                            {dict.navigation.login}
+                                        </button>
+                                    </SignInButton>
+                                )}
+                            </>
+                        )}
                     </div>
 
                     {/* Mobile Menu  */}
@@ -82,9 +125,38 @@ const NavbarWithTranslations = ({ dict, lang }) => {
 
                         <LanguageSwitcher currentLocale={lang} />
 
-                        <button className="ml-2 px-7 py-1.5 bg-[#1D77B6] hover:bg-[#1a6aa3] text-sm transition text-white rounded-full">
-                            {dict.navigation.login}
-                        </button>
+                        {isLoaded && (
+                            <>
+                                {isSignedIn ? (
+                                    <div className="flex items-center gap-2 ml-2">
+                                        {isAdmin && (
+                                            <Link href="/admin" className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                                                <Shield size={18} />
+                                            </Link>
+                                        )}
+                                        {isVendor && storeApproved && (
+                                            <Link href="/store" className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                                                <StoreIcon size={18} />
+                                            </Link>
+                                        )}
+                                        <UserButton
+                                            afterSignOutUrl="/"
+                                            appearance={{
+                                                elements: {
+                                                    avatarBox: "h-8 w-8",
+                                                },
+                                            }}
+                                        />
+                                    </div>
+                                ) : (
+                                    <SignInButton mode="modal">
+                                        <button className="ml-2 px-7 py-1.5 bg-[#1D77B6] hover:bg-[#1a6aa3] text-sm transition text-white rounded-full">
+                                            {dict.navigation.login}
+                                        </button>
+                                    </SignInButton>
+                                )}
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

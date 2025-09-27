@@ -3,6 +3,8 @@ import { Toaster } from "react-hot-toast";
 import StoreProvider from "@/app/StoreProvider";
 import { getDictionary } from "@/components/internationalization/dictionaries";
 import { i18n, isRTL } from "@/components/internationalization/config";
+import { ClerkProvider } from '@clerk/nextjs';
+import AuthSync from "@/components/AuthSync";
 import "../globals.css";
 
 const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600"] });
@@ -36,10 +38,14 @@ export default async function LocaleLayout({ children, params }) {
     return (
         <html lang={lang} dir={rtl ? "rtl" : "ltr"}>
             <body className={`${fontClass} antialiased`}>
-                <StoreProvider>
-                    <Toaster />
-                    {children}
-                </StoreProvider>
+                <ClerkProvider>
+                    <StoreProvider>
+                        <AuthSync>
+                            <Toaster />
+                            {children}
+                        </AuthSync>
+                    </StoreProvider>
+                </ClerkProvider>
             </body>
         </html>
     );

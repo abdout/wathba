@@ -8,7 +8,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CurrencyIcon from "@/components/CurrencyIcon";
-import dynamic from "next/dynamic";
 
 // Prevent pre-rendering on server
 export const dynamic = 'force-dynamic';
