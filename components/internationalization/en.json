@@ -1,0 +1,269 @@
+{
+  "metadata": {
+    "title": "Al Wathba Coop",
+    "description": "Your trusted cooperative society providing quality products and services to enhance community life"
+  },
+  "navigation": {
+    "home": "Home",
+    "shop": "Shop",
+    "cart": "Cart",
+    "about": "About",
+    "contact": "Contact",
+    "login": "Login",
+    "searchPlaceholder": "Search products"
+  },
+  "hero": {
+    "title": "Gadgets you'll love. Prices you'll trust.",
+    "subtitle": "Your ultimate multi-vendor e-commerce destination",
+    "viewMore": "View More",
+    "startsFrom": "Starts from",
+    "learnMore": "LEARN MORE",
+    "bestProducts": "Best products",
+    "discounts": "20% discounts",
+    "news": "NEWS",
+    "freeShipping": "Free Shipping on Orders Above AED 50!"
+  },
+  "products": {
+    "title": "Latest Products",
+    "bestSelling": "Best Selling",
+    "showing": "Showing",
+    "of": "of",
+    "products": "products"
+  },
+  "shop": {
+    "noProductsFound": "No products found"
+  },
+  "productNames": {
+    "Modern table lamp": "Modern table lamp",
+    "Smart speaker gray": "Smart speaker gray",
+    "Smart watch white": "Smart watch white",
+    "Wireless headphones": "Wireless headphones",
+    "Smart watch black": "Smart watch black",
+    "Security Camera": "Security Camera",
+    "Smart Pen for iPad": "Smart Pen for iPad",
+    "Home Theater": "Home Theater",
+    "Apple Wireless Earbuds": "Apple Wireless Earbuds",
+    "Apple Smart Watch": "Apple Smart Watch",
+    "RGB Gaming Mouse": "RGB Gaming Mouse",
+    "Smart Home Cleaner": "Smart Home Cleaner"
+  },
+  "specs": {
+    "title": "Our Specifications",
+    "description": "We offer top-tier service and convenience to ensure your shopping experience is smooth, secure and completely hassle-free.",
+    "freeShipping": {
+      "title": "Free Shipping",
+      "description": "Enjoy fast, free delivery on every order no conditions, just reliable doorstep."
+    },
+    "easyReturn": {
+      "title": "7 Days easy Return",
+      "description": "Change your mind? No worries. Return any item within 7 days."
+    },
+    "customerSupport": {
+      "title": "24/7 Customer Support",
+      "description": "We're here for you. Get expert help with our customer support."
+    }
+  },
+  "newsletter": {
+    "title": "Join Newsletter",
+    "description": "Subscribe to get exclusive deals, new arrivals, and insider updates delivered straight to your inbox every week.",
+    "placeholder": "Enter your email address",
+    "button": "Get Updates"
+  },
+  "footer": {
+    "description": "Welcome to Alwathbacoop, your ultimate multi-vendor e-commerce destination. From electronics and gadgets to essential accessories, we bring you the best products from trusted vendors — all in one place.",
+    "copyright": "Copyright 2025 © Alwathbacoop All Right Reserved.",
+    "sections": {
+      "products": {
+        "title": "PRODUCTS",
+        "items": ["Earphones", "Headphones", "Smartphones", "Laptops"]
+      },
+      "website": {
+        "title": "WEBSITE",
+        "home": "Home",
+        "privacy": "Privacy Policy",
+        "plus": "Become Plus Member",
+        "createStore": "Create Your Store"
+      },
+      "contact": {
+        "title": "CONTACT",
+        "email": "sales@alwathbacoop.ae",
+        "phone": "+971502731313",
+        "location": "Alwathbah north - Abu Dhabi"
+      }
+    }
+  },
+  "banner": {
+    "message": "Get 20% OFF on Your First Order!",
+    "claimOffer": "Claim Offer"
+  },
+  "product": {
+    "addToCart": "Add to Cart",
+    "viewCart": "View Cart",
+    "quantity": "Quantity",
+    "reviews": "Reviews",
+    "review": "Review",
+    "description": "Description",
+    "save": "Save",
+    "rightNow": "Right Now",
+    "freeShippingWorldwide": "Free Shipping Worldwide",
+    "securedPayment": "100% Secured Payment",
+    "trustedByBrands": "Trusted by Leading Brands",
+    "writeReview": "Write Review (Optional)",
+    "selectRating": "Please select a rating",
+    "rateProduct": "Rate Product",
+    "productBy": "Product by",
+    "viewStore": "View Store"
+  },
+  "forms": {
+    "enterName": "Enter your name",
+    "emailAddress": "Email Address",
+    "street": "Street",
+    "city": "City",
+    "state": "State",
+    "zipCode": "Zip Code",
+    "country": "Country",
+    "phone": "Phone",
+    "couponCode": "Coupon Code",
+    "apply": "Apply",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "remove": "Remove",
+    "select": "Select",
+    "confirm": "Confirm",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "cart": {
+    "myCart": "My Cart",
+    "itemsInCart": "items in your cart",
+    "addMore": "Add more",
+    "product": "Product",
+    "totalPrice": "Total Price",
+    "paymentSummary": "Payment Summary",
+    "orderSummary": "Order Summary",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "free": "Free",
+    "total": "Total",
+    "placeOrder": "Place Order",
+    "paymentMethod": "Payment Method",
+    "address": "Address",
+    "selectAddress": "Select Address",
+    "addAddress": "Add Address",
+    "address": "Address",
+    "selectAddress": "Select Address",
+    "addAddress": "Add New Address",
+    "couponSuccess": "Coupon copied to clipboard!",
+    "emptyCart": "Cart is Empty",
+    "continueShopping": "Continue Shopping"
+  },
+  "general": {
+    "all": "All",
+    "loading": "Loading...",
+    "viewMore": "View More",
+    "showMore": "Show More",
+    "loadMore": "Load More",
+    "search": "Search",
+    "filter": "Filter",
+    "sortBy": "Sort By",
+    "categories": "Categories",
+    "brands": "Brands",
+    "priceRange": "Price Range",
+    "rating": "Rating",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "new": "New",
+    "sale": "Sale",
+    "discount": "Discount",
+    "free": "Free",
+    "shipping": "Shipping",
+    "delivery": "Delivery",
+    "return": "Return",
+    "policy": "Policy",
+    "terms": "Terms",
+    "conditions": "Conditions",
+    "privacy": "Privacy",
+    "help": "Help",
+    "support": "Support",
+    "faq": "FAQ",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "close": "Close",
+    "open": "Open",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK"
+  },
+  "categories": {
+    "Headphones": "Headphones",
+    "Speakers": "Speakers",
+    "Watch": "Watches",
+    "Earbuds": "Earbuds",
+    "Mouse": "Mouse",
+    "Decoration": "Decoration"
+  },
+  "store": {
+    "seller": "Seller",
+    "dashboard": "Dashboard",
+    "totalProducts": "Total Products",
+    "totalEarnings": "Total Earnings",
+    "totalOrders": "Total Orders",
+    "totalRatings": "Total Ratings",
+    "totalReviews": "Total Reviews",
+    "viewProduct": "View Product",
+    "addProduct": "Add Product",
+    "manageProducts": "Manage Products",
+    "orders": "Orders"
+  },
+  "admin": {
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "stores": "Stores",
+    "approve": "Approve",
+    "coupons": "Coupons",
+    "totalStores": "Total Stores",
+    "pendingApprovals": "Pending Approvals",
+    "activeCoupons": "Active Coupons"
+  },
+  "about": {
+    "sections": {
+      "who": {
+        "subtitle": "W h o   W e   A r e",
+        "title": "Who We Are",
+        "description": "Established in 2017, Al Wathba Cooperative Society was founded with the goal of supporting and developing the local community by providing exceptional cooperative services that enhance the quality of life and meet the local community needs efficiently and transparently. Since our establishment, we have been committed to building a cooperative system based on community values, teamwork, and sustainable economic practices."
+      },
+      "why": {
+        "subtitle": "W h y   U s",
+        "title": "Why Us",
+        "description": "We believe that cooperation work is the foundation for inclusive development. With our dedication to offering high-quality products and services that reflect the aspirations of the community, we meet the growing needs efficiently. Our commitment to transparency, community values, and sustainable practices makes us the trusted choice for cooperative services in Al Wathba."
+      },
+      "mission": {
+        "subtitle": "O u r   M i s s i o n",
+        "title": "Our Vision and Mission",
+        "description": "To provide an effective cooperative environment that supports individuals, offers reliable products and services, and launches developmental initiatives and strategic partnerships that enhance awareness and living standards. We strive to be the leading cooperative society that promotes the principle of cooperation and joint community work."
+      }
+    },
+    "goals": [
+      {
+        "title": "Community Support",
+        "description": "Building strong community bonds through cooperative initiatives that support individuals and families in achieving their goals."
+      },
+      {
+        "title": "Quality Services",
+        "description": "Delivering reliable, high-quality products and services that meet the evolving needs of our community with transparency and efficiency."
+      },
+      {
+        "title": "Sustainable Development",
+        "description": "Implementing sustainable economic practices that ensure long-term growth and prosperity for our cooperative society and community."
+      }
+    ]
+  }
+}
