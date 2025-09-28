@@ -6,17 +6,19 @@ import { stripeCheckoutSchema } from '@/lib/validations/stripe';
 import { rateLimit, createRateLimitResponse } from '@/lib/middleware/rateLimit';
 import { withErrorHandler, APIError } from '@/lib/middleware/errorHandler';
 
-// Initialize Stripe
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY environment variable is required');
-}
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+// Initialize Stripe (optional for build)
+const stripeKey = process.env.STRIPE_SECRET_KEY;
+const stripe = stripeKey ? new Stripe(stripeKey, {
   apiVersion: '2024-11-20.acacia'
-});
+}) : null;
 
 // POST - Create checkout session
 export const POST = withErrorHandler(async (request) => {
+  // Check if Stripe is configured
+  if (!stripe) {
+    throw new APIError('Payment system is not configured', 503);
+  }
+
   // Apply stricter rate limiting for payment operations
   const rateLimitResult = await rateLimit(request, 'write');
   if (!rateLimitResult.success) {
