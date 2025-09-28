@@ -56,12 +56,10 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                         <Link href={getLocalizedPath('/about')}>{dict.navigation.about || 'About'}</Link>
                         <Link href={getLocalizedPath('/shop')}>{dict.navigation.shop || 'Shop'}</Link>
 
-                        {/* Seller Link - Shows for vendor */}
-                        {isSignedIn && isVendor && storeApproved && (
-                            <Link href={'/store'}>
-                                {dict.navigation.seller || 'Seller'}
-                            </Link>
-                        )}
+                        {/* Seller Link - Always visible */}
+                        <Link href={getLocalizedPath('/create-store')}>
+                            {dict.navigation.seller || 'Seller'}
+                        </Link>
 
                         {/* Admin Link - Shows for admin */}
                         {isSignedIn && isAdmin && (
