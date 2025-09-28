@@ -52,18 +52,30 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                     </Link>
 
                     {/* Desktop Menu */}
-                    <div className="hidden sm:flex items-center gap-4 lg:gap-8 text-slate-600">
-                        <Link href={getLocalizedPath('/')}>{dict.navigation.home}</Link>
-                        <Link href={getLocalizedPath('/shop')}>{dict.navigation.shop}</Link>
-                        <Link href={getLocalizedPath('/about')}>{dict.navigation.about}</Link>
-                        <Link href={getLocalizedPath('/')}>{dict.navigation.contact}</Link>
+                    <div className="hidden sm:flex items-center gap-4 lg:gap-6 text-slate-600">
+                        <Link href={getLocalizedPath('/about')}>{dict.navigation.about || 'About'}</Link>
+                        <Link href={getLocalizedPath('/shop')}>{dict.navigation.shop || 'Shop'}</Link>
 
-                        <form onSubmit={handleSearch} className="hidden lg:flex items-center w-xs text-sm gap-2 bg-slate-100 px-4 py-3 rounded-full">
-                            <Search size={18} className="text-slate-600" />
+                        {/* Seller Link - Shows for vendor */}
+                        {isSignedIn && isVendor && storeApproved && (
+                            <Link href={'/store'}>
+                                {dict.navigation.seller || 'Seller'}
+                            </Link>
+                        )}
+
+                        {/* Admin Link - Shows for admin */}
+                        {isSignedIn && isAdmin && (
+                            <Link href={`/${lang}/admin`}>
+                                {dict.navigation.admin || 'Admin'}
+                            </Link>
+                        )}
+
+                        <form onSubmit={handleSearch} className="hidden lg:flex items-center w-48 text-sm gap-2 bg-slate-100 px-3 py-2 rounded-full">
+                            <Search size={16} className="text-slate-600" />
                             <input
-                                className="w-full bg-transparent outline-none placeholder-slate-600"
+                                className="w-full bg-transparent outline-none placeholder-slate-600 text-sm"
                                 type="text"
-                                placeholder={dict.navigation.searchPlaceholder}
+                                placeholder={dict.navigation.searchPlaceholder || 'Search'}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 required
@@ -81,22 +93,6 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                             <>
                                 {isSignedIn ? (
                                     <div className="flex items-center gap-4">
-                                        {/* Admin Dashboard Link */}
-                                        {isAdmin && (
-                                            <Link href={`/${lang}/admin`} className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1">
-                                                <Shield size={16} />
-                                                <span className="hidden lg:inline">Admin</span>
-                                            </Link>
-                                        )}
-
-                                        {/* Vendor Dashboard Link */}
-                                        {isVendor && storeApproved && (
-                                            <Link href="/store" className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1">
-                                                <StoreIcon size={16} />
-                                                <span className="hidden lg:inline">My Store</span>
-                                            </Link>
-                                        )}
-
                                         {/* User Account Button */}
                                         <UserButton
                                             afterSignOutUrl="/"
@@ -131,16 +127,6 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                             <>
                                 {isSignedIn ? (
                                     <div className="flex items-center gap-2 ml-2">
-                                        {isAdmin && (
-                                            <Link href={`/${lang}/admin`} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                                                <Shield size={18} />
-                                            </Link>
-                                        )}
-                                        {isVendor && storeApproved && (
-                                            <Link href="/store" className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                                                <StoreIcon size={18} />
-                                            </Link>
-                                        )}
                                         <UserButton
                                             afterSignOutUrl="/"
                                             appearance={{

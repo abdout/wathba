@@ -9,6 +9,9 @@
     "cart": "Cart",
     "about": "About",
     "contact": "Contact",
+    "dashboard": "Dashboard",
+    "seller": "Seller",
+    "admin": "Admin",
     "login": "Login",
     "searchPlaceholder": "Search products"
   },
