@@ -16,8 +16,9 @@ export default function AuthSync({ children }) {
     }
 
     if (isSignedIn && user) {
-      // Sync user data to Redux store
-      dispatch(setUser({ user }));
+      // Create a plain serializable object before dispatching
+      const plainUser = JSON.parse(JSON.stringify(user));
+      dispatch(setUser({ user: plainUser }));
     } else {
       dispatch(clearUser());
     }
