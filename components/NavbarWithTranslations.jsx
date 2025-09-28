@@ -6,9 +6,9 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocale } from "@/components/internationalization/use-locale";
 import { assets } from "@/assets/assets";
-import Image from "next/image";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useUser, UserButton, SignInButton } from "@clerk/nextjs";
+import OptimizedImage from "./OptimizedImage";
 
 const NavbarWithTranslations = ({ dict, lang }) => {
     const router = useRouter();
@@ -41,11 +41,13 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                 <div className="flex items-center justify-between max-w-7xl mx-auto py-4 transition-all">
 
                     <Link href={getLocalizedPath('/')}>
-                        <Image
+                        <OptimizedImage
                             src={lang === 'ar' ? assets.logo_ar : assets.logo_en}
-                            alt="GoCart Logo"
+                            alt={dict?.navbar?.logoAlt || "Al Wathba Coop Logo"}
+                            width={150}
                             height={40}
                             className="h-10 w-auto"
+                            priority
                         />
                     </Link>
 
@@ -56,7 +58,7 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                         <Link href={getLocalizedPath('/about')}>{dict.navigation.about}</Link>
                         <Link href={getLocalizedPath('/')}>{dict.navigation.contact}</Link>
 
-                        <form onSubmit={handleSearch} className="hidden xl:flex items-center w-xs text-sm gap-2 bg-slate-100 px-4 py-3 rounded-full">
+                        <form onSubmit={handleSearch} className="hidden lg:flex items-center w-xs text-sm gap-2 bg-slate-100 px-4 py-3 rounded-full">
                             <Search size={18} className="text-slate-600" />
                             <input
                                 className="w-full bg-transparent outline-none placeholder-slate-600"
@@ -81,7 +83,7 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                                     <div className="flex items-center gap-4">
                                         {/* Admin Dashboard Link */}
                                         {isAdmin && (
-                                            <Link href="/admin" className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                                            <Link href={`/${lang}/admin`} className="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1">
                                                 <Shield size={16} />
                                                 <span className="hidden lg:inline">Admin</span>
                                             </Link>
@@ -130,7 +132,7 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                                 {isSignedIn ? (
                                     <div className="flex items-center gap-2 ml-2">
                                         {isAdmin && (
-                                            <Link href="/admin" className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                                            <Link href={`/${lang}/admin`} className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
                                                 <Shield size={18} />
                                             </Link>
                                         )}

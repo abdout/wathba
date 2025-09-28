@@ -225,10 +225,37 @@
     "dashboard": "لوحة التحكم",
     "stores": "المتاجر",
     "approve": "الموافقة",
+    "reject": "الرفض",
+    "approving": "جاري الموافقة",
+    "rejecting": "جاري الرفض",
     "coupons": "الكوبونات",
     "totalStores": "إجمالي المتاجر",
+    "totalProducts": "إجمالي المنتجات",
+    "totalRevenue": "إجمالي الإيرادات",
+    "totalOrders": "إجمالي الطلبات",
     "pendingApprovals": "الموافقات المعلقة",
-    "activeCoupons": "الكوبونات النشطة"
+    "activeCoupons": "الكوبونات النشطة",
+    "noApplicationPending": "لا توجد طلبات معلقة",
+    "notAuthorized": "ليس لديك صلاحية للوصول إلى هذه الصفحة",
+    "goToHome": "العودة للرئيسية"
+  },
+  "auth": {
+    "signIn": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "signOut": "تسجيل الخروج",
+    "continueWithGoogle": "المتابعة مع Google",
+    "continueWithFacebook": "المتابعة مع Facebook",
+    "orContinueWith": "أو المتابعة مع",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "rememberMe": "تذكرني",
+    "createAccount": "إنشاء حساب",
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "dontHaveAccount": "ليس لديك حساب؟",
+    "termsAndConditions": "الشروط والأحكام",
+    "privacyPolicy": "سياسة الخصوصية",
+    "bySigningUp": "بالتسجيل، فإنك توافق على"
   },
   "about": {
     "sections": {
@@ -261,6 +288,53 @@
         "title": "التنمية المستدامة",
         "description": "تطبيق ممارسات اقتصادية مستدامة تضمن النمو والازدهار على المدى الطويل لجمعيتنا التعاونية والمجتمع."
       }
-    ]
+    ],
+    "boardOfDirectors": {
+      "subtitle": "ق ي ا د ت ن ا",
+      "title": "مجلس الإدارة",
+      "description": "تعرف على أعضاء مجلس الإدارة المتفانين الذين يقودون جمعية الوثبة التعاونية بخبرتهم والتزامهم بتنمية المجتمع.",
+      "members": [
+        {
+          "name": "علي يافور المنصوري",
+          "position": "رئيس مجلس الإدارة",
+          "image": "01.png"
+        },
+        {
+          "name": "علي طارش المنصوري",
+          "position": "نائب رئيس مجلس الإدارة",
+          "image": "02.png"
+        },
+        {
+          "name": "محمد عيسى المنصوري",
+          "position": "أمين الصندوق",
+          "image": "03.png"
+        },
+        {
+          "name": "بخيت سعيد الكتبي",
+          "position": "أمين السر",
+          "image": "04.png"
+        },
+        {
+          "name": "مبارك جريو المنصوري",
+          "position": "عضو",
+          "image": "05.png"
+        },
+        {
+          "name": "ناصر سعيد المنصوري",
+          "position": "عضو",
+          "image": "06.png"
+        },
+        {
+          "name": "حمد علي المنصوري",
+          "position": "عضو",
+          "image": "07.png"
+        },
+        {
+          "name": "محمد الطاهر عبد الجليل",
+          "position": "عضو",
+          "image": "08.png"
+        }
+      ]
+    }
   }
 }

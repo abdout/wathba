@@ -1,6 +1,7 @@
 import Image from "next/image";
 import PublicLayoutWithTranslations from "@/components/PublicLayoutWithTranslations";
 import { getDictionary } from "@/components/internationalization/dictionaries";
+import OptimizedImage from "@/components/OptimizedImage";
 import whoImage from "@/assets/who.jpg";
 import whyImage from "@/assets/why.jpg";
 
@@ -123,6 +124,48 @@ export default async function AboutPage({ params }) {
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Board of Directors Section */}
+                    <div className="mt-20">
+                        <div className="text-center space-y-8 mb-16">
+                            <div className="text-[#e8563f] text-sm font-medium tracking-[0.3em] uppercase">
+                                {dict.about.boardOfDirectors.subtitle}
+                            </div>
+                            <h2 className="text-[#444444] text-5xl font-bold leading-tight">
+                                {dict.about.boardOfDirectors.title}
+                            </h2>
+                            <p className="text-[#6c6c6c] text-lg leading-relaxed max-w-3xl mx-auto">
+                                {dict.about.boardOfDirectors.description}
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+                            {dict.about.boardOfDirectors.members.map((member, index) => (
+                                <div key={index} className="text-center space-y-4">
+                                    <div className="relative">
+                                        <OptimizedImage
+                                            src={`/assets/${member.image}`}
+                                            alt={member.name}
+                                            width={200}
+                                            height={200}
+                                            className="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                                            transformation={[
+                                                { width: 400, height: 400, crop: 'at_max', quality: 85 }
+                                            ]}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <h3 className={`font-semibold text-lg text-[#444444] ${lang === 'ar' ? 'font-arabic' : ''}`}>
+                                            {member.name}
+                                        </h3>
+                                        <p className={`text-[#e8563f] text-sm font-medium ${lang === 'ar' ? 'font-arabic' : ''}`}>
+                                            {member.position}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

@@ -28,7 +28,7 @@ const Navbar = () => {
                     <Link href="/">
                         <Image
                             src={assets.logo_en}
-                            alt="GoCart Logo"
+                            alt="Alwathba Logo"
                             height={40}
                             className="h-10 w-auto"
                         />

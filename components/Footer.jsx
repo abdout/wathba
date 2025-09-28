@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import { assets } from "@/assets/assets";
+import OptimizedImage from "./OptimizedImage";
 
 const Footer = ({ dict = {}, lang = 'en' }) => {
 
@@ -53,14 +53,16 @@ const Footer = ({ dict = {}, lang = 'en' }) => {
                 <div className="flex flex-col md:flex-row items-start justify-between gap-10 py-10 text-slate-500">
                     <div>
                         <Link href="/" className="block">
-                            <Image
+                            <OptimizedImage
                                 src={lang === 'ar' ? assets.logo_ar : assets.logo_en}
-                                alt="GoCart Logo"
+                                alt={dict?.footer?.logoAlt || "Al Wathba Coop Logo"}
+                                width={150}
                                 height={40}
                                 className="h-10 w-auto"
+                                priority
                             />
                         </Link>
-                        <p className="max-w-[410px] mt-6 text-sm">{dict?.footer?.description || "Welcome to gocart, your ultimate destination for the latest and smartest gadgets. From smartphones and smartwatches to essential accessories, we bring you the best in innovation — all in one place."}</p>
+                        <p className="max-w-[410px] mt-6 text-sm">{dict?.footer?.description || "Welcome to alwathba, your ultimate destination for the latest and smartest gadgets. From smartphones and smartwatches to essential accessories, we bring you the best in innovation — all in one place."}</p>
                         <div className="flex items-center gap-3 mt-5">
                             {socialIcons.map((item, i) => (
                                 <Link href={item.link} key={i} className="flex items-center justify-center w-10 h-10 bg-slate-100 hover:scale-105 hover:border border-slate-300 transition rounded-full">
@@ -70,17 +72,19 @@ const Footer = ({ dict = {}, lang = 'en' }) => {
                         </div>
                         <div className="flex items-center gap-3 mt-8">
                             <Link href="#" className="hover:scale-105 transition">
-                                <Image
+                                <OptimizedImage
                                     src={assets.googleplay}
                                     alt="Get it on Google Play"
+                                    width={120}
                                     height={32}
                                     className="h-8 w-auto"
                                 />
                             </Link>
                             <Link href="#" className="hover:scale-105 transition">
-                                <Image
+                                <OptimizedImage
                                     src={assets.appstore}
                                     alt="Download on the App Store"
+                                    width={120}
                                     height={32}
                                     className="h-8 w-auto"
                                 />
@@ -122,31 +126,31 @@ const Footer = ({ dict = {}, lang = 'en' }) => {
                 {/* Payment Methods */}
                 <div className={`flex gap-2 mt-6 mb-8 ${lang === 'ar' ? 'justify-start' : 'justify-start'}`}>
                     <div className="bg-white rounded-md p-1 w-14 h-10 flex items-center justify-center border border-gray-200">
-                        <Image src={assets.visa} alt="Visa" height={28} className="h-7 w-auto" />
+                        <OptimizedImage src={assets.visa} alt="Visa" width={56} height={28} className="h-7 w-auto" />
                     </div>
                     <div className="bg-white rounded-md p-1 w-14 h-10 flex items-center justify-center border border-gray-200">
-                        <Image src={assets.masterCard} alt="MasterCard" height={28} className="h-7 w-auto" />
+                        <OptimizedImage src={assets.masterCard} alt="MasterCard" width={56} height={28} className="h-7 w-auto" />
                     </div>
                     <div className="bg-white rounded-md p-1 w-14 h-10 flex items-center justify-center border border-gray-200">
-                        <Image src={assets.mada} alt="Mada" height={28} className="h-7 w-auto" />
+                        <OptimizedImage src={assets.mada} alt="Mada" width={56} height={28} className="h-7 w-auto" />
                     </div>
                     <div className="bg-white rounded-md p-1 w-14 h-10 flex items-center justify-center border border-gray-200">
-                        <Image src={assets.applePay} alt="Apple Pay" height={28} className="h-7 w-auto" />
+                        <OptimizedImage src={assets.applePay} alt="Apple Pay" width={56} height={28} className="h-7 w-auto" />
                     </div>
                     <div className="bg-white rounded-md p-1 w-14 h-10 flex items-center justify-center border border-gray-200">
-                        <Image src={assets.americanExpress} alt="American Express" height={28} className="h-7 w-auto" />
+                        <OptimizedImage src={assets.americanExpress} alt="American Express" width={56} height={28} className="h-7 w-auto" />
                     </div>
                     <div className="bg-white rounded-md p-1 w-14 h-10 flex items-center justify-center border border-gray-200">
-                        <Image src={assets.tamara} alt="Tamara" height={28} className="h-7 w-auto" />
+                        <OptimizedImage src={assets.tamara} alt="Tamara" width={56} height={28} className="h-7 w-auto" />
                     </div>
                     <div className="bg-white rounded-md p-1 w-14 h-10 flex items-center justify-center border border-gray-200">
-                        <Image src={assets.tabby} alt="Tabby" height={28} className="h-7 w-auto" />
+                        <OptimizedImage src={assets.tabby} alt="Tabby" width={56} height={28} className="h-7 w-auto" />
                     </div>
                 </div>
 
                 <div className="border-t border-slate-200">
                     <p className="py-4 text-sm text-slate-500">
-                        {dict?.footer?.copyright || "Copyright 2025 © gocart All Right Reserved."}
+                        {dict?.footer?.copyright || "Copyright 2025 © alwathba All Right Reserved."}
                     </p>
                 </div>
             </div>

@@ -4,10 +4,10 @@ import { addToCart } from "@/lib/features/cart/cartSlice";
 import { StarIcon, TagIcon, EarthIcon, CreditCardIcon, UserIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Image from "next/image";
 import Counter from "./Counter";
 import { useDispatch, useSelector } from "react-redux";
 import CurrencyIcon from "./CurrencyIcon";
+import OptimizedImage from "./OptimizedImage";
 
 const ProductDetails = ({ product, dict, lang }) => {
 
@@ -32,12 +32,29 @@ const ProductDetails = ({ product, dict, lang }) => {
                 <div className="flex sm:flex-col gap-3">
                     {product.images.map((image, index) => (
                         <div key={index} onClick={() => setMainImage(product.images[index])} className="bg-slate-100 flex items-center justify-center size-26 rounded-lg group cursor-pointer">
-                            <Image src={image} className="group-hover:scale-103 group-active:scale-95 transition" alt="" width={45} height={45} />
+                            <OptimizedImage
+                                src={image}
+                                className="group-hover:scale-103 group-active:scale-95 transition"
+                                alt={product.name}
+                                width={45}
+                                height={45}
+                                transformation={[
+                                    { width: 90, height: 90, quality: 80 }
+                                ]}
+                            />
                         </div>
                     ))}
                 </div>
                 <div className="flex justify-center items-center h-100 sm:size-113 bg-slate-100 rounded-lg ">
-                    <Image src={mainImage} alt="" width={250} height={250} />
+                    <OptimizedImage
+                        src={mainImage}
+                        alt={product.name}
+                        width={250}
+                        height={250}
+                        transformation={[
+                            { width: 500, height: 500, quality: 90 }
+                        ]}
+                    />
                 </div>
             </div>
             <div className="flex-1">

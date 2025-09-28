@@ -1,10 +1,10 @@
 'use client'
 import { assets } from '@/assets/assets'
 import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from 'lucide-react'
-import Image from 'next/image'
 import React from 'react'
 import CategoriesMarquee from './CategoriesMarquee'
 import CurrencyIcon from './CurrencyIcon'
+import OptimizedImage from './OptimizedImage'
 
 const Hero = ({ dict, lang }) => {
 
@@ -31,7 +31,15 @@ const Hero = ({ dict, lang }) => {
                         </div>
                         <button className='bg-slate-800 text-white text-sm py-2.5 px-7 sm:py-5 sm:px-12 mt-4 sm:mt-10 rounded-md hover:bg-slate-900 hover:scale-103 active:scale-95 transition'>{dict?.hero?.learnMore || "LEARN MORE"}</button>
                     </div>
-                    <Image className={`sm:absolute bottom-0 w-full sm:max-w-sm ${lang === 'ar' ? 'left-0 md:left-10 scale-x-[-1]' : 'right-0 md:right-10'}`} src={assets.hero_model_img} alt="" />
+                    <OptimizedImage
+                        className={`sm:absolute bottom-0 w-full sm:max-w-sm ${lang === 'ar' ? 'left-0 md:left-10 scale-x-[-1]' : 'right-0 md:right-10'}`}
+                        src={assets.hero_model_img}
+                        alt={dict?.hero?.heroImage || "Hero model"}
+                        width={400}
+                        height={400}
+                        priority
+                        quality={90}
+                    />
                 </div>
                 <div className='flex flex-col md:flex-row xl:flex-col gap-5 w-full xl:max-w-sm text-sm text-slate-600'>
                     <div className='flex-1 flex items-center justify-between w-full bg-orange-200 rounded-3xl p-6 px-8 group'>
@@ -45,7 +53,14 @@ const Hero = ({ dict, lang }) => {
                                 )}
                             </p>
                         </div>
-                        <Image className='w-35' src={assets.hero_product_img1} alt="" />
+                        <OptimizedImage
+                            className='w-35'
+                            src={assets.hero_product_img1}
+                            alt={dict?.hero?.bestProducts || "Best products"}
+                            width={140}
+                            height={140}
+                            quality={85}
+                        />
                     </div>
                     <div className='flex-1 flex items-center justify-between w-full bg-blue-200 rounded-3xl p-6 px-8 group'>
                         <div>
@@ -58,7 +73,14 @@ const Hero = ({ dict, lang }) => {
                                 )}
                             </p>
                         </div>
-                        <Image className='w-35' src={assets.hero_product_img2} alt="" />
+                        <OptimizedImage
+                            className='w-35'
+                            src={assets.hero_product_img2}
+                            alt={dict?.hero?.discounts || "Discounts"}
+                            width={140}
+                            height={140}
+                            quality={85}
+                        />
                     </div>
                 </div>
             </div>

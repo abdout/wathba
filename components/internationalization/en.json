@@ -228,10 +228,37 @@
     "dashboard": "Dashboard",
     "stores": "Stores",
     "approve": "Approve",
+    "reject": "Reject",
+    "approving": "Approving",
+    "rejecting": "Rejecting",
     "coupons": "Coupons",
     "totalStores": "Total Stores",
+    "totalProducts": "Total Products",
+    "totalRevenue": "Total Revenue",
+    "totalOrders": "Total Orders",
     "pendingApprovals": "Pending Approvals",
-    "activeCoupons": "Active Coupons"
+    "activeCoupons": "Active Coupons",
+    "noApplicationPending": "No Application Pending",
+    "notAuthorized": "You are not authorized to access this page",
+    "goToHome": "Go to home"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithFacebook": "Continue with Facebook",
+    "orContinueWith": "Or continue with",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember Me",
+    "createAccount": "Create Account",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "termsAndConditions": "Terms and Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "bySigningUp": "By signing up, you agree to our"
   },
   "about": {
     "sections": {
@@ -264,6 +291,53 @@
         "title": "Sustainable Development",
         "description": "Implementing sustainable economic practices that ensure long-term growth and prosperity for our cooperative society and community."
       }
-    ]
+    ],
+    "boardOfDirectors": {
+      "subtitle": "O u r   L e a d e r s h i p",
+      "title": "Board of Directors",
+      "description": "Meet our dedicated board members who guide Al Wathba Cooperative Society with their expertise and commitment to community development.",
+      "members": [
+        {
+          "name": "Ali Yafor Al Mansouri",
+          "position": "Chairman",
+          "image": "01.png"
+        },
+        {
+          "name": "Ali Tarish Al Mansouri",
+          "position": "Vice Chairman",
+          "image": "02.png"
+        },
+        {
+          "name": "Mohammed Issa Al Mansouri",
+          "position": "Treasurer",
+          "image": "03.png"
+        },
+        {
+          "name": "Bukhait Saeed Al Ketbi",
+          "position": "Secretary",
+          "image": "04.png"
+        },
+        {
+          "name": "Mubarak Jeryo Al Mansouri",
+          "position": "Member",
+          "image": "05.png"
+        },
+        {
+          "name": "Nasser Saeed Al Mansouri",
+          "position": "Member",
+          "image": "06.png"
+        },
+        {
+          "name": "Hamad Ali Al Mansouri",
+          "position": "Member",
+          "image": "07.png"
+        },
+        {
+          "name": "Mohammed Al Taher Abdul Jalil",
+          "position": "Member",
+          "image": "08.png"
+        }
+      ]
+    }
   }
 }

@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images:{
-        unoptimized: true
+        unoptimized: true,
+        domains: ['ik.imagekit.io'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'ik.imagekit.io',
+                pathname: '/**',
+            }
+        ]
     },
     env: {
         // Fallback values for build time when .env.local is not present

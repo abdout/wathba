@@ -1,4 +1,4 @@
-# GoCart Internationalization Implementation Plan
+# Alwathba Internationalization Implementation Plan
 
 ## ✅ Completed Tasks
 
@@ -351,4 +351,4 @@ export default function ClientComponent({ dictionary, lang }) {
 
 ---
 
-This implementation plan provides a clear, step-by-step approach to adding internationalization to the GoCart application. Follow each phase sequentially for best results.
+This implementation plan provides a clear, step-by-step approach to adding internationalization to the Alwathba application. Follow each phase sequentially for best results.

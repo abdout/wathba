@@ -1,7 +1,7 @@
-# Clerk Authentication Setup Guide for GoCart
+# Clerk Authentication Setup Guide for Alwathba
 
 ## Overview
-This guide will help you configure Clerk authentication for your GoCart multi-vendor e-commerce platform.
+This guide will help you configure Clerk authentication for your Alwathba multi-vendor e-commerce platform.
 
 ## Prerequisites
 - A Clerk account (sign up at https://clerk.com)
@@ -12,7 +12,7 @@ This guide will help you configure Clerk authentication for your GoCart multi-ve
 
 1. Go to https://dashboard.clerk.com and sign in
 2. Click "Create application"
-3. Name your application (e.g., "GoCart")
+3. Name your application (e.g., "Alwathba")
 4. Choose authentication methods:
    - ✅ Email
    - ✅ Google OAuth
@@ -206,7 +206,7 @@ For testing webhooks locally:
 
 - Clerk Documentation: https://clerk.com/docs
 - Clerk Discord: https://discord.com/invite/b5rXHjAg7A
-- GoCart Issues: Create an issue in your repository
+- Alwathba Issues: Create an issue in your repository
 
 ## Next Steps
 

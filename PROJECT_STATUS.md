@@ -1,7 +1,7 @@
 # Al Wathba Cooperative E-Commerce Platform - Project Status Report
 
 ## 📊 Project Overview
-**Project Name:** Al Wathba Cooperative Society E-Commerce Platform (formerly GoCart)
+**Project Name:** Al Wathba Cooperative Society E-Commerce Platform (formerly Alwathba)
 **Tech Stack:** Next.js 15, React 19, Redux Toolkit, Prisma ORM, PostgreSQL, Tailwind CSS 4
 **Development Stage:** Frontend Prototype (30% Complete)
 **Production Readiness:** Not Production Ready ❌

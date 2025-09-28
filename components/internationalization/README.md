@@ -409,7 +409,7 @@ Create `src/components/internationalization/en.json`:
 ```json
 {
   "metadata": {
-    "title": "GoCart - Multi-Vendor E-commerce Platform",
+    "title": "Alwathba - Multi-Vendor E-commerce Platform",
     "description": "Professional multi-vendor e-commerce platform for Saudi Arabia"
   },
   "common": {
@@ -433,7 +433,7 @@ Create `src/components/internationalization/en.json`:
     "pricing": "Pricing"
   },
   "landing": {
-    "welcome": "Welcome to GoCart",
+    "welcome": "Welcome to Alwathba",
     "subtitle": "Your ultimate multi-vendor e-commerce destination"
   },
   "auth": {

@@ -1,6 +1,6 @@
-# Contributing to GoCart
+# Contributing to Alwathba
 
-Thank you for considering contributing to **GoCart**!
+Thank you for considering contributing to **Alwathba**!
 We welcome contributions from everyone, whether it's fixing a bug, adding a new feature, or optimizing the codebase.
 
 ---

@@ -5,6 +5,7 @@ import OurSpecs from "@/components/OurSpec";
 import LatestProducts from "@/components/LatestProducts";
 import PublicLayoutWithTranslations from "@/components/PublicLayoutWithTranslations";
 import { getDictionary } from "@/components/internationalization/dictionaries";
+import GoogleOneTapAuth from "@/components/GoogleOneTap";
 
 // Prevent pre-rendering on server due to Redux in layout
 export const dynamic = 'force-dynamic';
@@ -21,6 +22,7 @@ export default async function Home({ params }) {
                 <BestSelling dict={dict} lang={lang} />
                 <OurSpecs dict={dict} />
                 <Newsletter dict={dict} lang={lang} />
+                <GoogleOneTapAuth />
             </div>
         </PublicLayoutWithTranslations>
     );

@@ -5,7 +5,7 @@ import PageTitle from "@/components/PageTitle";
 import CurrencyIcon from "@/components/CurrencyIcon";
 import { deleteItemFromCart } from "@/lib/features/cart/cartSlice";
 import { Trash2Icon } from "lucide-react";
-import Image from "next/image";
+import OptimizedImage from "@/components/OptimizedImage";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -74,7 +74,16 @@ export default function CartPage({ dict, lang }) {
                                 <tr key={index} className="space-x-2">
                                     <td className="flex gap-3 my-4">
                                         <div className="flex gap-3 items-center justify-center bg-slate-100 size-18 rounded-md">
-                                            <Image src={item.images[0]} className="h-14 w-auto" alt="" width={45} height={45} />
+                                            <OptimizedImage
+                                                src={item.images[0]}
+                                                className="h-14 w-auto"
+                                                alt={getProductName(item)}
+                                                width={45}
+                                                height={45}
+                                                transformation={[
+                                                    { width: 90, height: 90, quality: 80 }
+                                                ]}
+                                            />
                                         </div>
                                         <div>
                                             <p className="max-sm:text-sm">{getProductName(item)}</p>

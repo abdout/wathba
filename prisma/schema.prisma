@@ -42,6 +42,12 @@ model Product {
     store      Store       @relation(fields: [storeId], references: [id], onDelete: Cascade)
     orderItems OrderItem[]
     rating     Rating[]
+
+    // Indexes for better query performance
+    @@index([category])
+    @@index([storeId])
+    @@index([inStock, category])
+    @@index([createdAt])
 }
 
 enum OrderStatus {
@@ -76,6 +82,12 @@ model Order {
     user    User    @relation("BuyerRelation", fields: [userId], references: [id])
     store   Store   @relation(fields: [storeId], references: [id])
     address Address @relation(fields: [addressId], references: [id])
+
+    // Indexes for better query performance
+    @@index([userId])
+    @@index([storeId])
+    @@index([status])
+    @@index([createdAt])
 }
 
 // Required for creating an OrderItem: orderId, productId, quantity, price

@@ -6,7 +6,7 @@ import CurrencyIcon from "@/components/CurrencyIcon"
 import { CircleDollarSignIcon, ShoppingBasketIcon, StoreIcon, TagsIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 
-export default function AdminDashboard() {
+export default function AdminDashboard({ dict, lang }) {
 
     // Currency icon is now handled by CurrencyIcon component
 
@@ -20,10 +20,27 @@ export default function AdminDashboard() {
     })
 
     const dashboardCardsData = [
-        { title: 'Total Products', value: dashboardData.products, icon: ShoppingBasketIcon },
-        { title: 'Total Revenue', value: dashboardData.revenue, icon: CircleDollarSignIcon, showCurrency: true },
-        { title: 'Total Orders', value: dashboardData.orders, icon: TagsIcon },
-        { title: 'Total Stores', value: dashboardData.stores, icon: StoreIcon },
+        {
+            title: dict?.admin?.totalProducts || 'Total Products',
+            value: dashboardData.products,
+            icon: ShoppingBasketIcon
+        },
+        {
+            title: dict?.admin?.totalRevenue || 'Total Revenue',
+            value: dashboardData.revenue,
+            icon: CircleDollarSignIcon,
+            showCurrency: true
+        },
+        {
+            title: dict?.admin?.totalOrders || 'Total Orders',
+            value: dashboardData.orders,
+            icon: TagsIcon
+        },
+        {
+            title: dict?.admin?.totalStores || 'Total Stores',
+            value: dashboardData.stores,
+            icon: StoreIcon
+        },
     ]
 
     const fetchDashboardData = async () => {
@@ -39,16 +56,18 @@ export default function AdminDashboard() {
 
     return (
         <div className="text-slate-500">
-            <h1 className="text-2xl">Admin <span className="text-slate-800 font-medium">Dashboard</span></h1>
+            <h1 className={`text-2xl ${lang === 'ar' ? 'text-right font-arabic' : ''}`}>
+                {dict?.admin?.admin || 'Admin'} <span className="text-slate-800 font-medium">{dict?.admin?.dashboard || 'Dashboard'}</span>
+            </h1>
 
             {/* Cards */}
             <div className="flex flex-wrap gap-5 my-10 mt-4">
                 {
                     dashboardCardsData.map((card, index) => (
                         <div key={index} className="flex items-center gap-10 border border-slate-200 p-3 px-6 rounded-lg">
-                            <div className="flex flex-col gap-3 text-xs">
+                            <div className={`flex flex-col gap-3 text-xs ${lang === 'ar' ? 'text-right font-arabic' : ''}`}>
                                 <p>{card.title}</p>
-                                <b className="text-2xl font-medium text-slate-700 flex items-center gap-1">
+                                <b className={`text-2xl font-medium text-slate-700 flex items-center gap-1 ${lang === 'ar' ? 'flex-row-reverse' : ''}`}>
                                     {card.showCurrency && <CurrencyIcon className="w-5 h-5" width={20} height={20} />}
                                     {card.value}
                                 </b>
