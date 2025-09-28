@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import toast from 'react-hot-toast';
-import Image from 'next/image';
+import OptimizedImage from './OptimizedImage';
 import { assets } from '@/assets/assets';
 
 export default function Banner({ dict, lang }) {
@@ -21,7 +21,7 @@ export default function Banner({ dict, lang }) {
                     <div className="flex-1 flex justify-center items-center gap-4">
                         <p className="text-center font-medium text-sm text-white">{dict?.banner?.message || 'Get 20% OFF on Your First Order!'}</p>
                         <button onClick={handleClaim} type="button" className="font-normal text-sm text-gray-800 bg-white px-5 py-1.5 rounded-full max-sm:hidden whitespace-nowrap hover:bg-gray-100 transition-colors flex items-center gap-2">
-                            <Image
+                            <OptimizedImage
                                 src={assets.gift}
                                 alt="Gift"
                                 width={16}

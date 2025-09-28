@@ -1,5 +1,5 @@
 'use client'
-import Image from "next/image";
+import OptimizedImage from "./OptimizedImage";
 import { DotIcon } from "lucide-react";
 import { useSelector } from "react-redux";
 import Rating from "./Rating";
@@ -21,10 +21,10 @@ const OrderItem = ({ order }) => {
                         {order.orderItems.map((item, index) => (
                             <div key={index} className="flex items-center gap-4">
                                 <div className="w-20 aspect-square bg-slate-100 flex items-center justify-center rounded-md">
-                                    <Image
+                                    <OptimizedImage
                                         className="h-14 w-auto"
                                         src={item.product.images[0]}
-                                        alt="product_img"
+                                        alt={item.product.name || "product"}
                                         width={50}
                                         height={50}
                                     />

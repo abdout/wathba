@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { assets } from "@/assets/assets";
-import Image from "next/image";
+import OptimizedImage from "./OptimizedImage";
 
 const Navbar = () => {
 
@@ -26,9 +26,10 @@ const Navbar = () => {
                 <div className="flex items-center justify-between max-w-7xl mx-auto py-4  transition-all">
 
                     <Link href="/">
-                        <Image
+                        <OptimizedImage
                             src={assets.logo_en}
                             alt="Alwathba Logo"
+                            width={120}
                             height={40}
                             className="h-10 w-auto"
                         />

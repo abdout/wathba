@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import { HomeIcon, ShieldCheckIcon, StoreIcon, TicketPercentIcon } from "lucide-react"
-import Image from "next/image"
+import OptimizedImage from "../OptimizedImage"
 import Link from "next/link"
 import { assets } from "@/assets/assets"
 import { useUser } from "@clerk/nextjs"
@@ -26,7 +26,7 @@ const AdminSidebar = () => {
                 {user?.imageUrl ? (
                     <img className="w-14 h-14 rounded-full object-cover" src={user.imageUrl} alt={displayName} />
                 ) : (
-                    <Image className="w-14 h-14 rounded-full" src={assets.gs_logo} alt="" width={80} height={80} />
+                    <OptimizedImage className="w-14 h-14 rounded-full" src={assets.gs_logo} alt="Admin" width={80} height={80} />
                 )}
                 <p className="text-slate-700">Hi, {displayName}</p>
             </div>
