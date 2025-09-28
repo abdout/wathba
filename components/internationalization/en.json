@@ -26,6 +26,12 @@
     "news": "NEWS",
     "freeShipping": "Free Shipping on Orders Above AED 50!"
   },
+  "homepage": {
+    "featuredCategories": "Featured Categories",
+    "categoriesSubtitle": "Shop from our wide range of categories",
+    "grocery": "Grocery",
+    "grocerySubtitle": "Your daily needs delivered to your doorstep"
+  },
   "products": {
     "title": "Latest Products",
     "bestSelling": "Best Selling",
@@ -211,7 +217,19 @@
     "Watch": "Watches",
     "Earbuds": "Earbuds",
     "Mouse": "Mouse",
-    "Decoration": "Decoration"
+    "Decoration": "Decoration",
+    "freshFruit": "Fresh Fruit",
+    "freshVegetables": "Fresh Vegetables",
+    "meatFish": "Meat & Fish",
+    "snacks": "Snacks",
+    "beverages": "Beverages",
+    "beautyHealth": "Beauty & Health",
+    "breadBakery": "Bread & Bakery",
+    "bakingNeeds": "Baking Needs",
+    "cooking": "Cooking",
+    "diabeticFood": "Diabetic Food",
+    "dishDetergents": "Dish Detergents",
+    "oil": "Oil"
   },
   "store": {
     "seller": "Seller",

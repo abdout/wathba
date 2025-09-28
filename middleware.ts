@@ -57,7 +57,11 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
       sessionClaims?.metadata?.onboardingComplete !== true &&
       !isPublicRoute(req) &&
       !req.url.includes('/sign-out')) {
-    const onboardingUrl = new URL('/onboarding', req.url);
+    // Extract language from current path or default to 'en'
+    const pathname = req.nextUrl.pathname;
+    const langMatch = pathname.match(/^\/(ar|en)/);
+    const lang = langMatch ? langMatch[1] : 'en';
+    const onboardingUrl = new URL(`/${lang}/onboarding`, req.url);
     return NextResponse.redirect(onboardingUrl);
   }
 

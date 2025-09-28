@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo:*)",
+      "Bash(echo \"IMAGEKIT_PRIVATE_KEY length: $#IMAGEKIT_PRIVATE_KEY\")",
+      "Bash(npm run dev:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

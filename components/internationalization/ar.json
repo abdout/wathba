@@ -26,6 +26,12 @@
     "news": "أخبار",
     "freeShipping": "شحن مجاني للطلبات فوق 50 درهم!"
   },
+  "homepage": {
+    "featuredCategories": "الفئات المميزة",
+    "categoriesSubtitle": "تسوق من مجموعتنا الواسعة من الفئات",
+    "grocery": "البقالة",
+    "grocerySubtitle": "احتياجاتك اليومية تصل إلى باب منزلك"
+  },
   "products": {
     "title": "أحدث المنتجات",
     "bestSelling": "الأكثر مبيعاً",
@@ -208,7 +214,19 @@
     "Watch": "ساعات",
     "Earbuds": "سماعات الأذن",
     "Mouse": "فأرة",
-    "Decoration": "ديكور"
+    "Decoration": "ديكور",
+    "freshFruit": "فواكه طازجة",
+    "freshVegetables": "خضروات طازجة",
+    "meatFish": "لحوم وأسماك",
+    "snacks": "وجبات خفيفة",
+    "beverages": "مشروبات",
+    "beautyHealth": "الجمال والصحة",
+    "breadBakery": "خبز ومخبوزات",
+    "bakingNeeds": "مستلزمات الخبز",
+    "cooking": "الطبخ",
+    "diabeticFood": "أغذية السكري",
+    "dishDetergents": "منظفات الأطباق",
+    "oil": "زيت"
   },
   "store": {
     "seller": "البائع",
