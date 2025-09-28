@@ -4,6 +4,7 @@ import Newsletter from "@/components/Newsletter";
 import OurSpecs from "@/components/OurSpec";
 import LatestProducts from "@/components/LatestProducts";
 import FeaturedCategories from "@/components/FeaturedCategories";
+import FeaturesBar from "@/components/FeaturesBar";
 import PublicLayoutWithTranslations from "@/components/PublicLayoutWithTranslations";
 import { getDictionary } from "@/components/internationalization/dictionaries";
 import GoogleOneTapAuth from "@/components/GoogleOneTap";
@@ -19,6 +20,7 @@ export default async function Home({ params }) {
         <PublicLayoutWithTranslations dict={dict} lang={lang}>
             <div>
                 <Hero dict={dict} lang={lang} />
+                <FeaturesBar dict={dict} lang={lang} />
                 <FeaturedCategories dict={dict} lang={lang} />
                 <LatestProducts dict={dict} lang={lang} />
                 <BestSelling dict={dict} lang={lang} />

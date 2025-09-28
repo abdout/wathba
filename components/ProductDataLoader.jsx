@@ -9,9 +9,14 @@ export default function ProductDataLoader({ children }) {
 
   useEffect(() => {
     // Fetch products from API on initial load
+    console.log('Fetching products from API...');
     dispatch(fetchProducts({
       limit: 50 // Fetch more products initially
-    }));
+    })).then(result => {
+      console.log('Products fetch result:', result);
+    }).catch(err => {
+      console.error('Error fetching products:', err);
+    });
   }, [dispatch]);
 
   return children;

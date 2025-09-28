@@ -171,6 +171,24 @@
     "emptyCart": "Cart is Empty",
     "continueShopping": "Continue Shopping"
   },
+  "features": {
+    "freeShipping": {
+      "title": "Free Shipping",
+      "description": "Free shipping on all your order"
+    },
+    "customerSupport": {
+      "title": "Customer Support 24/7",
+      "description": "Instant access to Support"
+    },
+    "securePayment": {
+      "title": "100% Secure Payment",
+      "description": "We ensure your money is save"
+    },
+    "moneyBack": {
+      "title": "Money-Back Guarantee",
+      "description": "30 Days Money-Back Guarantee"
+    }
+  },
   "general": {
     "all": "All",
     "loading": "Loading...",

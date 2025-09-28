@@ -168,6 +168,24 @@
     "emptyCart": "السلة فارغة",
     "continueShopping": "متابعة التسوق"
   },
+  "features": {
+    "freeShipping": {
+      "title": "شحن مجاني",
+      "description": "شحن مجاني على جميع طلباتك"
+    },
+    "customerSupport": {
+      "title": "دعم العملاء 24/7",
+      "description": "الوصول الفوري للدعم"
+    },
+    "securePayment": {
+      "title": "دفع آمن 100%",
+      "description": "نضمن أن أموالك آمنة"
+    },
+    "moneyBack": {
+      "title": "ضمان استرداد الأموال",
+      "description": "ضمان استرداد الأموال لمدة 30 يومًا"
+    }
+  },
   "general": {
     "all": "جميع",
     "loading": "جاري التحميل...",

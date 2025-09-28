@@ -8,6 +8,10 @@ const LatestProducts = ({ dict, lang }) => {
 
     const displayQuantity = 4
     const products = useSelector(state => state?.product?.list || [])
+    const loading = useSelector(state => state?.product?.loading)
+    const error = useSelector(state => state?.product?.error)
+
+    console.log('LatestProducts - Products:', products.length, 'Loading:', loading, 'Error:', error)
 
     return (
         <div className='px-6 my-30 max-w-6xl mx-auto'>

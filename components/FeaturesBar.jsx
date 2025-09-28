@@ -9,47 +9,47 @@ const FeaturesBar = ({ dict, lang }) => {
   const features = [
     {
       id: 1,
-      icon: '/icons/shipping.svg',
+      icon: '/assets/delivery.png',
       title: dict?.features?.freeShipping?.title || 'Free Shipping',
       description: dict?.features?.freeShipping?.description || 'Free shipping on all your order'
     },
     {
       id: 2,
-      icon: '/icons/support.svg',
+      icon: '/assets/headphones.png',
       title: dict?.features?.customerSupport?.title || 'Customer Support 24/7',
       description: dict?.features?.customerSupport?.description || 'Instant access to Support'
     },
     {
       id: 3,
-      icon: '/icons/secure.svg',
+      icon: '/assets/shopping-bag.png',
       title: dict?.features?.securePayment?.title || '100% Secure Payment',
       description: dict?.features?.securePayment?.description || 'We ensure your money is save'
     },
     {
       id: 4,
-      icon: '/icons/guarantee.svg',
+      icon: '/assets/package.png',
       title: dict?.features?.moneyBack?.title || 'Money-Back Guarantee',
       description: dict?.features?.moneyBack?.description || '30 Days Money-Back Guarantee'
     }
   ];
 
   return (
-    <section className="py-8 px-4 sm:px-6 lg:px-8 bg-gray-50">
+    <section className="py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature) => (
             <div
               key={feature.id}
-              className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}
+              className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}
             >
               <div className="flex-shrink-0">
-                <div className="w-12 h-12 flex items-center justify-center">
+                <div className="w-8 h-8 flex items-center justify-center">
                   <OptimizedImage
                     src={feature.icon}
                     alt={feature.title}
-                    width={40}
-                    height={40}
-                    className="w-10 h-10 object-contain"
+                    width={32}
+                    height={32}
+                    className="w-8 h-8 object-contain"
                   />
                 </div>
               </div>
