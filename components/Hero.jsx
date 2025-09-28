@@ -4,7 +4,7 @@ import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from
 import React from 'react'
 import CategoriesMarquee from './CategoriesMarquee'
 import CurrencyIcon from './CurrencyIcon'
-import OptimizedImage from './OptimizedImage'
+import OptimizedImage from './OptimizedImageSimple' // Using simplified version for now
 
 const Hero = ({ dict, lang }) => {
 
@@ -27,7 +27,7 @@ const Hero = ({ dict, lang }) => {
                         </h2>
                         <div className='text-slate-800 text-sm font-medium mt-4 sm:mt-8'>
                             <p>{dict?.hero?.startsFrom || "Starts from"}</p>
-                            <p className='text-3xl flex items-center gap-1'><CurrencyIcon className="w-6 h-6" width={24} height={24} />4.90</p>
+                            <div className='text-3xl flex items-center gap-1'><CurrencyIcon className="w-6 h-6" width={24} height={24} />4.90</div>
                         </div>
                         <button className='bg-slate-800 text-white text-sm py-2.5 px-7 sm:py-5 sm:px-12 mt-4 sm:mt-10 rounded-md hover:bg-slate-900 hover:scale-103 active:scale-95 transition'>{dict?.hero?.learnMore || "LEARN MORE"}</button>
                     </div>

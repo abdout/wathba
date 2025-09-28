@@ -1,7 +1,7 @@
 'use client'
 import { usePathname } from "next/navigation"
 import { HomeIcon, LayoutListIcon, SquarePenIcon, SquarePlusIcon } from "lucide-react"
-import OptimizedImage from "../OptimizedImage"
+import OptimizedImage from "../OptimizedImageSimple"
 import Link from "next/link"
 
 const StoreSidebar = ({storeInfo}) => {

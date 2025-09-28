@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { assets } from "@/assets/assets";
-import OptimizedImage from "./OptimizedImage";
+import OptimizedImage from "./OptimizedImageSimple";
 
 const Navbar = () => {
 

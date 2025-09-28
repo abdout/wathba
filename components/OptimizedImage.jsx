@@ -1,7 +1,7 @@
 'use client';
 
 import { Image } from '@imagekit/next';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function OptimizedImage({
     src,
@@ -18,10 +18,21 @@ export default function OptimizedImage({
     ...props
 }) {
     const [imgError, setImgError] = useState(false);
-    const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/osmanabdout';
+
+    // Debug logging
+    useEffect(() => {
+        if (src) {
+            console.log('OptimizedImage loading:', { src });
+        }
+    }, [src]);
 
     // Handle error fallback
     const handleError = (e) => {
+        console.error('Image load error:', {
+            src,
+            errorType: e?.type || 'unknown',
+            errorMessage: e?.message || 'Image failed to load'
+        });
         setImgError(true);
         if (onError) onError(e);
     };
@@ -57,15 +68,22 @@ export default function OptimizedImage({
             // Extract path from full ImageKit URL
             try {
                 const url = new URL(src);
-                imageSrc = url.pathname;
+                // Remove the leading slash from pathname
+                imageSrc = url.pathname.startsWith('/') ? url.pathname.slice(1) : url.pathname;
+                console.log('Extracted path from ImageKit URL:', { original: src, extracted: imageSrc });
             } catch {
                 imageSrc = src;
             }
-        } else if (!src.startsWith('/')) {
-            // Ensure relative paths start with /
-            imageSrc = `/${src}`;
+        } else if (src.startsWith('/')) {
+            // Remove leading slash for ImageKit paths
+            imageSrc = src.slice(1);
+        } else {
+            // Use as-is
+            imageSrc = src;
         }
     }
+
+    console.log('Final image src:', { original: src, processed: imageSrc });
 
     // Build optimized transformations
     const optimizedTransformations = [...transformation];
@@ -92,7 +110,6 @@ export default function OptimizedImage({
 
     return (
         <Image
-            urlEndpoint={urlEndpoint}
             src={imageSrc}
             alt={alt || ''}
             width={width || 500}
@@ -103,7 +120,6 @@ export default function OptimizedImage({
             onError={handleError}
             sizes={sizes || `(max-width: 640px) 100vw, (max-width: 1024px) 50vw, ${width}px`}
             placeholder={placeholder}
-            responsive={true}
             {...props}
         />
     );

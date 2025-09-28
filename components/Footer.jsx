@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { assets } from "@/assets/assets";
-import OptimizedImage from "./OptimizedImage";
+import OptimizedImage from "./OptimizedImageSimple"; // Using simplified version
 
 const Footer = ({ dict = {}, lang = 'en' }) => {
 

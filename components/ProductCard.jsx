@@ -3,7 +3,7 @@ import { StarIcon } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import CurrencyIcon from './CurrencyIcon'
-import OptimizedImage from './OptimizedImage'
+import OptimizedImage from './OptimizedImageSimple'
 
 const ProductCard = ({ product, dict }) => {
 

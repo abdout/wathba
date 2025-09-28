@@ -5,7 +5,7 @@ import PageTitle from "@/components/PageTitle";
 import CurrencyIcon from "@/components/CurrencyIcon";
 import { deleteItemFromCart } from "@/lib/features/cart/cartSlice";
 import { Trash2Icon } from "lucide-react";
-import OptimizedImage from "@/components/OptimizedImage";
+import OptimizedImage from "@/components/OptimizedImageSimple";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 

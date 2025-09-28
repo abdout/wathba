@@ -1,9 +1,7 @@
-import Image from "next/image";
 import PublicLayoutWithTranslations from "@/components/PublicLayoutWithTranslations";
 import { getDictionary } from "@/components/internationalization/dictionaries";
-import OptimizedImage from "@/components/OptimizedImage";
-import whoImage from "@/assets/who.jpg";
-import whyImage from "@/assets/why.jpg";
+import OptimizedImage from "@/components/OptimizedImageSimple";
+import { who as whoImage, why as whyImage } from "@/lib/imagekit-urls";
 
 // Prevent pre-rendering on server due to Redux in layout
 export const dynamic = 'force-dynamic';
@@ -30,7 +28,7 @@ export default async function AboutPage({ params }) {
                                 </p>
                             </div>
                             <div className="mt-8">
-                                <Image
+                                <OptimizedImage
                                     src={whoImage}
                                     alt="Al Wathba landscape representing our community roots"
                                     width={500}
@@ -53,7 +51,7 @@ export default async function AboutPage({ params }) {
                                 </p>
                             </div>
                             <div className="mt-8">
-                                <Image
+                                <OptimizedImage
                                     src={whyImage}
                                     alt="Community cooperation and teamwork"
                                     width={500}

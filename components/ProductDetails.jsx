@@ -7,7 +7,7 @@ import { useState } from "react";
 import Counter from "./Counter";
 import { useDispatch, useSelector } from "react-redux";
 import CurrencyIcon from "./CurrencyIcon";
-import OptimizedImage from "./OptimizedImage";
+import OptimizedImage from "./OptimizedImageSimple";
 
 const ProductDetails = ({ product, dict, lang }) => {
 

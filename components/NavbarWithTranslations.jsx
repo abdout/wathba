@@ -8,7 +8,7 @@ import { useLocale } from "@/components/internationalization/use-locale";
 import { assets } from "@/assets/assets";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useUser, UserButton, SignInButton } from "@clerk/nextjs";
-import OptimizedImage from "./OptimizedImage";
+import OptimizedImage from "./OptimizedImageSimple"; // Using simplified version
 
 const NavbarWithTranslations = ({ dict, lang }) => {
     const router = useRouter();
