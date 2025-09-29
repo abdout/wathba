@@ -26,7 +26,15 @@ const ProductDetails = ({ product, dict, lang }) => {
     const [mainImage, setMainImage] = useState(product?.images?.[0] || '');
 
     const addToCartHandler = () => {
-        dispatch(addToCart({ productId }))
+        console.log('[ProductDetails] Add to Cart clicked');
+        console.log('[ProductDetails] Product ID:', productId);
+        console.log('[ProductDetails] Product object:', product);
+        console.log('[ProductDetails] Current cart state:', cart);
+        console.log('[ProductDetails] Dispatching addToCart action...');
+
+        dispatch(addToCart(productId));  // Fixed: Pass productId directly, not as an object
+
+        console.log('[ProductDetails] addToCart action dispatched');
     }
 
     const averageRating = product.rating && product.rating.length > 0

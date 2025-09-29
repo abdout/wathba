@@ -9,11 +9,11 @@ const Counter = ({ productId }) => {
     const dispatch = useDispatch();
 
     const addToCartHandler = () => {
-        dispatch(addToCart({ productId }))
+        dispatch(addToCart(productId))  // Fixed: Pass productId directly
     }
 
     const removeFromCartHandler = () => {
-        dispatch(removeFromCart({ productId }))
+        dispatch(removeFromCart(productId))  // Fixed: Pass productId directly
     }
 
     return (
