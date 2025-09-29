@@ -112,11 +112,11 @@ const FeaturedCategories = ({ dict, lang }) => {
                   <OptimizedImage
                     src={category.image}
                     alt={category.name}
-                    width={70}
+                    width={100}
                     height={70}
-                    className="w-16 h-16 object-cover"
+                    className="w-24 h-16 object-cover"
                     transformation={[
-                      { width: 70, height: 70, quality: 90 }
+                      { width: 100, height: 70, quality: 90 }
                     ]}
                   />
                 </div>
