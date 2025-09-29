@@ -11,39 +11,88 @@ export default function ProductDataLoader({ children }) {
   const error = useSelector(state => state?.product?.error);
 
   useEffect(() => {
-    console.log('=== ProductDataLoader DEBUG START ===');
-    console.log('[ProductDataLoader] Component mounted at:', new Date().toISOString());
-    console.log('[ProductDataLoader] Current products in Redux:', products);
-    console.log('[ProductDataLoader] Products length:', products.length);
-    console.log('[ProductDataLoader] Loading state:', loading);
-    console.log('[ProductDataLoader] Error state:', error);
-
-    // Fetch products from API on initial load
-    console.log('[ProductDataLoader] Dispatching fetchProducts action...');
-
-    const fetchPromise = dispatch(fetchProducts({
-      limit: 50 // Fetch more products initially
-    }));
-
-    fetchPromise.then(result => {
-      console.log('[ProductDataLoader] Fetch completed successfully');
-      console.log('[ProductDataLoader] Result type:', result.type);
-      console.log('[ProductDataLoader] Result payload:', result.payload);
-
-      if (result.payload) {
-        console.log('[ProductDataLoader] Products received:', result.payload.products?.length || 0);
-        console.log('[ProductDataLoader] First product:', result.payload.products?.[0]);
-        console.log('[ProductDataLoader] Pagination:', result.payload.pagination);
-      }
-    }).catch(err => {
-      console.error('[ProductDataLoader] ERROR fetching products:', err);
-      console.error('[ProductDataLoader] Error stack:', err.stack);
+    console.log('========== ProductDataLoader DEBUG START ==========');
+    console.log('[ProductDataLoader] Timestamp:', new Date().toISOString());
+    console.log('[ProductDataLoader] Environment:', process.env.NODE_ENV);
+    console.log('[ProductDataLoader] API URL:', process.env.NEXT_PUBLIC_APP_URL || 'Not set');
+    console.log('[ProductDataLoader] Current window location:', typeof window !== 'undefined' ? window.location.href : 'SSR');
+    console.log('[ProductDataLoader] Component mounted');
+    console.log('[ProductDataLoader] Redux State:', {
+      productsLength: products.length,
+      loading: loading,
+      error: error,
+      hasError: !!error,
+      errorMessage: error?.message || error,
+      firstProduct: products[0]
     });
 
-    console.log('=== ProductDataLoader DEBUG END ===');
+    // Check if we already have products
+    if (products.length > 0) {
+      console.log('[ProductDataLoader] Products already loaded, count:', products.length);
+      console.log('[ProductDataLoader] Sample product IDs:', products.slice(0, 3).map(p => p?.id));
+      return;
+    }
+
+    console.log('[ProductDataLoader] No products in store, fetching from API...');
+    console.log('[ProductDataLoader] Dispatching fetchProducts action with limit: 50');
+
+    const fetchPromise = dispatch(fetchProducts({
+      limit: 50
+    }));
+
+    fetchPromise
+      .then(result => {
+        console.log('========== Fetch Success ==========');
+        console.log('[ProductDataLoader] Fetch completed at:', new Date().toISOString());
+        console.log('[ProductDataLoader] Action type:', result.type);
+        console.log('[ProductDataLoader] Success type check:', result.type.endsWith('/fulfilled'));
+
+        if (result.type.endsWith('/rejected')) {
+          console.error('[ProductDataLoader] Fetch was rejected!');
+          console.error('[ProductDataLoader] Rejection payload:', result.payload);
+          console.error('[ProductDataLoader] Error details:', result.error);
+        }
+
+        if (result.payload) {
+          console.log('[ProductDataLoader] Payload received:', {
+            hasProducts: !!result.payload.products,
+            productsCount: result.payload.products?.length || 0,
+            pagination: result.payload.pagination,
+            error: result.payload.error,
+            message: result.payload.message
+          });
+
+          if (result.payload.products && result.payload.products.length > 0) {
+            console.log('[ProductDataLoader] First product details:', {
+              id: result.payload.products[0]?.id,
+              name: result.payload.products[0]?.name,
+              hasImages: !!result.payload.products[0]?.images,
+              hasStore: !!result.payload.products[0]?.store
+            });
+          } else {
+            console.warn('[ProductDataLoader] No products in payload!');
+          }
+        } else {
+          console.error('[ProductDataLoader] No payload in result!');
+        }
+        console.log('========== Fetch Complete ==========');
+      })
+      .catch(err => {
+        console.error('========== Fetch Error ==========');
+        console.error('[ProductDataLoader] ERROR at:', new Date().toISOString());
+        console.error('[ProductDataLoader] Error message:', err.message);
+        console.error('[ProductDataLoader] Error stack:', err.stack);
+        console.error('[ProductDataLoader] Full error object:', err);
+        console.error('[ProductDataLoader] Error name:', err.name);
+        console.error('[ProductDataLoader] Error code:', err.code);
+        console.error('========== Error End ==========');
+      });
+
+    console.log('[ProductDataLoader] Fetch promise dispatched');
+    console.log('========== ProductDataLoader DEBUG END ==========');
 
     return () => {
-      console.log('[ProductDataLoader] Component unmounting...');
+      console.log('[ProductDataLoader] Component unmounting at:', new Date().toISOString());
     };
   }, [dispatch]);
 

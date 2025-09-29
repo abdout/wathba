@@ -9,6 +9,11 @@ const ProductDescription = ({ product, dict, lang }) => {
     const [selectedTab, setSelectedTab] = useState('Description')
     const isRTL = lang === 'ar'
 
+    // Early return if product is not available
+    if (!product) {
+        return null;
+    }
+
     return (
         <div className="my-18 text-sm text-slate-600">
 
@@ -55,16 +60,18 @@ const ProductDescription = ({ product, dict, lang }) => {
             )}
 
             {/* Store Page */}
-            <div className="flex gap-3 mt-14">
-                <OptimizedImage src={product.store.logo} alt="" className="size-11 rounded-full ring ring-slate-400" width={100} height={100} />
-                <div>
-                    <p className="font-medium text-slate-600">{dict?.product?.productBy || "Product by"} {product.store.name}</p>
-                    <Link href={`/shop/${product.store.username}`} className="flex items-center gap-1.5 text-green-500">
-                        {dict?.product?.viewStore || "view store"}
-                        {isRTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
-                    </Link>
+            {product?.store && (
+                <div className="flex gap-3 mt-14">
+                    <OptimizedImage src={product.store.logo} alt="" className="size-11 rounded-full ring ring-slate-400" width={100} height={100} />
+                    <div>
+                        <p className="font-medium text-slate-600">{dict?.product?.productBy || "Product by"} {product.store.name}</p>
+                        <Link href={`/shop/${product.store.username}`} className="flex items-center gap-1.5 text-green-500">
+                            {dict?.product?.viewStore || "view store"}
+                            {isRTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
+                        </Link>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     )
 }

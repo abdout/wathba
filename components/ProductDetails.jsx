@@ -11,6 +11,11 @@ import OptimizedImage from "./OptimizedImage";
 
 const ProductDetails = ({ product, dict, lang }) => {
 
+    // Early return if product is not available
+    if (!product) {
+        return null;
+    }
+
     const productId = product.id;
 
     const cart = useSelector(state => state?.cart?.cartItems || {});
@@ -18,7 +23,7 @@ const ProductDetails = ({ product, dict, lang }) => {
 
     const router = useRouter()
 
-    const [mainImage, setMainImage] = useState(product.images[0]);
+    const [mainImage, setMainImage] = useState(product?.images?.[0] || '');
 
     const addToCartHandler = () => {
         dispatch(addToCart({ productId }))
@@ -32,7 +37,7 @@ const ProductDetails = ({ product, dict, lang }) => {
         <div className="flex max-lg:flex-col gap-12">
             <div className="flex max-sm:flex-col-reverse gap-3">
                 <div className="flex sm:flex-col gap-3">
-                    {product.images.map((image, index) => (
+                    {product?.images?.map((image, index) => (
                         <div key={index} onClick={() => setMainImage(product.images[index])} className="bg-slate-100 flex items-center justify-center size-26 rounded-lg group cursor-pointer">
                             <OptimizedImage
                                 src={image}
