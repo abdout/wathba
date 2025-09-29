@@ -15,9 +15,8 @@ const LatestNews = ({ dict, lang }) => {
         day: "18",
         month: dict?.news?.months?.nov || "NOV"
       },
-      image: "/assets/news/fresh-oranges.jpg",
+      image: "https://ik.imagekit.io/osmanabdout/assets/blog-01.png?updatedAt=1759170873988",
       title: dict?.news?.articles?.[0]?.title || "Curabitur porttitor orci eget neque accumsan venenatis. Nunc fermentum.",
-      titleColor: "#2c742f",
       category: dict?.news?.category || "Food",
       author: dict?.news?.author || "Admin",
     },
@@ -27,9 +26,8 @@ const LatestNews = ({ dict, lang }) => {
         day: "29",
         month: dict?.news?.months?.jan || "JAN"
       },
-      image: "/assets/news/eggs-avocado.jpg",
+      image: "https://ik.imagekit.io/osmanabdout/assets/blog-02.jpg?updatedAt=1759170873497",
       title: dict?.news?.articles?.[1]?.title || "Eget lobortis lorem lacinia. Vivamus pharetra semper,",
-      titleColor: "#1a1a1a",
       category: dict?.news?.category || "Food",
       author: dict?.news?.author || "Admin",
     },
@@ -39,9 +37,8 @@ const LatestNews = ({ dict, lang }) => {
         day: "21",
         month: dict?.news?.months?.feb || "FEB"
       },
-      image: "/assets/news/healthy-salad.jpg",
+      image: "https://ik.imagekit.io/osmanabdout/assets/blog-03.jpg?updatedAt=1759170873628",
       title: dict?.news?.articles?.[2]?.title || "Maecenas blandit risus elementum mauris malesuada.",
-      titleColor: "#1a1a1a",
       category: dict?.news?.category || "Food",
       author: dict?.news?.author || "Admin",
     },
@@ -101,8 +98,7 @@ const LatestNews = ({ dict, lang }) => {
               </div>
 
               <h3
-                className={`text-xl font-semibold mb-4 leading-tight group-hover:text-gray-800 hover:text-green-600 transition-colors cursor-pointer line-clamp-2 ${isRTL ? 'font-rubik text-right' : 'font-outfit text-left'}`}
-                style={{ color: news.titleColor }}
+                className={`text-xl font-semibold mb-4 leading-tight text-gray-800 hover:text-green-600 transition-colors cursor-pointer line-clamp-2 ${isRTL ? 'font-rubik text-right' : 'font-outfit text-left'}`}
               >
                 {news.title}
               </h3>

@@ -1,6 +1,7 @@
 'use client'
 import { Suspense, useEffect, useState } from "react"
 import ProductCard from "@/components/ProductCard"
+import ProductCardSkeleton from "@/components/skeletons/ProductCardSkeleton"
 import { MoveLeftIcon, MoveRightIcon, Filter, ChevronDown } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useSelector, useDispatch } from "react-redux"
@@ -137,12 +138,8 @@ function ShopContent({ dict, lang }) {
                 {/* Products Grid */}
                 {loading ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 xl:gap-12 mb-32">
-                        {[...Array(8)].map((_, i) => (
-                            <div key={i} className="animate-pulse">
-                                <div className="bg-gray-300 h-64 rounded mb-4"></div>
-                                <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
-                                <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                            </div>
+                        {[...Array(12)].map((_, i) => (
+                            <ProductCardSkeleton key={i} />
                         ))}
                     </div>
                 ) : (

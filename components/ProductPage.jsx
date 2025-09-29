@@ -2,6 +2,8 @@
 import ProductDescription from "@/components/ProductDescription";
 import ProductDetails from "@/components/ProductDetails";
 import ProductDataLoader from "@/components/ProductDataLoader";
+import ProductDetailsSkeleton from "@/components/skeletons/ProductDetailsSkeleton";
+import ProductDescriptionSkeleton from "@/components/skeletons/ProductDescriptionSkeleton";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -115,13 +117,12 @@ export default function ProductPage({ dict, lang }) {
                         <span>{product && getCategoryName(product.category)}</span>
                     </div>
 
-                    {/* Loading State */}
+                    {/* Loading State with Skeleton */}
                     {loading && !product && (
-                        <div className="flex flex-col items-center justify-center min-h-[400px] text-gray-500">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mb-4"></div>
-                            <p>{dict?.common?.loading || "Loading product..."}</p>
-                            <p className="text-sm mt-2">Environment: {process.env.NODE_ENV}</p>
-                        </div>
+                        <>
+                            <ProductDetailsSkeleton />
+                            <ProductDescriptionSkeleton />
+                        </>
                     )}
 
                     {/* Error State */}
