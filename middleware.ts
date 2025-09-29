@@ -1,5 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextRequest, NextResponse } from 'next/server';
+import { redirectToSignIn } from '@clerk/nextjs/server';
 
 // Define route matchers for different access levels
 const isPublicRoute = createRouteMatcher([
@@ -13,6 +14,7 @@ const isPublicRoute = createRouteMatcher([
   '/sign-up(.*)',
   '/(ar|en)/sign-in(.*)',
   '/(ar|en)/sign-up(.*)',
+  '/api(.*)',  // Make API routes public
 ]);
 
 const isOnboardingRoute = createRouteMatcher([
@@ -35,12 +37,17 @@ const isStoreRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
+  // Skip middleware for API routes entirely
+  if (req.nextUrl.pathname.startsWith('/api')) {
+    return NextResponse.next();
+  }
+
   const { isAuthenticated, sessionClaims } = await auth();
 
   // Handle onboarding route
   if (isOnboardingRoute(req)) {
     if (!isAuthenticated) {
-      return auth.redirectToSignIn({ returnBackUrl: req.url });
+      return redirectToSignIn({ returnBackUrl: req.url });
     }
     // Allow access to onboarding if user hasn't completed it
     if (sessionClaims?.metadata?.onboardingComplete !== true) {
@@ -68,7 +75,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
   // Protect admin routes
   if (isAdminRoute(req)) {
     if (!isAuthenticated) {
-      return auth.redirectToSignIn({ returnBackUrl: req.url });
+      return redirectToSignIn({ returnBackUrl: req.url });
     }
     // Check if user has admin role
     const userRole = sessionClaims?.metadata?.role as string;
@@ -82,7 +89,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
   // Protect store (vendor) routes
   if (isStoreRoute(req)) {
     if (!isAuthenticated) {
-      return auth.redirectToSignIn({ returnBackUrl: req.url });
+      return redirectToSignIn({ returnBackUrl: req.url });
     }
     // Check if user has vendor role
     const userRole = sessionClaims?.metadata?.role as string;
@@ -102,7 +109,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
   // Protect general authenticated routes (cart, checkout, orders, etc.)
   if (isProtectedRoute(req)) {
     if (!isAuthenticated) {
-      return auth.redirectToSignIn({ returnBackUrl: req.url });
+      return redirectToSignIn({ returnBackUrl: req.url });
     }
     return NextResponse.next();
   }
