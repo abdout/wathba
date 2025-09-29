@@ -39,7 +39,7 @@ const Hero02 = ({ dict, lang }) => {
                         </div>
                         <div className={`sm:absolute bottom-0 w-full sm:w-80 max-w-sm ${lang === 'ar' ? 'left-0 md:left-5' : 'right-0 md:right-5'}`}>
                             <OptimizedImage
-                                className='w-full h-auto object-contain'
+                                className={`w-full h-auto object-contain ${lang === 'ar' ? 'scale-x-[-1]' : ''}`}
                                 src='/assets/hero-03.png'
                                 alt={dict?.hero?.organicAlt || "Fresh organic food"}
                                 width={320}
@@ -69,9 +69,7 @@ const Hero02 = ({ dict, lang }) => {
                             {/* Content */}
                             <div className='relative z-10'>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-800 to-[#FFD700] bg-clip-text text-transparent max-w-40`}>
-                                    {"75%"}
-                                    <br />
-                                    {"Sales"}
+                                    {dict?.hero?.summerSale || "Summer Sale - 75% OFF"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4'>
                                     {dict?.hero?.shopNow || "Shop now"}
@@ -102,9 +100,7 @@ const Hero02 = ({ dict, lang }) => {
                             {/* Content */}
                             <div className='relative z-10'>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-white to-[#7DE2FF] bg-clip-text text-transparent max-w-40`}>
-                                    {"Best"}
-                                    <br />
-                                    {"Deal"}
+                                    {dict?.hero?.bestDeal || "Best Deal - Special Products"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4 text-white'>
                                     {dict?.hero?.viewMore || "View more"}

@@ -14,17 +14,43 @@ const LatestProducts = ({ dict, lang }) => {
     const reduxState = useSelector(state => state)
 
     // Detailed debug logging
-    console.log('[LatestProducts] Component rendered');
-    console.log('[LatestProducts] Full Redux state:', reduxState);
-    console.log('[LatestProducts] Product state:', reduxState?.product);
-    console.log('[LatestProducts] Products array:', products);
-    console.log('[LatestProducts] Products length:', products.length);
+    console.log('=== LatestProducts DEBUG START ===');
+    console.log('[LatestProducts] Component mounted/rendered at:', new Date().toISOString());
+    console.log('[LatestProducts] Full Redux state structure:', {
+        hasProduct: !!reduxState?.product,
+        productKeys: reduxState?.product ? Object.keys(reduxState.product) : [],
+        fullState: reduxState
+    });
+    console.log('[LatestProducts] Product state details:', {
+        state: reduxState?.product,
+        list: reduxState?.product?.list,
+        listType: Array.isArray(reduxState?.product?.list) ? 'array' : typeof reduxState?.product?.list,
+        listLength: reduxState?.product?.list?.length
+    });
+    console.log('[LatestProducts] Products variable:', {
+        value: products,
+        isArray: Array.isArray(products),
+        length: products.length,
+        firstItem: products[0]
+    });
     console.log('[LatestProducts] Loading state:', loading);
     console.log('[LatestProducts] Error state:', error);
+    console.log('[LatestProducts] Display quantity:', displayQuantity);
 
-    // Products are now fetched by ProductDataLoader component at the page level
+    // Check if products need to be fetched
+    useEffect(() => {
+        console.log('[LatestProducts useEffect] Checking if products need fetching');
+        console.log('[LatestProducts useEffect] Current products:', products);
+        console.log('[LatestProducts useEffect] Loading state:', loading);
 
-    console.log('[LatestProducts] Rendering with products:', products.length, 'Loading:', loading, 'Error:', error)
+        if (!products || products.length === 0) {
+            console.log('[LatestProducts useEffect] No products found, dispatching fetchProducts');
+            dispatch(fetchProducts());
+        }
+    }, [dispatch]);
+
+    console.log('[LatestProducts] About to render, products count:', products.length);
+    console.log('=== LatestProducts DEBUG END ===');
 
     return (
         <div className='px-6 my-30 max-w-6xl mx-auto'>

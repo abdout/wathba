@@ -148,7 +148,7 @@ export default async function AboutPage({ params }) {
                                             alt={member.name}
                                             width={200}
                                             height={200}
-                                            className="w-full h-48 object-cover rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300"
+                                            className="w-48 h-48 object-cover rounded-full mx-auto"
                                             transformation={[
                                                 { width: 400, height: 400, crop: 'at_max', quality: 85 }
                                             ]}

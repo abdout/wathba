@@ -14,9 +14,9 @@ const Hero03 = ({ dict, lang }) => {
                         <div className='p-5 sm:px-12'>
                             <div className='inline-flex items-center gap-3 bg-green-300 text-green-600 pr-4 p-1 rounded-full text-xs sm:text-sm'>
                                 <span className='bg-green-600 px-3 py-1 max-sm:ml-1 rounded-full text-white text-xs'>
-                                    {dict?.hero?.news || "NEW"}
+                                    {dict?.hero?.news || "NEWS"}
                                 </span>
-                                {dict?.hero?.bookshopPromo || "Back to School Special Offers!"}
+                                {dict?.hero?.freeShipping || "Free Shipping on Orders Above AED 50!"}
                                 {lang === 'ar' ? (
                                     <ChevronLeftIcon className='group-hover:mr-2 transition-all' size={16} />
                                 ) : (
@@ -30,16 +30,16 @@ const Hero03 = ({ dict, lang }) => {
                                 <p>{dict?.hero?.startsFrom || "Starts from"}</p>
                                 <div className='text-2xl flex items-center gap-1'>
                                     <CurrencyIcon className="w-5 h-5" width={20} height={20} />
-                                    2.50
+                                    4.90
                                 </div>
                             </div>
                             <button className='bg-slate-800 text-white text-sm py-2.5 px-7 sm:py-5 sm:px-12 mt-4 sm:mt-10 rounded-md hover:bg-slate-900 hover:scale-103 active:scale-95 transition'>
-                                {dict?.hero?.shopNow || "SHOP NOW"}
+                                {dict?.hero?.learnMore || "LEARN MORE"}
                             </button>
                         </div>
                         <div className={`sm:absolute bottom-0 w-full sm:w-80 max-w-sm ${lang === 'ar' ? 'left-0 md:left-5' : 'right-0 md:right-5'}`}>
                             <OptimizedImage
-                                className='w-full h-auto object-contain'
+                                className={`w-full h-auto object-contain ${lang === 'ar' ? 'scale-x-[-1]' : ''}`}
                                 src='/assets/hero-07.png'
                                 alt={dict?.hero?.bookshopAlt || "Books and stationery"}
                                 width={320}
@@ -69,9 +69,7 @@ const Hero03 = ({ dict, lang }) => {
                             {/* Content */}
                             <div className='relative z-10'>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-white to-gray-300 bg-clip-text text-transparent max-w-40`}>
-                                    {"Study"}
-                                    <br />
-                                    {"Essentials"}
+                                    {dict?.hero?.studyEssentials || "Study Essentials"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4 text-white'>
                                     {dict?.hero?.viewMore || "View more"}
@@ -102,9 +100,7 @@ const Hero03 = ({ dict, lang }) => {
                             {/* Content */}
                             <div className='relative z-10'>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-white to-gray-300 bg-clip-text text-transparent max-w-40`}>
-                                    {"Art"}
-                                    <br />
-                                    {"Supplies"}
+                                    {dict?.hero?.notebooks || "Notebooks & Pens"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4 text-white'>
                                     {dict?.hero?.shopNow || "Shop now"}

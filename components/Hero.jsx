@@ -31,7 +31,7 @@ const Hero = ({ dict, lang }) => {
                 {currentSlide === 3 && <Hero04 dict={dict} lang={lang} />}
 
                 {/* Slide Indicators */}
-                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
+                <div className='absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
                     {Array.from({ length: totalSlides }).map((_, index) => (
                         <button
                             key={index}
@@ -45,7 +45,6 @@ const Hero = ({ dict, lang }) => {
                     ))}
                 </div>
             </div>
-            <CategoriesMarquee dict={dict} />
         </div>
     )
 }

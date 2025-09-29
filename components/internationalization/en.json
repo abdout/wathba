@@ -31,7 +31,21 @@
     "shippingText": "Free shipping on all your order",
     "shopNow": "Shop now",
     "summerSale": "Summer Sale - 75% OFF",
-    "bestDeal": "Best Deal - Special Products"
+    "bestDeal": "Best Deal - Special Products",
+    "bookshopPromo": "Back to School Special Offers!",
+    "bookshopTitle": "Books & Stationery\nfor Every Need",
+    "bookshopAlt": "Books and stationery",
+    "appliancePromo": "Energy Efficient Home Solutions!",
+    "applianceTitle": "Smart Home\nAppliances",
+    "applianceAlt": "Home appliances",
+    "hot": "HOT",
+    "explore": "EXPLORE",
+    "heroImage": "Hero model",
+    "organicAlt": "Fresh organic food",
+    "kitchenEssentials": "Kitchen Essentials",
+    "cleaningTools": "Cleaning Tools",
+    "studyEssentials": "Study Essentials",
+    "notebooks": "Notebooks & Pens"
   },
   "news": {
     "title": "Latest News",

@@ -11,6 +11,8 @@ export default function OptimizedImage({
     priority = false,
     quality = 80,
     transformation = [],
+    fill,
+    placeholder,
     ...props
 }) {
     // Handle different src formats
@@ -59,20 +61,39 @@ export default function OptimizedImage({
         }
     }
 
-    // For debugging in development
-    if (process.env.NODE_ENV === 'development') {
-        console.log('OptimizedImage:', { original: src, optimized: finalUrl });
-    }
+    // For debugging in development (disabled to reduce noise)
+    // if (process.env.NODE_ENV === 'development') {
+    //     console.log('OptimizedImage:', { original: src, optimized: finalUrl });
+    // }
+
+    // Handle fill attribute for absolute positioning
+    const imgStyle = fill ? {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        objectFit: 'cover',
+        ...props.style
+    } : props.style;
+
+    // Filter out non-DOM attributes
+    const imgProps = { ...props };
+    // Remove custom props that shouldn't go to DOM
+    delete imgProps.fill;
+    delete imgProps.placeholder;
+    delete imgProps.transformation;
 
     return (
         <img
             src={finalUrl}
             alt={alt || ''}
-            width={width}
-            height={height}
+            width={fill ? undefined : width}
+            height={fill ? undefined : height}
             className={className}
             loading={priority ? 'eager' : 'lazy'}
-            {...props}
+            style={imgStyle}
+            {...imgProps}
         />
     );
 }

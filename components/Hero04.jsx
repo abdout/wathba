@@ -14,9 +14,9 @@ const Hero04 = ({ dict, lang }) => {
                         <div className='p-5 sm:px-12'>
                             <div className='inline-flex items-center gap-3 bg-green-300 text-green-600 pr-4 p-1 rounded-full text-xs sm:text-sm'>
                                 <span className='bg-green-600 px-3 py-1 max-sm:ml-1 rounded-full text-white text-xs'>
-                                    {dict?.hero?.hot || "HOT"}
+                                    {dict?.hero?.news || "NEWS"}
                                 </span>
-                                {dict?.hero?.appliancePromo || "Energy Efficient Home Solutions!"}
+                                {dict?.hero?.freeShipping || "Free Shipping on Orders Above AED 50!"}
                                 {lang === 'ar' ? (
                                     <ChevronLeftIcon className='group-hover:mr-2 transition-all' size={16} />
                                 ) : (
@@ -30,16 +30,16 @@ const Hero04 = ({ dict, lang }) => {
                                 <p>{dict?.hero?.startsFrom || "Starts from"}</p>
                                 <div className='text-2xl flex items-center gap-1'>
                                     <CurrencyIcon className="w-5 h-5" width={20} height={20} />
-                                    29.90
+                                    4.90
                                 </div>
                             </div>
                             <button className='bg-slate-800 text-white text-sm py-2.5 px-7 sm:py-5 sm:px-12 mt-4 sm:mt-10 rounded-md hover:bg-slate-900 hover:scale-103 active:scale-95 transition'>
-                                {dict?.hero?.explore || "EXPLORE"}
+                                {dict?.hero?.learnMore || "LEARN MORE"}
                             </button>
                         </div>
                         <div className={`sm:absolute bottom-0 w-full sm:w-80 max-w-sm ${lang === 'ar' ? 'left-0 md:left-5' : 'right-0 md:right-5'}`}>
                             <OptimizedImage
-                                className='w-full h-auto object-contain'
+                                className={`w-full h-auto object-contain ${lang === 'ar' ? 'scale-x-[-1]' : ''}`}
                                 src='/assets/hero-10.png'
                                 alt={dict?.hero?.applianceAlt || "Home appliances"}
                                 width={320}
@@ -57,12 +57,10 @@ const Hero04 = ({ dict, lang }) => {
                         <div className='flex-1 flex items-center justify-between w-full bg-orange-200 rounded-3xl p-6 px-8 group'>
                             <div>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-800 to-[#FFAD51] bg-clip-text text-transparent max-w-40`}>
-                                    {"Kitchen"}
-                                    <br />
-                                    {"Deals"}
+                                    {dict?.hero?.kitchenEssentials || "Kitchen Essentials"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4'>
-                                    {dict?.hero?.discover || "Discover"}
+                                    {dict?.hero?.viewMore || "View more"}
                                     {lang === 'ar' ? (
                                         <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
                                     ) : (
@@ -84,9 +82,7 @@ const Hero04 = ({ dict, lang }) => {
                         <div className='flex-1 flex items-center justify-between w-full bg-blue-200 rounded-3xl p-6 px-8 group'>
                             <div>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-800 to-[#78B2FF] bg-clip-text text-transparent max-w-40`}>
-                                    {"Smart"}
-                                    <br />
-                                    {"Living"}
+                                    {dict?.hero?.cleaningTools || "Cleaning Tools"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4'>
                                     {dict?.hero?.viewMore || "View more"}
