@@ -1,6 +1,7 @@
 'use client'
 import ProductDescription from "@/components/ProductDescription";
 import ProductDetails from "@/components/ProductDetails";
+import ProductDataLoader from "@/components/ProductDataLoader";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -53,35 +54,37 @@ export default function ProductPage({ dict, lang }) {
     };
 
     return (
-        <div className="mx-6">
-            <div className="max-w-7xl mx-auto">
-                {/* Breadcrumbs */}
-                <div className={`text-gray-600 text-sm mt-8 mb-5 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    <span>{dict?.navigation?.home || "Home"}</span>
-                    <span className="mx-2">/</span>
-                    <span>{dict?.products?.title || "Products"}</span>
-                    <span className="mx-2">/</span>
-                    <span>{product && getCategoryName(product.category)}</span>
+        <ProductDataLoader>
+            <div className="mx-6">
+                <div className="max-w-7xl mx-auto">
+                    {/* Breadcrumbs */}
+                    <div className={`text-gray-600 text-sm mt-8 mb-5 ${isRTL ? 'text-right' : 'text-left'}`}>
+                        <span>{dict?.navigation?.home || "Home"}</span>
+                        <span className="mx-2">/</span>
+                        <span>{dict?.products?.title || "Latest Products"}</span>
+                        <span className="mx-2">/</span>
+                        <span>{product && getCategoryName(product.category)}</span>
+                    </div>
+
+                    {/* Product Details */}
+                    {product && (
+                        <ProductDetails
+                            product={{...product, name: getProductName(product)}}
+                            dict={dict}
+                            lang={lang}
+                        />
+                    )}
+
+                    {/* Description & Reviews */}
+                    {product && (
+                        <ProductDescription
+                            product={{...product, name: getProductName(product)}}
+                            dict={dict}
+                            lang={lang}
+                        />
+                    )}
                 </div>
-
-                {/* Product Details */}
-                {product && (
-                    <ProductDetails
-                        product={{...product, name: getProductName(product)}}
-                        dict={dict}
-                        lang={lang}
-                    />
-                )}
-
-                {/* Description & Reviews */}
-                {product && (
-                    <ProductDescription
-                        product={{...product, name: getProductName(product)}}
-                        dict={dict}
-                        lang={lang}
-                    />
-                )}
             </div>
-        </div>
+        </ProductDataLoader>
     );
 }
