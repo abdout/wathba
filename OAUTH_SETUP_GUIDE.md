@@ -48,10 +48,80 @@ This guide provides step-by-step instructions for setting up Google and Facebook
 **Google OAuth redirect configuration is now complete!**
 
 #### STEP 3: Create Facebook App
-**Status: NOT STARTED** 🔴
-1. Go to [Facebook Developers](https://developers.facebook.com/apps)
-2. Create new **Business** app
-3. Configure basic settings with domain: `wa.databayt.org`
+**Status: READY TO START** 🟡
+
+**IMMEDIATE ACTION ITEMS:**
+
+1. **Go to Facebook Developers Console**
+   - Visit: https://developers.facebook.com/apps
+   - Click "Create App" button
+
+2. **Select App Type**
+   - Choose "Business" (not Consumer or Other)
+   - Click "Next"
+
+3. **Fill App Details**
+   - **App name**: `Al Wathba Coop`
+   - **Contact email**: `sales@alwathbacoop.ae`
+   - **Business account**: Select existing or create new
+   - Click "Create App"
+
+4. **Complete Basic Settings** (Settings > Basic)
+   - **Display Name**: `Al Wathba Coop`
+   - **App Domains**: `wa.databayt.org`
+   - **Privacy Policy URL**: `https://wa.databayt.org/privacy`
+   - **Terms of Service URL**: `https://wa.databayt.org/terms`
+   - **Contact Email**: `sales@alwathbacoop.ae`
+   - **Category**: E-commerce
+   - Save changes
+
+5. **Add Facebook Login Product**
+   - Click "Add Product" from left sidebar
+   - Find "Facebook Login" → Click "Set Up"
+   - Choose "Web" platform
+   - Skip quickstart (click "Settings" in left menu)
+
+6. **Configure OAuth Settings** (Products > Facebook Login > Settings)
+   - **Client OAuth Login**: ✅ Yes
+   - **Web OAuth Login**: ✅ Yes
+   - **Force Web OAuth Reauthentication**: ❌ No
+   - **Use Strict Mode for Redirect URIs**: ✅ Yes
+
+7. **Get Redirect URI from Clerk**
+   - Go to Clerk Dashboard: https://dashboard.clerk.com
+   - Navigate: User & authentication > SSO connections
+   - Click Facebook provider → Edit
+   - **COPY THIS URI**: `https://charming-redbird-6.clerk.accounts.dev/v1/oauth_callback`
+
+8. **Add Redirect URI to Facebook**
+   - In Facebook: Products > Facebook Login > Settings
+   - **Valid OAuth Redirect URIs** field
+   - Add: `https://charming-redbird-6.clerk.accounts.dev/v1/oauth_callback`
+   - Save changes
+
+9. **Get Facebook Credentials**
+   - Go to Settings > Basic
+   - **App ID**: Copy this number
+   - **App Secret**: Click "Show" → Copy securely
+   - **IMPORTANT**: Keep these credentials safe!
+
+10. **Configure in Clerk Dashboard**
+    - Back to Clerk: User & authentication > SSO connections
+    - Facebook provider → Edit
+    - **App ID**: [Paste Facebook App ID]
+    - **App Secret**: [Paste Facebook App Secret]
+    - Scopes: `email,public_profile` (default)
+    - Save configuration
+
+11. **Test Configuration**
+    - Go to your app: `https://wa.databayt.org/en/sign-in`
+    - Click "Continue with Facebook"
+    - Should redirect properly and work
+
+**Expected Results:**
+- Facebook login button appears on sign-in page
+- Users can register/login with Facebook
+- User profile data syncs correctly
 
 ---
 

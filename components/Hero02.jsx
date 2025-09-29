@@ -69,10 +69,10 @@ const Hero02 = ({ dict, lang }) => {
                             {/* Content */}
                             <div className='relative z-10'>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-800 to-[#FFD700] bg-clip-text text-transparent max-w-40`}>
-                                    75%
+                                    75%{'\n'}Discount
                                 </p>
                                 <p className='flex items-center gap-1 mt-4'>
-                                    Discount
+                                    {dict?.hero?.viewMore || "View more"}
                                     {lang === 'ar' ? (
                                         <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
                                     ) : (
@@ -100,10 +100,10 @@ const Hero02 = ({ dict, lang }) => {
                             {/* Content */}
                             <div className='relative z-10'>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-white to-[#7DE2FF] bg-clip-text text-transparent max-w-40`}>
-                                    Best
+                                    Best{'\n'}Products
                                 </p>
                                 <p className='flex items-center gap-1 mt-4 text-white'>
-                                    Products
+                                    {dict?.hero?.viewMore || "View more"}
                                     {lang === 'ar' ? (
                                         <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
                                     ) : (

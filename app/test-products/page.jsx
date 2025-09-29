@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts } from '@/lib/features/product/productSlice';
 
+// Prevent static generation
+export const dynamic = 'force-dynamic';
+
 export default function TestProducts() {
     const dispatch = useDispatch();
     const products = useSelector(state => state?.product?.list || []);

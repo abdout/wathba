@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product CRUD Testing Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .test-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .test-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input, select {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: bold;
+            min-width: 100px;
+        }
+
+        button:hover {
+            background: #5a67d8;
+        }
+
+        .result-box {
+            background: #f7f9fc;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .success {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .error {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .product-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .product-card .price {
+            color: #667eea;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .product-card .category {
+            background: #f3f4f6;
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛍️ Product CRUD Testing Interface</h1>
+
+        <!-- Get All Products -->
+        <div class="test-section">
+            <h2>1. READ - Get Products</h2>
+            <div class="test-controls">
+                <input type="number" id="limit" placeholder="Limit (default: 12)" value="12">
+                <input type="text" id="category" placeholder="Category (optional)">
+                <input type="number" id="minPrice" placeholder="Min Price">
+                <input type="number" id="maxPrice" placeholder="Max Price">
+                <select id="sortBy">
+                    <option value="">Sort By</option>
+                    <option value="price">Price</option>
+                    <option value="createdAt">Date</option>
+                    <option value="name">Name</option>
+                </select>
+                <select id="sortOrder">
+                    <option value="desc">Descending</option>
+                    <option value="asc">Ascending</option>
+                </select>
+                <button onclick="getProducts()">Get Products</button>
+            </div>
+            <div id="getProductsResult" class="result-box"></div>
+        </div>
+
+        <!-- Get Single Product -->
+        <div class="test-section">
+            <h2>2. READ - Get Single Product</h2>
+            <div class="test-controls">
+                <input type="text" id="productId" placeholder="Product ID">
+                <button onclick="getSingleProduct()">Get Product</button>
+            </div>
+            <div id="getSingleProductResult" class="result-box"></div>
+        </div>
+
+        <!-- Search Products -->
+        <div class="test-section">
+            <h2>3. SEARCH - Search Products</h2>
+            <div class="test-controls">
+                <input type="text" id="searchQuery" placeholder="Search term">
+                <button onclick="searchProducts()">Search</button>
+            </div>
+            <div id="searchResult" class="result-box"></div>
+        </div>
+
+        <!-- Create Product (Requires Auth) -->
+        <div class="test-section">
+            <h2>4. CREATE - Add Product (Requires Vendor Auth)</h2>
+            <div class="test-controls">
+                <input type="text" id="newName" placeholder="Product Name" value="Test Product">
+                <input type="text" id="newDescription" placeholder="Description" value="Test Description">
+                <input type="number" id="newMrp" placeholder="MRP" value="100">
+                <input type="number" id="newPrice" placeholder="Price" value="90">
+                <input type="text" id="newCategory" placeholder="Category" value="test">
+                <button onclick="createProduct()">Create Product</button>
+            </div>
+            <div id="createResult" class="result-box"></div>
+        </div>
+
+        <!-- Database Statistics -->
+        <div class="test-section">
+            <h2>5. Database Statistics</h2>
+            <button onclick="getStats()">Get Statistics</button>
+            <div id="statsResult" class="result-box">
+                <div class="stats-grid" id="statsGrid"></div>
+            </div>
+        </div>
+
+        <!-- Product Display -->
+        <div class="test-section">
+            <h2>6. Product Gallery</h2>
+            <button onclick="displayProducts()">Load Product Gallery</button>
+            <div class="product-grid" id="productGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/api';
+
+        // Helper function to display results
+        function displayResult(elementId, data, isSuccess = true) {
+            const element = document.getElementById(elementId);
+            const statusClass = isSuccess ? 'success' : 'error';
+            const statusText = isSuccess ? 'SUCCESS' : 'ERROR';
+
+            element.innerHTML = `
+                <div class="${statusClass}">${statusText}</div>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+
+        // 1. Get Products
+        async function getProducts() {
+            const params = new URLSearchParams();
+            const limit = document.getElementById('limit').value;
+            const category = document.getElementById('category').value;
+            const minPrice = document.getElementById('minPrice').value;
+            const maxPrice = document.getElementById('maxPrice').value;
+            const sortBy = document.getElementById('sortBy').value;
+            const sortOrder = document.getElementById('sortOrder').value;
+
+            if (limit) params.append('limit', limit);
+            if (category) params.append('category', category);
+            if (minPrice) params.append('minPrice', minPrice);
+            if (maxPrice) params.append('maxPrice', maxPrice);
+            if (sortBy) params.append('sortBy', sortBy);
+            if (sortOrder) params.append('sortOrder', sortOrder);
+
+            try {
+                const response = await fetch(`${API_BASE}/products?${params}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const summary = {
+                        success: true,
+                        totalProducts: data.data.pagination.totalCount,
+                        currentPage: data.data.pagination.page,
+                        totalPages: data.data.pagination.totalPages,
+                        productsReturned: data.data.products.length,
+                        products: data.data.products.map(p => ({
+                            id: p.id,
+                            name: p.name,
+                            price: p.price,
+                            category: p.category
+                        }))
+                    };
+                    displayResult('getProductsResult', summary, true);
+                } else {
+                    displayResult('getProductsResult', data, false);
+                }
+            } catch (error) {
+                displayResult('getProductsResult', { error: error.message }, false);
+            }
+        }
+
+        // 2. Get Single Product
+        async function getSingleProduct() {
+            const productId = document.getElementById('productId').value;
+
+            if (!productId) {
+                displayResult('getSingleProductResult', { error: 'Please enter a product ID' }, false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/products/${productId}`);
+                const data = await response.json();
+                displayResult('getSingleProductResult', data, data.success);
+            } catch (error) {
+                displayResult('getSingleProductResult', { error: error.message }, false);
+            }
+        }
+
+        // 3. Search Products
+        async function searchProducts() {
+            const query = document.getElementById('searchQuery').value;
+
+            if (!query) {
+                displayResult('searchResult', { error: 'Please enter a search term' }, false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/products/search?q=${encodeURIComponent(query)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const summary = {
+                        success: true,
+                        searchTerm: query,
+                        resultsFound: data.data.products.length,
+                        products: data.data.products.map(p => ({
+                            id: p.id,
+                            name: p.name,
+                            price: p.price,
+                            category: p.category
+                        }))
+                    };
+                    displayResult('searchResult', summary, true);
+                } else {
+                    displayResult('searchResult', data, false);
+                }
+            } catch (error) {
+                displayResult('searchResult', { error: error.message }, false);
+            }
+        }
+
+        // 4. Create Product
+        async function createProduct() {
+            const productData = {
+                name: document.getElementById('newName').value,
+                description: document.getElementById('newDescription').value,
+                mrp: parseFloat(document.getElementById('newMrp').value),
+                price: parseFloat(document.getElementById('newPrice').value),
+                category: document.getElementById('newCategory').value,
+                images: ['test-image.jpg'],
+                inStock: true
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/vendor/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(productData)
+                });
+                const data = await response.json();
+
+                if (response.status === 401) {
+                    displayResult('createResult', {
+                        error: 'Authentication required',
+                        message: 'You need to be logged in as a vendor to create products'
+                    }, false);
+                } else {
+                    displayResult('createResult', data, data.success);
+                }
+            } catch (error) {
+                displayResult('createResult', { error: error.message }, false);
+            }
+        }
+
+        // 5. Get Statistics
+        async function getStats() {
+            try {
+                const response = await fetch(`${API_BASE}/products?limit=100`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const products = data.data.products;
+                    const categories = [...new Set(products.map(p => p.category))];
+                    const avgPrice = products.reduce((sum, p) => sum + p.price, 0) / products.length;
+                    const inStock = products.filter(p => p.inStock).length;
+
+                    document.getElementById('statsGrid').innerHTML = `
+                        <div class="stat-card">
+                            <h4>Total Products</h4>
+                            <div class="value">${products.length}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Categories</h4>
+                            <div class="value">${categories.length}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>In Stock</h4>
+                            <div class="value">${inStock}</div>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Avg Price</h4>
+                            <div class="value">$${avgPrice.toFixed(2)}</div>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                displayResult('statsResult', { error: error.message }, false);
+            }
+        }
+
+        // 6. Display Products Gallery
+        async function displayProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/products?limit=12`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const products = data.data.products;
+                    document.getElementById('productGrid').innerHTML = products.map(p => `
+                        <div class="product-card">
+                            <h3>${p.name}</h3>
+                            <div class="price">$${p.price}</div>
+                            <div class="category">${p.category}</div>
+                            <div style="margin-top: 10px; color: #666;">
+                                ID: ${p.id.substring(0, 10)}...
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                document.getElementById('productGrid').innerHTML = `<div class="error">Error: ${error.message}</div>`;
+            }
+        }
+
+        // Load products on page load
+        window.onload = () => {
+            getProducts();
+            getStats();
+        };
+    </script>
+</body>
+</html>
