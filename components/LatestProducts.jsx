@@ -57,7 +57,7 @@ const LatestProducts = ({ dict, lang }) => {
             <Title title={dict?.products?.title || 'Latest Products'} description={`${dict?.products?.showing || 'Showing'} ${products.length < displayQuantity ? products.length : displayQuantity} ${dict?.products?.of || 'of'} ${products.length} ${dict?.products?.products || 'products'}`} href='/shop' dict={dict} lang={lang} />
             <div className='mt-12 grid grid-cols-2 sm:flex flex-wrap gap-6 justify-between'>
                 {products.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, displayQuantity).map((product, index) => (
-                    <ProductCard key={index} product={product} dict={dict} />
+                    <ProductCard key={index} product={product} dict={dict} lang={lang} />
                 ))}
             </div>
         </div>

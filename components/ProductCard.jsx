@@ -5,7 +5,7 @@ import React from 'react'
 import CurrencyIcon from './CurrencyIcon'
 import OptimizedImage from './OptimizedImage'
 
-const ProductCard = ({ product, dict }) => {
+const ProductCard = ({ product, dict, lang }) => {
 
     // Use averageRating if available (from API), otherwise calculate from rating array
     const rating = product.averageRating !== undefined
@@ -18,7 +18,7 @@ const ProductCard = ({ product, dict }) => {
     const productName = dict?.productNames?.[product.name] || product.name;
 
     return (
-        <Link href={`/product/${product.id}`} className=' group max-xl:mx-auto'>
+        <Link href={`/${lang || 'en'}/product/${product.id}`} className=' group max-xl:mx-auto'>
             <div className='bg-[#F5F5F5] h-40  sm:w-60 sm:h-68 rounded-lg flex items-center justify-center'>
                 <OptimizedImage
                     width={500}

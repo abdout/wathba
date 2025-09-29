@@ -57,7 +57,7 @@ const BestSelling = ({ dict, lang }) => {
                     const bRatings = b.totalRatings !== undefined ? b.totalRatings : (b.rating?.length || 0);
                     return bRatings - aRatings;
                 }).slice(0, displayQuantity).map((product, index) => (
-                    <ProductCard key={index} product={product} dict={dict} />
+                    <ProductCard key={index} product={product} dict={dict} lang={lang} />
                 ))}
             </div>
         </div>

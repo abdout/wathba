@@ -69,7 +69,9 @@ const Hero02 = ({ dict, lang }) => {
                             {/* Content */}
                             <div className='relative z-10'>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-800 to-[#FFD700] bg-clip-text text-transparent max-w-40`}>
-                                    75%{'\n'}Discount
+                                    75%
+                                    <br />
+                                    Discount
                                 </p>
                                 <p className='flex items-center gap-1 mt-4'>
                                     {dict?.hero?.viewMore || "View more"}
@@ -100,7 +102,9 @@ const Hero02 = ({ dict, lang }) => {
                             {/* Content */}
                             <div className='relative z-10'>
                                 <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-white to-[#7DE2FF] bg-clip-text text-transparent max-w-40`}>
-                                    Best{'\n'}Products
+                                    Best
+                                    <br />
+                                    Products
                                 </p>
                                 <p className='flex items-center gap-1 mt-4 text-white'>
                                     {dict?.hero?.viewMore || "View more"}
