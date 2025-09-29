@@ -1,17 +1,30 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Title from './Title'
 import ProductCard from './ProductCard'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchProducts } from '@/lib/features/product/productSlice'
 
 const LatestProducts = ({ dict, lang }) => {
-
+    const dispatch = useDispatch()
     const displayQuantity = 4
     const products = useSelector(state => state?.product?.list || [])
     const loading = useSelector(state => state?.product?.loading)
     const error = useSelector(state => state?.product?.error)
+    const reduxState = useSelector(state => state)
 
-    console.log('LatestProducts - Products:', products.length, 'Loading:', loading, 'Error:', error)
+    // Detailed debug logging
+    console.log('[LatestProducts] Component rendered');
+    console.log('[LatestProducts] Full Redux state:', reduxState);
+    console.log('[LatestProducts] Product state:', reduxState?.product);
+    console.log('[LatestProducts] Products array:', products);
+    console.log('[LatestProducts] Products length:', products.length);
+    console.log('[LatestProducts] Loading state:', loading);
+    console.log('[LatestProducts] Error state:', error);
+
+    // Products are now fetched by ProductDataLoader component at the page level
+
+    console.log('[LatestProducts] Rendering with products:', products.length, 'Loading:', loading, 'Error:', error)
 
     return (
         <div className='px-6 my-30 max-w-6xl mx-auto'>

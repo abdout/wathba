@@ -2,192 +2,211 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/prisma';
 
-// GET vendor's store details
+// GET vendor store details
 export async function GET(request) {
   try {
     const { userId } = await auth();
 
     if (!userId) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: 'Authentication required' },
         { status: 401 }
       );
     }
 
-    // Get store for this vendor
+    // Get user
+    const user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Get vendor store
     const store = await prisma.store.findUnique({
-      where: { userId },
+      where: { userId: user.id },
       include: {
         _count: {
           select: {
-            Product: true,
-            Order: true
+            products: true,
+            orders: true
           }
         }
       }
     });
 
     if (!store) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Store not found',
-          message: 'You need to create a store first'
-        },
-        { status: 404 }
-      );
+      return NextResponse.json({
+        success: true,
+        data: null,
+        message: 'No store found. Please create a store first.'
+      });
     }
 
-    // Calculate additional metrics
-    const totalRevenue = await prisma.order.aggregate({
-      where: {
-        storeId: store.id,
-        status: 'DELIVERED'
-      },
-      _sum: {
-        total: true
-      }
-    });
-
-    const pendingOrders = await prisma.order.count({
-      where: {
-        storeId: store.id,
-        status: 'ORDER_PLACED'
-      }
-    });
+    // Get additional stats
+    const [totalRevenue, pendingOrders] = await Promise.all([
+      prisma.order.aggregate({
+        where: {
+          storeId: store.id,
+          isPaid: true
+        },
+        _sum: {
+          total: true
+        }
+      }),
+      prisma.order.count({
+        where: {
+          storeId: store.id,
+          status: 'ORDER_PLACED'
+        }
+      })
+    ]);
 
     return NextResponse.json({
       success: true,
       data: {
         ...store,
-        statistics: {
-          totalProducts: store._count.Product,
-          totalOrders: store._count.Order,
+        stats: {
+          totalProducts: store._count.products,
+          totalOrders: store._count.orders,
           totalRevenue: totalRevenue._sum.total || 0,
           pendingOrders
         }
       }
     });
   } catch (error) {
-    console.error('Error fetching store:', error);
+    console.error('Error fetching vendor store:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to fetch store',
-        message: error.message
-      },
+      { success: false, error: 'Failed to fetch store' },
       { status: 500 }
     );
   }
 }
 
-// POST - Create new store
+// POST create vendor store
 export async function POST(request) {
   try {
     const { userId } = await auth();
 
     if (!userId) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: 'Authentication required' },
         { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const { name, username, description, logo, contact, email, address, category } = body;
+
+    // Validate required fields
+    if (!name || !username || !email) {
+      return NextResponse.json(
+        { success: false, error: 'Name, username, and email are required' },
+        { status: 400 }
+      );
+    }
+
+    // Get user
+    const user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
       );
     }
 
     // Check if user already has a store
     const existingStore = await prisma.store.findUnique({
-      where: { userId }
+      where: { userId: user.id }
     });
 
     if (existingStore) {
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Store already exists',
-          store: existingStore
-        },
+        { success: false, error: 'You already have a store' },
         { status: 400 }
       );
     }
 
-    const body = await request.json();
-    const { name, description, username, address, email, contact, logo } = body;
-
-    // Validation
-    if (!name || !description || !username || !address || !email || !contact) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Missing required fields',
-          required: ['name', 'description', 'username', 'address', 'email', 'contact']
-        },
-        { status: 400 }
-      );
-    }
-
-    // Check if username is already taken
+    // Check username availability
     const usernameExists = await prisma.store.findUnique({
-      where: { username }
+      where: { username: username.toLowerCase() }
     });
 
     if (usernameExists) {
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Username already taken'
-        },
+        { success: false, error: 'Username already taken' },
         { status: 400 }
       );
     }
 
-    // Create store (starts as pending, needs admin approval)
+    // Create store
     const store = await prisma.store.create({
       data: {
-        userId,
+        userId: user.id,
         name,
-        description,
         username: username.toLowerCase(),
-        address,
+        description: description || '',
+        logo: logo || '',
+        contact: contact || '',
         email,
-        contact,
-        logo: logo || 'https://ik.imagekit.io/osmanabdout/assets/store-placeholder.png',
-        status: 'pending',
-        isActive: false
+        address: address || '',
+        category: category || 'general',
+        status: 'pending', // Needs admin approval
+        isActive: false // Will be activated after approval
       }
     });
 
     return NextResponse.json({
       success: true,
       data: store,
-      message: 'Store created successfully. Waiting for admin approval.'
+      message: 'Store created successfully. Pending admin approval.'
     }, { status: 201 });
   } catch (error) {
-    console.error('Error creating store:', error);
+    console.error('Error creating vendor store:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to create store',
-        message: error.message
-      },
+      { success: false, error: 'Failed to create store' },
       { status: 500 }
     );
   }
 }
 
-// PUT - Update store details
+// PUT update vendor store
 export async function PUT(request) {
   try {
     const { userId } = await auth();
 
     if (!userId) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: 'Authentication required' },
         { status: 401 }
       );
     }
 
-    // Get vendor's store
+    const body = await request.json();
+    const { name, description, logo, contact, email, address, category } = body;
+
+    // Get user
+    const user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    // Get store
     const store = await prisma.store.findUnique({
-      where: { userId }
+      where: { userId: user.id }
     });
 
     if (!store) {
@@ -197,52 +216,28 @@ export async function PUT(request) {
       );
     }
 
-    const body = await request.json();
-
-    // Check if username is being changed and is available
-    if (body.username && body.username !== store.username) {
-      const usernameExists = await prisma.store.findUnique({
-        where: { username: body.username.toLowerCase() }
-      });
-
-      if (usernameExists) {
-        return NextResponse.json(
-          {
-            success: false,
-            error: 'Username already taken'
-          },
-          { status: 400 }
-        );
-      }
-    }
-
     // Update store
     const updatedStore = await prisma.store.update({
       where: { id: store.id },
       data: {
-        ...(body.name && { name: body.name }),
-        ...(body.description && { description: body.description }),
-        ...(body.username && { username: body.username.toLowerCase() }),
-        ...(body.address && { address: body.address }),
-        ...(body.email && { email: body.email }),
-        ...(body.contact && { contact: body.contact }),
-        ...(body.logo && { logo: body.logo })
+        ...(name && { name }),
+        ...(description !== undefined && { description }),
+        ...(logo !== undefined && { logo }),
+        ...(contact !== undefined && { contact }),
+        ...(email && { email }),
+        ...(address !== undefined && { address }),
+        ...(category && { category })
       }
     });
 
     return NextResponse.json({
       success: true,
-      data: updatedStore,
-      message: 'Store updated successfully'
+      data: updatedStore
     });
   } catch (error) {
-    console.error('Error updating store:', error);
+    console.error('Error updating vendor store:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to update store',
-        message: error.message
-      },
+      { success: false, error: 'Failed to update store' },
       { status: 500 }
     );
   }

@@ -1,164 +1,142 @@
 import { NextResponse } from 'next/server';
-import { auth, currentUser } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/prisma';
 
 // GET user profile
 export async function GET(request) {
   try {
     const { userId } = await auth();
-    const clerkUser = await currentUser();
 
-    if (!userId || !clerkUser) {
+    if (!userId) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: 'Authentication required' },
         { status: 401 }
       );
     }
 
     // Get user from database
     let user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { clerkUserId: userId },
       include: {
-        store: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            status: true,
-            isActive: true,
-            logo: true
-          }
+        addresses: {
+          orderBy: { isDefault: 'desc' }
         },
         _count: {
           select: {
-            buyerOrders: true,
-            Address: true,
-            ratings: true
+            orders: true,
+            stores: true,
+            rating: true
           }
         }
       }
     });
 
-    // If user doesn't exist in database, create them
+    // If user doesn't exist in DB, create with minimal data
     if (!user) {
       user = await prisma.user.create({
         data: {
-          id: userId,
-          name: clerkUser.firstName + ' ' + clerkUser.lastName || 'User',
-          email: clerkUser.emailAddresses[0]?.emailAddress || '',
-          image: clerkUser.imageUrl || '',
+          clerkUserId: userId,
+          email: '',
+          name: 'User',
+          image: '',
           cart: {}
         },
         include: {
-          store: true,
+          addresses: true,
           _count: {
             select: {
-              buyerOrders: true,
-              Address: true,
-              ratings: true
+              orders: true,
+              stores: true,
+              rating: true
             }
           }
         }
       });
     }
 
-    // Merge Clerk data with database data
-    const profile = {
-      ...user,
-      clerkData: {
-        firstName: clerkUser.firstName,
-        lastName: clerkUser.lastName,
-        username: clerkUser.username,
-        emailAddresses: clerkUser.emailAddresses,
-        phoneNumbers: clerkUser.phoneNumbers,
-        createdAt: clerkUser.createdAt,
-        lastSignInAt: clerkUser.lastSignInAt
-      },
-      role: user.store ? 'vendor' : 'customer',
-      statistics: {
-        totalOrders: user._count.buyerOrders,
-        totalAddresses: user._count.Address,
-        totalReviews: user._count.ratings
+    // Get store if user is a vendor
+    const store = await prisma.store.findUnique({
+      where: { userId: user.id },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        status: true,
+        isActive: true
       }
-    };
+    });
 
     return NextResponse.json({
       success: true,
-      data: profile
+      data: {
+        ...user,
+        isVendor: !!store,
+        store
+      }
     });
   } catch (error) {
-    console.error('Error fetching profile:', error);
+    console.error('Error fetching user profile:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to fetch profile',
-        message: error.message
-      },
+      { success: false, error: 'Failed to fetch profile' },
       { status: 500 }
     );
   }
 }
 
-// PUT - Update user profile
+// PUT update user profile
 export async function PUT(request) {
   try {
     const { userId } = await auth();
 
     if (!userId) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: 'Authentication required' },
         { status: 401 }
       );
     }
 
     const body = await request.json();
-    const { name, image } = body;
+    const { name, phone, email } = body;
 
-    // Check if user exists
-    const existingUser = await prisma.user.findUnique({
-      where: { id: userId }
+    // Get user
+    let user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
     });
 
-    if (!existingUser) {
-      return NextResponse.json(
-        { success: false, error: 'User not found' },
-        { status: 404 }
-      );
+    if (!user) {
+      // Create user if doesn't exist
+      user = await prisma.user.create({
+        data: {
+          clerkUserId: userId,
+          email: email || '',
+          name: name || 'User',
+          image: '',
+          phone: phone || '',
+          cart: {}
+        }
+      });
+    } else {
+      // Update existing user
+      user = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          ...(name && { name }),
+          ...(email && { email }),
+          ...(phone && { phone })
+        }
+      });
     }
 
-    // Update user profile
-    const updatedUser = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        ...(name && { name }),
-        ...(image && { image })
-      },
-      include: {
-        store: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            status: true,
-            isActive: true
-          }
-        }
-      }
-    });
+    // Name updated in database
 
     return NextResponse.json({
       success: true,
-      data: updatedUser,
-      message: 'Profile updated successfully'
+      data: user
     });
   } catch (error) {
-    console.error('Error updating profile:', error);
+    console.error('Error updating user profile:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Failed to update profile',
-        message: error.message
-      },
+      { success: false, error: 'Failed to update profile' },
       { status: 500 }
     );
   }

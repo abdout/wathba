@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import { HomeIcon, ShieldCheckIcon, StoreIcon, TicketPercentIcon } from "lucide-react"
-import OptimizedImage from "../OptimizedImageSimple"
+import OptimizedImage from "../OptimizedImage"
 import Link from "next/link"
 import { assets } from "@/assets/assets"
 import { useUser } from "@clerk/nextjs"

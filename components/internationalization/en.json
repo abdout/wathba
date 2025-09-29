@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "Al Wathba Coop",
+    "title": "Alwathba Coop",
     "description": "Your trusted cooperative society providing quality products and services to enhance community life"
   },
   "navigation": {
@@ -24,7 +24,44 @@
     "bestProducts": "Best products",
     "discounts": "20% discounts",
     "news": "NEWS",
-    "freeShipping": "Free Shipping on Orders Above AED 50!"
+    "freeShipping": "Free Shipping on Orders Above AED 50!",
+    "organicTitle": "Fresh & Healthy\nOrganic Food",
+    "saleText": "Sale up to",
+    "discount": "30% OFF",
+    "shippingText": "Free shipping on all your order",
+    "shopNow": "Shop now",
+    "summerSale": "Summer Sale - 75% OFF",
+    "bestDeal": "Best Deal - Special Products"
+  },
+  "news": {
+    "title": "Latest News",
+    "readMore": "Read More",
+    "by": "By",
+    "category": "Food",
+    "author": "Admin",
+    "months": {
+      "jan": "JAN",
+      "feb": "FEB",
+      "nov": "NOV"
+    },
+    "articles": [
+      {
+        "title": "Curabitur porttitor orci eget neque accumsan venenatis. Nunc fermentum."
+      },
+      {
+        "title": "Eget lobortis lorem lacinia. Vivamus pharetra semper,"
+      },
+      {
+        "title": "Maecenas blandit risus elementum mauris malesuada."
+      }
+    ]
+  },
+  "promo": {
+    "badge": "Only This Week",
+    "title": "Grocery store with different treasures",
+    "description": "We have prepared special discounts for you on grocery products...",
+    "shopNow": "Shop Now",
+    "off": "OFF"
   },
   "homepage": {
     "featuredCategories": "Featured Categories",
@@ -304,12 +341,12 @@
       "who": {
         "subtitle": "W h o   W e   A r e",
         "title": "Who We Are",
-        "description": "Established in 2017, Al Wathba Cooperative Society was founded with the goal of supporting and developing the local community by providing exceptional cooperative services that enhance the quality of life and meet the local community needs efficiently and transparently. Since our establishment, we have been committed to building a cooperative system based on community values, teamwork, and sustainable economic practices."
+        "description": "Established in 2017, Alwathba Cooperative Society was founded with the goal of supporting and developing the local community by providing exceptional cooperative services that enhance the quality of life and meet the local community needs efficiently and transparently. Since our establishment, we have been committed to building a cooperative system based on community values, teamwork, and sustainable economic practices."
       },
       "why": {
         "subtitle": "W h y   U s",
         "title": "Why Us",
-        "description": "We believe that cooperation work is the foundation for inclusive development. With our dedication to offering high-quality products and services that reflect the aspirations of the community, we meet the growing needs efficiently. Our commitment to transparency, community values, and sustainable practices makes us the trusted choice for cooperative services in Al Wathba."
+        "description": "We believe that cooperation work is the foundation for inclusive development. With our dedication to offering high-quality products and services that reflect the aspirations of the community, we meet the growing needs efficiently. Our commitment to transparency, community values, and sustainable practices makes us the trusted choice for cooperative services in Alwathba."
       },
       "mission": {
         "subtitle": "O u r   M i s s i o n",
@@ -334,7 +371,7 @@
     "boardOfDirectors": {
       "subtitle": "O u r   L e a d e r s h i p",
       "title": "Board of Directors",
-      "description": "Meet our dedicated board members who guide Al Wathba Cooperative Society with their expertise and commitment to community development.",
+      "description": "Meet our dedicated board members who guide Alwathba Cooperative Society with their expertise and commitment to community development.",
       "members": [
         {
           "name": "Ali Yafor Al Mansouri",

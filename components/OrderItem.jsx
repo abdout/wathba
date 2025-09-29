@@ -1,5 +1,5 @@
 'use client'
-import OptimizedImage from "./OptimizedImageSimple";
+import OptimizedImage from "./OptimizedImage";
 import { DotIcon } from "lucide-react";
 import { useSelector } from "react-redux";
 import Rating from "./Rating";

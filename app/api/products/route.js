@@ -3,21 +3,31 @@ import prisma from '@/lib/prisma';
 import { productSchema, productFilterSchema } from '@/lib/validations/product';
 import { rateLimit, createRateLimitResponse } from '@/lib/middleware/rateLimit';
 import { withErrorHandler, APIError } from '@/lib/middleware/errorHandler';
+import { productDummyData } from '@/assets/assets';
 
 export const GET = withErrorHandler(async (request) => {
+  console.log('[API /api/products] GET request received');
+  console.log('[API /api/products] Request URL:', request.url);
+
   // Apply rate limiting
   const rateLimitResult = await rateLimit(request, 'api');
   if (!rateLimitResult.success) {
+    console.log('[API /api/products] Rate limit exceeded');
     return createRateLimitResponse(rateLimitResult.headers);
   }
 
   const { searchParams } = new URL(request.url);
+  console.log('[API /api/products] Search params:', searchParams.toString());
 
   // Validate query parameters
   const queryParams = Object.fromEntries(searchParams.entries());
+  console.log('[API /api/products] Query params object:', queryParams);
+
   const validated = productFilterSchema.parse(queryParams);
+  console.log('[API /api/products] Validated params:', validated);
 
   const { page, limit, category, minPrice, maxPrice, storeId, inStock, search, sortBy, sortOrder } = validated;
+  console.log('[API /api/products] Destructured - page:', page, 'limit:', limit);
 
   const skip = (page - 1) * limit;
 
@@ -41,41 +51,115 @@ export const GET = withErrorHandler(async (request) => {
     })
   };
 
-  // Get products with ratings in single query to avoid N+1 problem
-  const [totalCount, products] = await Promise.all([
-    prisma.product.count({ where }),
-    prisma.product.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy: {
-        [sortBy]: sortOrder
-      },
-      include: {
-        store: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            logo: true,
-            isActive: true,
-            status: true
-          }
+  console.log('[API /api/products] Where clause:', JSON.stringify(where, null, 2));
+  console.log('[API /api/products] Skip:', skip, 'Take:', limit);
+  console.log('[API /api/products] OrderBy:', sortBy, sortOrder);
+
+  let totalCount = 0;
+  let products = [];
+  let usingDummyData = false;
+
+  try {
+    // Get products with ratings in single query to avoid N+1 problem
+    console.log('[API /api/products] Executing database queries...');
+
+    const [dbCount, dbProducts] = await Promise.all([
+      prisma.product.count({ where }),
+      prisma.product.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: {
+          [sortBy]: sortOrder
         },
-        rating: {
-          select: {
-            rating: true
+        include: {
+          store: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              logo: true,
+              isActive: true,
+              status: true
+            }
+          },
+          rating: {
+            select: {
+              rating: true
+            }
           }
         }
-      }
-    })
-  ]);
+      })
+    ]);
+
+    totalCount = dbCount;
+    products = dbProducts;
+
+    console.log('[API /api/products] Database query complete');
+    console.log('[API /api/products] Total count:', totalCount);
+    console.log('[API /api/products] Products found:', products.length);
+    if (products.length > 0) {
+      console.log('[API /api/products] First product:', products[0]);
+    }
+  } catch (dbError) {
+    console.error('[API /api/products] Database error:', dbError);
+    console.error('[API /api/products] Error message:', dbError.message);
+    console.log('[API /api/products] Falling back to dummy data...');
+
+    // Use dummy data as fallback
+    usingDummyData = true;
+
+    // Apply filters to dummy data
+    let filteredProducts = [...productDummyData];
+
+    // Apply category filter
+    if (category) {
+      filteredProducts = filteredProducts.filter(p => p.category === category);
+    }
+
+    // Apply search filter
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filteredProducts = filteredProducts.filter(p =>
+        p.name.toLowerCase().includes(searchLower) ||
+        p.description.toLowerCase().includes(searchLower) ||
+        p.category.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Apply price filters
+    if (minPrice !== undefined) {
+      filteredProducts = filteredProducts.filter(p => p.price >= minPrice);
+    }
+    if (maxPrice !== undefined) {
+      filteredProducts = filteredProducts.filter(p => p.price <= maxPrice);
+    }
+
+    // Apply sorting
+    if (sortBy === 'price') {
+      filteredProducts.sort((a, b) => sortOrder === 'asc' ? a.price - b.price : b.price - a.price);
+    } else if (sortBy === 'createdAt') {
+      filteredProducts.sort((a, b) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+        return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+      });
+    }
+
+    totalCount = filteredProducts.length;
+    products = filteredProducts.slice(skip, skip + limit);
+
+    console.log('[API /api/products] Using dummy data');
+    console.log('[API /api/products] Filtered total:', totalCount);
+    console.log('[API /api/products] Page products:', products.length);
+  }
 
   // Calculate average ratings from included data
   const productsWithRatings = products.map((product) => {
-    const ratings = product.rating;
+    // Handle both database products and dummy products
+    const ratings = product.rating || [];
     const averageRating = ratings.length > 0
-      ? ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length
+      ? ratings.reduce((sum, r) => sum + (r.rating || r), 0) / ratings.length
       : 0;
 
     return {
@@ -87,14 +171,29 @@ export const GET = withErrorHandler(async (request) => {
   });
 
   // Get categories for filters
-  const categories = await prisma.product.findMany({
-    select: {
-      category: true
-    },
-    distinct: ['category']
-  });
+  let categories = [];
+  if (usingDummyData) {
+    // Extract unique categories from dummy data
+    const uniqueCategories = [...new Set(productDummyData.map(p => p.category))];
+    categories = uniqueCategories.map(c => ({ category: c }));
+    console.log('[API /api/products] Categories from dummy data:', uniqueCategories);
+  } else {
+    try {
+      categories = await prisma.product.findMany({
+        select: {
+          category: true
+        },
+        distinct: ['category']
+      });
+    } catch (catError) {
+      console.error('[API /api/products] Error fetching categories:', catError);
+      // Fallback to categories from dummy data
+      const uniqueCategories = [...new Set(productDummyData.map(p => p.category))];
+      categories = uniqueCategories.map(c => ({ category: c }));
+    }
+  }
 
-  const response = NextResponse.json({
+  const responseData = {
     success: true,
     data: {
       products: productsWithRatings,
@@ -107,8 +206,18 @@ export const GET = withErrorHandler(async (request) => {
       filters: {
         categories: categories.map(c => c.category)
       }
-    }
-  });
+    },
+    usingDummyData // Include this flag for debugging
+  };
+
+  console.log('[API /api/products] Response data prepared');
+  console.log('[API /api/products] Using dummy data:', usingDummyData);
+  console.log('[API /api/products] Success:', responseData.success);
+  console.log('[API /api/products] Products in response:', responseData.data.products.length);
+  console.log('[API /api/products] Pagination:', responseData.data.pagination);
+  console.log('[API /api/products] Categories:', responseData.data.filters.categories);
+
+  const response = NextResponse.json(responseData);
 
   // Add rate limit headers
   if (rateLimitResult.headers) {

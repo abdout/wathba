@@ -29,7 +29,7 @@ export default function OnboardingClient({ dict, lang }) {
         if (role === 'vendor') {
           router.push(`/${currentLang}/onboarding/vendor`);
         } else {
-          toast.success('Welcome to Al Wathba Coop!');
+          toast.success('Welcome to Alwathba Coop!');
           router.push(`/${currentLang}/`);
         }
       } else {
@@ -47,10 +47,10 @@ export default function OnboardingClient({ dict, lang }) {
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          {dict?.onboarding?.welcome || 'Welcome to Al Wathba Coop!'}
+          {dict?.onboarding?.welcome || 'Welcome to Alwathba Coop!'}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          {dict?.onboarding?.selectRole || 'Please select how you want to use Al Wathba Coop'}
+          {dict?.onboarding?.selectRole || 'Please select how you want to use Alwathba Coop'}
         </p>
       </div>
 

@@ -2,199 +2,222 @@ import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import Stripe from 'stripe';
 import prisma from '@/lib/prisma';
-import { stripeCheckoutSchema } from '@/lib/validations/stripe';
-import { rateLimit, createRateLimitResponse } from '@/lib/middleware/rateLimit';
-import { withErrorHandler, APIError } from '@/lib/middleware/errorHandler';
 
-// Initialize Stripe (optional for build)
-const stripeKey = process.env.STRIPE_SECRET_KEY;
-const stripe = stripeKey ? new Stripe(stripeKey, {
-  apiVersion: '2024-11-20.acacia'
-}) : null;
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+  apiVersion: '2024-06-20',
+});
 
-// POST - Create checkout session
-export const POST = withErrorHandler(async (request) => {
-  // Check if Stripe is configured
-  if (!stripe) {
-    throw new APIError('Payment system is not configured', 503);
-  }
+// POST create checkout session
+export async function POST(request) {
+  try {
+    const { userId } = await auth();
 
-  // Apply stricter rate limiting for payment operations
-  const rateLimitResult = await rateLimit(request, 'write');
-  if (!rateLimitResult.success) {
-    return createRateLimitResponse(rateLimitResult.headers);
-  }
-
-  const { userId } = await auth();
-
-  if (!userId) {
-    throw new APIError('Unauthorized', 401);
-  }
-
-  const body = await request.json();
-
-  // Validate input
-  const { addressId, items } = stripeCheckoutSchema.parse(body);
-
-  // Get user and address
-  const [user, address] = await Promise.all([
-    prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        name: true
-      }
-    }),
-    prisma.address.findFirst({
-      where: { id: addressId, userId }
-    })
-  ]);
-
-  if (!user || !address) {
-    throw new APIError('Invalid user or address', 400);
-  }
-
-  // Batch fetch all products to avoid N+1 queries
-  const productIds = items.map(item => item.productId);
-  const products = await prisma.product.findMany({
-    where: {
-      id: { in: productIds },
-      inStock: true
-    },
-    include: {
-      store: {
-        select: {
-          id: true,
-          name: true,
-          isActive: true,
-          status: true
-        }
-      }
-    }
-  });
-
-  // Create product map for efficient lookup
-  const productMap = new Map(products.map(p => [p.id, p]));
-
-  // Group items by store for multi-vendor support
-  const itemsByStore = {};
-  let totalAmount = 0;
-
-  for (const item of items) {
-    const product = productMap.get(item.productId);
-
-    if (!product) {
-      throw new APIError(`Product ${item.productId} not found or out of stock`, 400);
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
     }
 
-    if (!product.store.isActive || product.store.status !== 'APPROVED') {
-      throw new APIError(`Product ${item.productId} not available from this store`, 400);
+    const body = await request.json();
+    const { orderId, returnUrl } = body;
+
+    if (!orderId) {
+      return NextResponse.json(
+        { success: false, error: 'Order ID required' },
+        { status: 400 }
+      );
     }
 
-    const storeId = product.storeId;
-    if (!itemsByStore[storeId]) {
-      itemsByStore[storeId] = {
-        store: product.store,
-        items: []
-      };
-    }
-
-    itemsByStore[storeId].items.push({
-      product,
-      quantity: item.quantity
+    // Get user and order
+    const user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
     });
 
-    totalAmount += product.price * item.quantity;
-  }
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
+    }
 
-  // Validate minimum amount (Stripe requires minimum charges)
-  if (totalAmount < 2) { // 2 AED minimum
-    throw new APIError('Order total must be at least 2 AED', 400);
-  }
-
-  // Create line items for Stripe
-  const lineItems = [];
-  for (const storeData of Object.values(itemsByStore)) {
-    for (const item of storeData.items) {
-      // Validate price is positive
-      if (item.product.price <= 0) {
-        throw new APIError(`Invalid product price for ${item.product.name}`, 400);
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        orderItems: {
+          include: {
+            product: true
+          }
+        },
+        address: true,
+        store: true
       }
+    });
 
+    if (!order) {
+      return NextResponse.json(
+        { success: false, error: 'Order not found' },
+        { status: 404 }
+      );
+    }
+
+    // Verify order belongs to user
+    if (order.userId !== user.id) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 403 }
+      );
+    }
+
+    // Check if order is already paid
+    if (order.isPaid) {
+      return NextResponse.json(
+        { success: false, error: 'Order already paid' },
+        { status: 400 }
+      );
+    }
+
+    // Create line items for Stripe
+    const lineItems = order.orderItems.map(item => ({
+      price_data: {
+        currency: 'aed',
+        product_data: {
+          name: item.product.name,
+          description: item.product.description || undefined,
+          images: item.product.images?.length > 0 ? [item.product.images[0]] : undefined,
+          metadata: {
+            productId: item.product.id,
+            storeId: order.storeId
+          }
+        },
+        unit_amount: Math.round(item.price * 100), // Stripe expects amounts in cents
+      },
+      quantity: item.quantity,
+    }));
+
+    // Add shipping as a line item if applicable
+    const shippingAmount = 0; // Free shipping for now, can be calculated based on location
+    if (shippingAmount > 0) {
       lineItems.push({
         price_data: {
           currency: 'aed',
           product_data: {
-            name: item.product.name,
-            description: `Sold by ${storeData.store.name}`,
-            images: item.product.images && item.product.images.length > 0 ? [item.product.images[0]] : [],
-            metadata: {
-              productId: item.product.id,
-              storeId: storeData.store.id,
-              storeName: storeData.store.name
-            }
+            name: 'Shipping & Handling',
+            description: `Delivery to ${order.address.city}, ${order.address.state}`,
           },
-          unit_amount: Math.round(item.product.price * 100) // Convert to cents
+          unit_amount: Math.round(shippingAmount * 100),
         },
-        quantity: item.quantity
+        quantity: 1,
       });
     }
-  }
 
-  // Validate environment variables
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
-  if (!appUrl) {
-    throw new APIError('Application URL not configured', 500);
-  }
-
-  // Create checkout session
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: lineItems,
-    mode: 'payment',
-    success_url: `${appUrl}/orders?success=true&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${appUrl}/cart?cancelled=true`,
-    customer_email: user.email,
-    client_reference_id: userId,
-    metadata: {
-      userId,
-      addressId,
-      orderData: JSON.stringify({
-        itemsByStore: Object.entries(itemsByStore).map(([storeId, data]) => ({
-          storeId,
-          storeName: data.store.name,
-          items: data.items.map(item => ({
-            productId: item.product.id,
-            quantity: item.quantity,
-            price: item.product.price
-          }))
-        }))
-      })
-    },
-    shipping_address_collection: {
-      allowed_countries: ['AE']
-    },
-    expires_at: Math.floor(Date.now() / 1000) + (30 * 60), // 30 minutes expiry
-    billing_address_collection: 'required'
-  });
-
-  const response = NextResponse.json({
-    success: true,
-    data: {
-      sessionId: session.id,
-      sessionUrl: session.url,
-      totalAmount: totalAmount,
-      currency: 'AED'
-    }
-  });
-
-  // Add rate limit headers
-  if (rateLimitResult.headers) {
-    Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
-      response.headers.set(key, value);
+    // Create Stripe checkout session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      customer_email: user.email,
+      metadata: {
+        orderId: order.id,
+        userId: user.id,
+        storeId: order.storeId,
+      },
+      success_url: returnUrl || `${process.env.NEXT_PUBLIC_APP_URL}/orders/${order.id}?payment=success`,
+      cancel_url: returnUrl || `${process.env.NEXT_PUBLIC_APP_URL}/orders/${order.id}?payment=cancelled`,
+      shipping_address_collection: {
+        allowed_countries: ['AE'], // UAE only for now
+      },
+      phone_number_collection: {
+        enabled: true,
+      },
+      locale: 'auto',
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60, // 30 minutes
     });
-  }
 
-  return response;
-});
+    // Store session ID in order for tracking
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        stripeSessionId: session.id
+      }
+    });
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        sessionId: session.id,
+        checkoutUrl: session.url
+      }
+    });
+  } catch (error) {
+    console.error('Error creating checkout session:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to create checkout session',
+        message: error.message
+      },
+      { status: 500 }
+    );
+  }
+}
+
+// GET check payment status
+export async function GET(request) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const sessionId = searchParams.get('sessionId');
+
+    if (!sessionId) {
+      return NextResponse.json(
+        { success: false, error: 'Session ID required' },
+        { status: 400 }
+      );
+    }
+
+    // Retrieve session from Stripe
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+    // Update order if payment successful
+    if (session.payment_status === 'paid' && session.metadata?.orderId) {
+      await prisma.order.update({
+        where: { id: session.metadata.orderId },
+        data: {
+          isPaid: true,
+          paidAt: new Date(),
+          paymentMethod: 'CARD',
+          stripePaymentId: session.payment_intent
+        }
+      });
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        status: session.payment_status,
+        orderId: session.metadata?.orderId,
+        amountTotal: session.amount_total ? session.amount_total / 100 : 0,
+        currency: session.currency
+      }
+    });
+  } catch (error) {
+    console.error('Error checking payment status:', error);
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Failed to check payment status',
+        message: error.message
+      },
+      { status: 500 }
+    );
+  }
+}

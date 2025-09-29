@@ -14,8 +14,20 @@ export async function GET(request) {
       );
     }
 
+    // Get user
+    const user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
+    });
+
+    if (!user) {
+      return NextResponse.json({
+        success: true,
+        data: []
+      });
+    }
+
     const addresses = await prisma.address.findMany({
-      where: { userId },
+      where: { userId: user.id },
       orderBy: { createdAt: 'desc' }
     });
 
@@ -93,10 +105,36 @@ export async function POST(request) {
       // For now, we'll just create the address
     }
 
+    // Get or create user
+    let user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
+    });
+
+    if (!user) {
+      // Create user with provided data
+      user = await prisma.user.create({
+        data: {
+          clerkUserId: userId,
+          email: email || '',
+          name: name || 'User',
+          image: '',
+          cart: {}
+        }
+      });
+    }
+
+    // If this should be the default address, update other addresses first
+    if (setAsDefault) {
+      await prisma.address.updateMany({
+        where: { userId: user.id },
+        data: { isDefault: false }
+      });
+    }
+
     // Create address
     const address = await prisma.address.create({
       data: {
-        userId,
+        userId: user.id,
         name,
         email,
         street,
@@ -104,7 +142,8 @@ export async function POST(request) {
         state,
         zip,
         country,
-        phone
+        phone,
+        isDefault: setAsDefault || false
       }
     });
 

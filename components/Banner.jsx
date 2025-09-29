@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import toast from 'react-hot-toast';
-import OptimizedImage from './OptimizedImageSimple';
+import OptimizedImage from './OptimizedImage';
 import { assets } from '@/assets/assets';
 
 export default function Banner({ dict, lang }) {

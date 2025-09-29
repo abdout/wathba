@@ -31,7 +31,7 @@ export default function ApiDocsPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">API Documentation</h1>
           <p className="text-gray-600 mt-2">
-            Complete API reference for Alwathba (Al Wathba Coop) E-commerce Platform
+            Complete API reference for Alwathba (Alwathba Coop) E-commerce Platform
           </p>
         </div>
         <SwaggerUI

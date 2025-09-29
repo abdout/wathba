@@ -11,14 +11,33 @@ export default function ProductPage({ dict, lang }) {
     const products = useSelector(state => state?.product?.list || []);
     const isRTL = lang === 'ar';
 
+    // Debug logging
+    console.log('[ProductPage] Component mounted/updated');
+    console.log('[ProductPage] productId from params:', productId);
+    console.log('[ProductPage] products from Redux store:', products);
+    console.log('[ProductPage] products.length:', products.length);
+    console.log('[ProductPage] Current product state:', product);
+
     const fetchProduct = async () => {
+        console.log('[ProductPage] fetchProduct called');
+        console.log('[ProductPage] Searching for product with ID:', productId);
+        console.log('[ProductPage] Available product IDs:', products.map(p => p.id));
+
         const product = products.find((product) => product.id === productId);
+
+        console.log('[ProductPage] Found product:', product);
         setProduct(product);
     }
 
     useEffect(() => {
+        console.log('[ProductPage] useEffect triggered');
+        console.log('[ProductPage] products.length in useEffect:', products.length);
+
         if (products.length > 0) {
+            console.log('[ProductPage] Products available, calling fetchProduct');
             fetchProduct()
+        } else {
+            console.log('[ProductPage] No products available in Redux store');
         }
         scrollTo(0, 0)
     }, [productId, products]);

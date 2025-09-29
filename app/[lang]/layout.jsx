@@ -6,7 +6,6 @@ import { i18n, isRTL } from "@/components/internationalization/config";
 import { ClerkProvider } from '@clerk/nextjs';
 import AuthSync from "@/components/AuthSync";
 import ImageKitProvider from "@/components/ImageKitProvider";
-import ProductDataLoader from "@/components/ProductDataLoader";
 import "../globals.css";
 
 const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600"] });
@@ -44,10 +43,8 @@ export default async function LocaleLayout({ children, params }) {
                     <StoreProvider>
                         <ImageKitProvider>
                             <AuthSync>
-                                <ProductDataLoader>
-                                    <Toaster />
-                                    {children}
-                                </ProductDataLoader>
+                                <Toaster />
+                                {children}
                             </AuthSync>
                         </ImageKitProvider>
                     </StoreProvider>

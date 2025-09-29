@@ -24,11 +24,11 @@ const OrderConfirmation = ({
   return (
     <Html>
       <Head />
-      <Preview>Order #{orderNumber} Confirmed - Al Wathba Coop</Preview>
+      <Preview>Order #{orderNumber} Confirmed - Alwathba Coop</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={header}>
-            <Heading style={h1}>Al Wathba Coop</Heading>
+            <Heading style={h1}>Alwathba Coop</Heading>
           </Section>
 
           <Section style={content}>

@@ -1,6 +1,6 @@
 import PublicLayoutWithTranslations from "@/components/PublicLayoutWithTranslations";
 import { getDictionary } from "@/components/internationalization/dictionaries";
-import OptimizedImage from "@/components/OptimizedImageSimple";
+import OptimizedImage from "@/components/OptimizedImage";
 import { who as whoImage, why as whyImage } from "@/lib/imagekit-urls";
 
 // Prevent pre-rendering on server due to Redux in layout
@@ -30,7 +30,7 @@ export default async function AboutPage({ params }) {
                             <div className="mt-8">
                                 <OptimizedImage
                                     src={whoImage}
-                                    alt="Al Wathba landscape representing our community roots"
+                                    alt="Alwathba landscape representing our community roots"
                                     width={500}
                                     height={400}
                                     className="w-full h-auto rounded-lg object-cover"

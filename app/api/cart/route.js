@@ -21,7 +21,7 @@ export const GET = withErrorHandler(async (request) => {
 
   // Get user's cart from database
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { clerkUserId: userId },
     select: { cart: true }
   });
 
@@ -130,10 +130,10 @@ export const POST = withErrorHandler(async (request) => {
 
   // Update user's cart in database
   const updatedUser = await prisma.user.upsert({
-    where: { id: userId },
+    where: { clerkUserId: userId },
     update: { cart },
     create: {
-      id: userId,
+      clerkUserId: userId,
       name: 'User',
       email: 'user@example.com',
       image: '',
@@ -203,7 +203,7 @@ export const PUT = withErrorHandler(async (request) => {
 
   // Get current cart
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { clerkUserId: userId },
     select: { cart: true }
   });
 
@@ -227,10 +227,10 @@ export const PUT = withErrorHandler(async (request) => {
 
   // Save updated cart
   await prisma.user.upsert({
-    where: { id: userId },
+    where: { clerkUserId: userId },
     update: { cart: updatedCart },
     create: {
-      id: userId,
+      clerkUserId: userId,
       name: 'User',
       email: 'user@example.com',
       image: '',
@@ -279,7 +279,7 @@ export const DELETE = withErrorHandler(async (request) => {
 
   // Get current cart
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { clerkUserId: userId },
     select: { cart: true }
   });
 
@@ -290,7 +290,7 @@ export const DELETE = withErrorHandler(async (request) => {
 
   // Save updated cart
   await prisma.user.update({
-    where: { id: userId },
+    where: { clerkUserId: userId },
     data: { cart: currentCart }
   });
 

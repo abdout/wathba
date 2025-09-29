@@ -76,10 +76,10 @@ async function main() {
     prisma.store.create({
       data: {
         id: 'store_001',
-        name: 'Al Wathba Fresh Market',
+        name: 'Alwathba Fresh Market',
         description: 'Your trusted source for fresh groceries and household essentials',
         username: 'alwathba_fresh',
-        address: 'Al Wathba North, Abu Dhabi, UAE',
+        address: 'Alwathba North, Abu Dhabi, UAE',
         logo: getImageKitUrl('happy_store.png'),
         email: 'fresh@alwathbacoop.ae',
         contact: '+971501234567',
@@ -254,7 +254,7 @@ async function main() {
       }
     }),
 
-    // Grocery & Household Products from Al Wathba Fresh Market
+    // Grocery & Household Products from Alwathba Fresh Market
     prisma.product.create({
       data: {
         name: 'Fine Facial Tissues',
@@ -393,7 +393,7 @@ async function main() {
       userId: 'user_customer_001',
       name: 'Mohammed Ibrahim',
       email: 'customer@example.com',
-      street: '123 Al Wathba Street, Building A',
+      street: '123 Alwathba Street, Building A',
       city: 'Abu Dhabi',
       state: 'Abu Dhabi',
       country: 'UAE',

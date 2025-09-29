@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { assets } from "@/assets/assets";
-import OptimizedImage from "./OptimizedImageSimple"; // Using simplified version
+import OptimizedImage from "./OptimizedImage"; // Using simplified version
 
 const Footer = ({ dict = {}, lang = 'en' }) => {
 
@@ -55,7 +55,7 @@ const Footer = ({ dict = {}, lang = 'en' }) => {
                         <Link href="/" className="block">
                             <OptimizedImage
                                 src={lang === 'ar' ? assets.logo_ar : assets.logo_en}
-                                alt={dict?.footer?.logoAlt || "Al Wathba Coop Logo"}
+                                alt={dict?.footer?.logoAlt || "Alwathba Coop Logo"}
                                 width={150}
                                 height={40}
                                 className="h-10 w-auto"

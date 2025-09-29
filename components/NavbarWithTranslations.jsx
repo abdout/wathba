@@ -8,7 +8,7 @@ import { useLocale } from "@/components/internationalization/use-locale";
 import { assets } from "@/assets/assets";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useUser, UserButton, SignInButton } from "@clerk/nextjs";
-import OptimizedImage from "./OptimizedImageSimple"; // Using simplified version
+import OptimizedImage from "./OptimizedImage"; // Using simplified version
 
 const NavbarWithTranslations = ({ dict, lang }) => {
     const router = useRouter();
@@ -43,10 +43,10 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                     <Link href={getLocalizedPath('/')}>
                         <OptimizedImage
                             src={lang === 'ar' ? assets.logo_ar : assets.logo_en}
-                            alt={dict?.navbar?.logoAlt || "Al Wathba Coop Logo"}
-                            width={150}
-                            height={40}
-                            className="h-10 w-auto"
+                            alt={dict?.navbar?.logoAlt || "Alwathba Coop Logo"}
+                            width={120}
+                            height={32}
+                            className="h-8 w-auto"
                             priority
                         />
                     </Link>

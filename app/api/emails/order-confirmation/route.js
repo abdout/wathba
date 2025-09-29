@@ -17,7 +17,7 @@ export async function POST(request) {
     // Send email
     const result = await sendEmail({
       to: customer.email,
-      subject: `Order Confirmation #${order.id} - Al Wathba Coop`,
+      subject: `Order Confirmation #${order.id} - Alwathba Coop`,
       react: OrderConfirmation({
         customerName: customer.name,
         orderNumber: order.id,

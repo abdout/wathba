@@ -2,8 +2,8 @@ import AdminLayout from "@/components/admin/AdminLayout";
 import { getDictionary } from "@/components/internationalization/dictionaries";
 
 export const metadata = {
-    title: "Al Wathba Coop - Admin",
-    description: "Al Wathba Coop - Admin Dashboard",
+    title: "Alwathba Coop - Admin",
+    description: "Alwathba Coop - Admin Dashboard",
 };
 
 export default async function RootAdminLayout({ children, params }) {

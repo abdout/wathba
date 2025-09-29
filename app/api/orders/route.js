@@ -26,9 +26,29 @@ export const GET = withErrorHandler(async (request) => {
   const { page, limit, status } = orderFilterSchema.parse(queryParams);
   const skip = (page - 1) * limit;
 
+  // Get user from database
+  const user = await prisma.user.findUnique({
+    where: { clerkUserId: userId }
+  });
+
+  if (!user) {
+    return NextResponse.json({
+      success: true,
+      data: {
+        orders: [],
+        pagination: {
+          page,
+          limit,
+          totalPages: 0,
+          totalCount: 0
+        }
+      }
+    });
+  }
+
   // Build where clause
   const where = {
-    userId,
+    userId: user.id,
     ...(status && { status })
   };
 
@@ -110,11 +130,20 @@ export const POST = withErrorHandler(async (request) => {
   const validated = createOrderSchema.parse(body);
   const { addressId, paymentMethod, couponCode, items } = validated;
 
+  // Get user from database
+  const user = await prisma.user.findUnique({
+    where: { clerkUserId: userId }
+  });
+
+  if (!user) {
+    throw new APIError('User not found', 404);
+  }
+
   // Verify address belongs to user
   const address = await prisma.address.findFirst({
     where: {
       id: addressId,
-      userId
+      userId: user.id
     }
   });
 
@@ -176,7 +205,7 @@ export const POST = withErrorHandler(async (request) => {
       prisma.coupon.findUnique({
         where: { code: couponCode }
       }),
-      prisma.order.count({ where: { userId } })
+      prisma.order.count({ where: { userId: user.id } })
     ]);
 
     if (coupon && coupon.expiresAt > new Date()) {
@@ -199,7 +228,7 @@ export const POST = withErrorHandler(async (request) => {
 
       const order = await tx.order.create({
         data: {
-          userId,
+          userId: user.id,
           storeId,
           addressId,
           total: orderTotal,
@@ -246,7 +275,7 @@ export const POST = withErrorHandler(async (request) => {
 
     // Clear user's cart after successful order
     await tx.user.update({
-      where: { id: userId },
+      where: { id: user.id },
       data: { cart: {} }
     });
 

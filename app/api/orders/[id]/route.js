@@ -22,11 +22,23 @@ export async function GET(request, { params }) {
       );
     }
 
+    // Get user
+    const user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
     // Get order with verification that it belongs to the user
     const order = await prisma.order.findFirst({
       where: {
         id,
-        userId
+        userId: user.id
       },
       include: {
         orderItems: {
@@ -89,11 +101,23 @@ export async function PUT(request, { params }) {
       );
     }
 
+    // Get user
+    const user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
     // Check if order exists and belongs to user
     const existingOrder = await prisma.order.findFirst({
       where: {
         id,
-        userId
+        userId: user.id
       }
     });
 
@@ -166,11 +190,23 @@ export async function DELETE(request, { params }) {
       );
     }
 
+    // Get user
+    const user = await prisma.user.findUnique({
+      where: { clerkUserId: userId }
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
     // Check if order exists and belongs to user
     const order = await prisma.order.findFirst({
       where: {
         id,
-        userId
+        userId: user.id
       }
     });
 

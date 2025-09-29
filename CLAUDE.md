@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Alwathba (rebranded as Al Wathba Coop) is a multi-vendor e-commerce platform built with Next.js 15, featuring:
+Alwathba (rebranded as Alwathba Coop) is a multi-vendor e-commerce platform built with Next.js 15, featuring:
 - Internationalization support (English/Arabic) with RTL layout
 - Multi-vendor architecture with separate vendor dashboards
 - Customer-facing storefront for shopping
@@ -32,24 +32,38 @@ npm run start
 # Run linting
 npm run lint
 
+# Run tests
+npm run test           # Run Vitest tests in watch mode
+npm run test:ui        # Run tests with UI interface
+npm run test:coverage  # Generate coverage report
+
 # Prisma commands (if database is configured)
 npx prisma generate    # Generate Prisma Client
 npx prisma db push     # Push schema to database
 npx prisma studio      # Open Prisma Studio GUI
 npx prisma migrate dev  # Create and apply migrations
+npx prisma db seed     # Seed database with sample data
+
+# Deployment
+npm run auto-deploy    # Automated deployment script
 ```
 
 ## Architecture
 
 ### Core Technologies
 - **Framework**: Next.js 15.3.5 with App Router and Turbopack
+- **React**: React 19.0.0
 - **Styling**: Tailwind CSS v4 with PostCSS
 - **State Management**: Redux Toolkit 2.8.2 with redux-persist
 - **Database**: PostgreSQL with Prisma ORM 6.16.2
 - **Authentication**: Clerk 6.33.0
-- **Image Optimization**: ImageKit SDK (@imagekit/next)
+- **Image Optimization**: ImageKit SDK (@imagekit/next 2.1.3)
 - **Icons**: Lucide React 0.525.0
 - **Notifications**: React Hot Toast 2.5.2
+- **Testing**: Vitest with React Testing Library
+- **Email**: Resend with React Email templates
+- **Payment**: Stripe integration
+- **API Documentation**: Swagger/OpenAPI at `/api-docs`
 
 ### Internationalization System
 - **Dictionary Pattern**: Translation files in `/components/internationalization/`
@@ -76,8 +90,14 @@ npx prisma migrate dev  # Create and apply migrations
 - `/app/store/` - Vendor dashboard pages
   - Dashboard, product management, orders, ratings
 - `/app/api/` - API routes
+  - `/products` - Product CRUD operations
+  - `/cart` - Cart management
+  - `/orders` - Order processing
+  - `/reviews` - Product reviews
   - `/clerk-webhook` - User sync with database
   - `/imagekit-auth` - Upload authentication
+  - `/emails/order-confirmation` - Email notifications
+  - `/stripe` - Payment processing
 
 ### Image Management with ImageKit
 - **OptimizedImage Component**: Drop-in replacement for Next.js Image
@@ -199,14 +219,26 @@ NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/osmanabdout
 NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=public_...
 IMAGEKIT_PRIVATE_KEY=private_...
 
-# Optional
+# Payment (optional)
+STRIPE_SECRET_KEY=sk_...
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_...
+
+# Email (optional)
+RESEND_API_KEY=re_...
+
+# Rate Limiting (optional)
+UPSTASH_REDIS_REST_URL=https://...
+UPSTASH_REDIS_REST_TOKEN=...
+
+# Other (optional)
 NEXT_PUBLIC_CURRENCY_SYMBOL=AED
+NEXT_PUBLIC_APP_URL=https://alwathbacoop.ae
 ```
 
 ## Social Authentication Setup (Google & Facebook)
 
 ### Clerk Dashboard Configuration
-Al Wathba Coop uses Clerk for authentication with Google and Facebook OAuth providers. Setup is done through the Clerk Dashboard:
+Alwathba Coop uses Clerk for authentication with Google and Facebook OAuth providers. Setup is done through the Clerk Dashboard:
 
 1. **Access Social Connections**: Go to https://dashboard.clerk.com/last-active?path=user-management/social-connections
 2. **Enable Providers**: Enable Google and Facebook OAuth providers
@@ -216,7 +248,7 @@ Al Wathba Coop uses Clerk for authentication with Google and Facebook OAuth prov
 1. **Google Cloud Console**: Visit https://console.cloud.google.com/apis/credentials
 2. **Create OAuth 2.0 Client ID**:
    - Application type: Web application
-   - Name: "Al Wathba Coop"
+   - Name: "Alwathba Coop"
    - Authorized JavaScript origins: `https://alwathbacoop.ae`
    - Authorized redirect URIs: Use the Clerk-provided redirect URI from your dashboard
 3. **Copy Credentials**: Copy Client ID and Client Secret to Clerk Dashboard
@@ -225,7 +257,7 @@ Al Wathba Coop uses Clerk for authentication with Google and Facebook OAuth prov
 1. **Facebook Developers**: Visit https://developers.facebook.com/apps
 2. **Create App**:
    - App type: Business
-   - App name: "Al Wathba Coop"
+   - App name: "Alwathba Coop"
    - Contact email: sales@alwathbacoop.ae
 3. **Configure Facebook Login**:
    - Add Facebook Login product
@@ -234,7 +266,7 @@ Al Wathba Coop uses Clerk for authentication with Google and Facebook OAuth prov
 4. **Copy Credentials**: Copy App ID and App Secret to Clerk Dashboard
 
 ### Production Redirect URIs
-For Al Wathba Coop production deployment, ensure these redirect URIs are configured:
+For Alwathba Coop production deployment, ensure these redirect URIs are configured:
 - **Google**: `https://clerk.alwathbacoop.ae/v1/oauth_callback`
 - **Facebook**: `https://clerk.alwathbacoop.ae/v1/oauth_callback`
 
@@ -265,8 +297,34 @@ For Al Wathba Coop production deployment, ensure these redirect URIs are configu
 5. Order created with status ORDER_PLACED
 6. Vendor receives notification in dashboard
 
+## Testing Configuration
+
+### Vitest Setup
+- **Test Environment**: jsdom for React component testing
+- **Coverage Provider**: V8 with HTML and JSON reports
+- **Test Files**: `*.test.{js,jsx}` or `*.spec.{js,jsx}`
+- **Path Aliases**: `@/` mapped to project root
+
+### Running Tests
+```bash
+npm run test           # Watch mode for development
+npm run test:ui        # Interactive UI for debugging
+npm run test:coverage  # Generate coverage reports
+```
+
+## API Documentation
+
+The project includes Swagger/OpenAPI documentation accessible at `/api-docs` when running the development server. The API documentation covers:
+- Product management endpoints
+- Order processing
+- Cart operations
+- Review system
+- User management
+- Vendor operations
+- Payment processing
+
 ## Current Branding
-- **Name**: Al Wathba Coop / تعاونية الوثبة
+- **Name**: Alwathba Coop / تعاونية الوثبة
 - **Contact**: +971502731313, sales@alwathbacoop.ae
 - **Location**: Alwathbah north - Abu Dhabi
 - **Currency**: AED (UAE Dirham)

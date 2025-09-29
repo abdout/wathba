@@ -1,92 +1,52 @@
 'use client'
-import { assets } from '@/assets/assets'
-import { ArrowRightIcon, ArrowLeftIcon, ChevronRightIcon, ChevronLeftIcon } from 'lucide-react'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import CategoriesMarquee from './CategoriesMarquee'
-import CurrencyIcon from './CurrencyIcon'
-import OptimizedImage from './OptimizedImageSimple' // Using simplified version for now
+import Hero01 from './Hero01'
+import Hero02 from './Hero02'
+import Hero03 from './Hero03'
+import Hero04 from './Hero04'
 
 const Hero = ({ dict, lang }) => {
+    const [currentSlide, setCurrentSlide] = useState(0)
+    const totalSlides = 4
+
+    // Auto-slide functionality
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % totalSlides)
+        }, 5000) // Change slide every 5 seconds
+
+        return () => clearInterval(interval)
+    }, [])
+
 
 
     return (
-        <div className='mx-6'>
-            <div className='flex max-xl:flex-col gap-8 max-w-7xl mx-auto my-6'>
-                <div className='relative flex-1 flex flex-col bg-green-200 rounded-3xl xl:min-h-100 group'>
-                    <div className='p-7 sm:px-16 '>
-                        <div className='inline-flex items-center gap-3 bg-green-300 text-green-600 pr-4 p-1 rounded-full text-xs sm:text-sm'>
-                            <span className='bg-green-600 px-3 py-1 max-sm:ml-1 rounded-full text-white text-xs'>{dict?.hero?.news || "NEWS"}</span> {dict?.hero?.freeShipping || "Free Shipping on Orders Above AED 50!"}
-                            {lang === 'ar' ? (
-                                <ChevronLeftIcon className='group-hover:mr-2 transition-all' size={16} />
-                            ) : (
-                                <ChevronRightIcon className='group-hover:ml-2 transition-all' size={16} />
-                            )}
-                        </div>
-                        <h2 className={`text-3xl sm:text-5xl leading-[1.2] my-3 font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-600 to-[#A0FF74] bg-clip-text text-transparent max-w-xs sm:max-w-md`}>
-                            {dict?.hero?.title || "Gadgets you'll love. Prices you'll trust."}
-                        </h2>
-                        <div className='text-slate-800 text-sm font-medium mt-4 sm:mt-8'>
-                            <p>{dict?.hero?.startsFrom || "Starts from"}</p>
-                            <div className='text-3xl flex items-center gap-1'><CurrencyIcon className="w-6 h-6" width={24} height={24} />4.90</div>
-                        </div>
-                        <button className='bg-slate-800 text-white text-sm py-2.5 px-7 sm:py-5 sm:px-12 mt-4 sm:mt-10 rounded-md hover:bg-slate-900 hover:scale-103 active:scale-95 transition'>{dict?.hero?.learnMore || "LEARN MORE"}</button>
-                    </div>
-                    <OptimizedImage
-                        className={`sm:absolute bottom-0 w-full sm:max-w-sm ${lang === 'ar' ? 'left-0 md:left-10 scale-x-[-1]' : 'right-0 md:right-10'}`}
-                        src={assets.hero_model_img}
-                        alt={dict?.hero?.heroImage || "Hero model"}
-                        width={400}
-                        height={400}
-                        priority
-                        quality={90}
-                    />
-                </div>
-                <div className='flex flex-col md:flex-row xl:flex-col gap-5 w-full xl:max-w-sm text-sm text-slate-600'>
-                    <div className='flex-1 flex items-center justify-between w-full bg-orange-200 rounded-3xl p-6 px-8 group'>
-                        <div>
-                            <p className={`text-3xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-800 to-[#FFAD51] bg-clip-text text-transparent max-w-40`}>{dict?.hero?.bestProducts || "Best products"}</p>
-                            <p className='flex items-center gap-1 mt-4'>{dict?.hero?.viewMore || "View more"}
-                                {lang === 'ar' ? (
-                                    <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
-                                ) : (
-                                    <ArrowRightIcon className='group-hover:ml-2 transition-all' size={18} />
-                                )}
-                            </p>
-                        </div>
-                        <OptimizedImage
-                            className='w-35'
-                            src={assets.hero_product_img1}
-                            alt={dict?.hero?.bestProducts || "Best products"}
-                            width={140}
-                            height={140}
-                            quality={85}
+        <div>
+            {/* Render Hero based on current slide */}
+            <div className='relative'>
+                {currentSlide === 0 && <Hero01 dict={dict} lang={lang} />}
+                {currentSlide === 1 && <Hero02 dict={dict} lang={lang} />}
+                {currentSlide === 2 && <Hero03 dict={dict} lang={lang} />}
+                {currentSlide === 3 && <Hero04 dict={dict} lang={lang} />}
+
+                {/* Slide Indicators */}
+                <div className='absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
+                    {Array.from({ length: totalSlides }).map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setCurrentSlide(index)}
+                            className={`w-2 h-2 rounded-full transition-all ${
+                                index === currentSlide
+                                    ? 'bg-green-600 w-6'
+                                    : 'bg-gray-300 hover:bg-gray-400'
+                            }`}
                         />
-                    </div>
-                    <div className='flex-1 flex items-center justify-between w-full bg-blue-200 rounded-3xl p-6 px-8 group'>
-                        <div>
-                            <p className={`text-3xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-800 to-[#78B2FF] bg-clip-text text-transparent max-w-40`}>{dict?.hero?.discounts || "20% discounts"}</p>
-                            <p className='flex items-center gap-1 mt-4'>{dict?.hero?.viewMore || "View more"}
-                                {lang === 'ar' ? (
-                                    <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
-                                ) : (
-                                    <ArrowRightIcon className='group-hover:ml-2 transition-all' size={18} />
-                                )}
-                            </p>
-                        </div>
-                        <OptimizedImage
-                            className='w-35'
-                            src={assets.hero_product_img2}
-                            alt={dict?.hero?.discounts || "Discounts"}
-                            width={140}
-                            height={140}
-                            quality={85}
-                        />
-                    </div>
+                    ))}
                 </div>
             </div>
             <CategoriesMarquee dict={dict} />
         </div>
-
     )
 }
 

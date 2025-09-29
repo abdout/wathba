@@ -3,12 +3,16 @@ import { StarIcon } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import CurrencyIcon from './CurrencyIcon'
-import OptimizedImage from './OptimizedImageSimple'
+import OptimizedImage from './OptimizedImage'
 
 const ProductCard = ({ product, dict }) => {
 
-    // calculate the average rating of the product
-    const rating = Math.round(product.rating.reduce((acc, curr) => acc + curr.rating, 0) / product.rating.length);
+    // Use averageRating if available (from API), otherwise calculate from rating array
+    const rating = product.averageRating !== undefined
+        ? Math.round(product.averageRating)
+        : product.rating?.length > 0
+            ? Math.round(product.rating.reduce((acc, curr) => acc + curr.rating, 0) / product.rating.length)
+            : 0;
 
     // Get translated product name or fallback to original
     const productName = dict?.productNames?.[product.name] || product.name;
