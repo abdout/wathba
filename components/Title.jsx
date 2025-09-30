@@ -13,7 +13,8 @@ const Title = ({ title, description, visibleButton = true, href = '', dict, lang
                 <p className='max-w-lg text-center'>{description}</p>
                 {visibleButton && (
                     <button className='text-green-500 flex items-center gap-1'>
-                        {dict?.general?.viewMore || 'View more'}
+                        <span className="hidden sm:inline">{dict?.general?.viewMore || 'View more'}</span>
+                        <span className="sm:hidden">More</span>
                         {isRTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
                     </button>
                 )}

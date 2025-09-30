@@ -26,7 +26,7 @@ const LatestNews = ({ dict, lang }) => {
         day: "29",
         month: dict?.news?.months?.jan || "JAN"
       },
-      image: "https://ik.imagekit.io/osmanabdout/assets/blog-02.png?updatedAt=1759170873988",
+      image: "https://ik.imagekit.io/osmanabdout/assets/blog-02.jpg?updatedAt=1759170873497",
       title: dict?.news?.articles?.[1]?.title || "Premium Olive Oil: Your Guide to Quality and Health",
       description: dict?.news?.articles?.[1]?.description || "Learn how to choose the best olive oil and understand its numerous health benefits for your family",
       category: dict?.news?.categories?.food || "Food",
@@ -37,7 +37,7 @@ const LatestNews = ({ dict, lang }) => {
         day: "21",
         month: dict?.news?.months?.feb || "FEB"
       },
-      image: "https://ik.imagekit.io/osmanabdout/assets/blog-03.png?updatedAt=1759170873988",
+      image: "https://ik.imagekit.io/osmanabdout/assets/blog-03.jpg?updatedAt=1759170873628",
       title: dict?.news?.articles?.[2]?.title || "Smart Washing Machines: Save Water and Energy",
       description: dict?.news?.articles?.[2]?.description || "Explore the latest washing machine technologies that help you save on utility bills while protecting the environment",
       category: dict?.news?.categories?.appliances || "Appliances",

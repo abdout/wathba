@@ -92,10 +92,12 @@ const FeaturedCategories = ({ dict, lang }) => {
           </h2>
           <Link href={`/${lang}/shop`} className="flex items-center gap-5 text-sm text-slate-600 mt-2">
             <p className="max-w-lg text-center">
-              {dict?.homepage?.grocerySubtitle || 'Your daily needs delivered to your doorstep'}
+              <span className="hidden sm:inline">{dict?.homepage?.grocerySubtitle || 'Your daily needs delivered to your doorstep'}</span>
+              <span className="sm:hidden">Daily needs at doorstep</span>
             </p>
             <button className="text-green-500 flex items-center gap-1">
-              {dict?.general?.viewMore || 'View more'}
+              <span className="hidden sm:inline">{dict?.general?.viewMore || 'View more'}</span>
+              <span className="sm:hidden">More</span>
               {isRTL ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
             </button>
           </Link>

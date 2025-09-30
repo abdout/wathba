@@ -19,11 +19,11 @@ const ProductCard = ({ product, dict, lang }) => {
 
     return (
         <Link href={`/${lang || 'en'}/product/${product.id}`} className='group max-xl:mx-auto w-full max-w-[180px] sm:max-w-[240px]'>
-            <div className='bg-[#F5F5F5] h-44 sm:h-52 w-full rounded-lg flex items-center justify-center p-6'>
+            <div className='bg-[#F5F5F5] h-44 sm:h-52 w-full rounded-lg flex items-center justify-center p-6 overflow-hidden'>
                 <OptimizedImage
                     width={500}
                     height={500}
-                    className='max-w-full h-full object-contain group-hover:scale-105 transition duration-300'
+                    className='w-full h-full object-contain group-hover:scale-105 transition duration-300'
                     src={product.images[0]}
                     alt={productName}
                     transformation={[
@@ -40,7 +40,7 @@ const ProductCard = ({ product, dict, lang }) => {
                         ))}
                     </div>
                 </div>
-                <p className='flex items-center gap-0.5 flex-shrink-0'>
+                <p className='flex items-start gap-0.5 flex-shrink-0'>
                     <CurrencyIcon className="w-3.5 h-3.5" width={14} height={14} />
                     {product.price}
                 </p>

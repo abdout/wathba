@@ -72,7 +72,8 @@ const Hero03 = ({ dict, lang }) => {
                                     {dict?.hero?.studyEssentials || "Study Essentials"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4 text-white'>
-                                    {dict?.hero?.viewMore || "View more"}
+                                    <span className="hidden sm:inline">{dict?.hero?.viewMore || "View more"}</span>
+                                    <span className="sm:hidden">More</span>
                                     {lang === 'ar' ? (
                                         <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
                                     ) : (

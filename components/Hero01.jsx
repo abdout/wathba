@@ -60,7 +60,8 @@ const Hero01 = ({ dict, lang }) => {
                                     {dict?.hero?.bestProducts || "Best products"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4'>
-                                    {dict?.hero?.viewMore || "View more"}
+                                    <span className="hidden sm:inline">{dict?.hero?.viewMore || "View more"}</span>
+                                    <span className="sm:hidden">More</span>
                                     {lang === 'ar' ? (
                                         <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
                                     ) : (
@@ -83,7 +84,8 @@ const Hero01 = ({ dict, lang }) => {
                                     {dict?.hero?.discounts || "20% discounts"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4'>
-                                    {dict?.hero?.viewMore || "View more"}
+                                    <span className="hidden sm:inline">{dict?.hero?.viewMore || "View more"}</span>
+                                    <span className="sm:hidden">More</span>
                                     {lang === 'ar' ? (
                                         <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
                                     ) : (

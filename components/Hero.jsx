@@ -22,30 +22,30 @@ const Hero = ({ dict, lang }) => {
 
 
     return (
-        <div>
+        <>
             {/* Render Hero based on current slide */}
             <div className='relative'>
                 {currentSlide === 0 && <Hero01 dict={dict} lang={lang} />}
                 {currentSlide === 1 && <Hero02 dict={dict} lang={lang} />}
                 {currentSlide === 2 && <Hero03 dict={dict} lang={lang} />}
                 {currentSlide === 3 && <Hero04 dict={dict} lang={lang} />}
-
-                {/* Slide Indicators */}
-                <div className='absolute bottom-16 left-1/2 -translate-x-1/2 flex gap-2 z-10'>
-                    {Array.from({ length: totalSlides }).map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setCurrentSlide(index)}
-                            className={`w-2 h-2 rounded-full transition-all ${
-                                index === currentSlide
-                                    ? 'bg-green-600 w-6'
-                                    : 'bg-gray-300 hover:bg-gray-400'
-                            }`}
-                        />
-                    ))}
-                </div>
             </div>
-        </div>
+
+            {/* Slide Indicators - Moved outside */}
+            <div className='flex justify-center gap-2 mt-4 sm:mt-6 mb-6 sm:mb-8'>
+                {Array.from({ length: totalSlides }).map((_, index) => (
+                    <button
+                        key={index}
+                        onClick={() => setCurrentSlide(index)}
+                        className={`w-2 h-2 rounded-full transition-all ${
+                            index === currentSlide
+                                ? 'bg-green-600 w-6'
+                                : 'bg-gray-300 hover:bg-gray-400'
+                        }`}
+                    />
+                ))}
+            </div>
+        </>
     )
 }
 
