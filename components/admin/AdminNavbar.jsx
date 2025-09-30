@@ -2,7 +2,6 @@
 import Link from "next/link"
 import OptimizedImage from "../OptimizedImage"
 import LanguageSwitcher from "../LanguageSwitcher"
-import { assets } from "@/assets/assets"
 
 const AdminNavbar = ({ dict, lang }) => {
     const isRTL = lang === 'ar'
@@ -11,7 +10,7 @@ const AdminNavbar = ({ dict, lang }) => {
         <div className={`flex items-center justify-between px-12 py-4 border-b border-slate-200 transition-all ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Link href={`/${lang}`} className="relative">
                 <OptimizedImage
-                    src={isRTL ? assets.logo_ar : assets.logo_en}
+                    src="https://ik.imagekit.io/osmanabdout/assets/logo.svg?updatedAt=1759240849342"
                     alt={dict?.admin?.logoAlt || "Alwathba Coop Admin"}
                     width={140}
                     height={45}
