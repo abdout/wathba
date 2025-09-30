@@ -19,17 +19,19 @@ const ProductCard = ({ product, dict, lang }) => {
 
     return (
         <Link href={`/${lang || 'en'}/product/${product.id}`} className='group max-xl:mx-auto w-full max-w-[180px] sm:max-w-[240px]'>
-            <div className='bg-[#F5F5F5] h-44 sm:h-52 w-full rounded-lg flex items-center justify-center overflow-hidden p-6'>
-                <OptimizedImage
-                    width={500}
-                    height={500}
-                    className='max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300'
-                    src={product.images[0]}
-                    alt={productName}
-                    transformation={[
-                        { width: 300, height: 300, quality: 85 }
-                    ]}
-                />
+            <div className='bg-[#F5F5F5] h-44 sm:h-52 w-full rounded-lg flex items-center justify-center p-6'>
+                <div className='relative w-full h-full'>
+                    <OptimizedImage
+                        width={500}
+                        height={500}
+                        className='w-full h-full object-contain group-hover:scale-105 transition duration-300'
+                        src={product.images[0]}
+                        alt={productName}
+                        transformation={[
+                            { width: 300, height: 300, quality: 85 }
+                        ]}
+                    />
+                </div>
             </div>
             <div className='flex justify-between gap-3 text-sm text-slate-800 pt-2 w-full'>
                 <div className='flex-1 min-w-0'>
