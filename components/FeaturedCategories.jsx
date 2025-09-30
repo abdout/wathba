@@ -120,7 +120,7 @@ const FeaturedCategories = ({ dict, lang }) => {
                     ]}
                   />
                 </div>
-                <h3 className={`text-center text-xs sm:text-sm font-medium text-gray-800 group-hover:text-green-600 transition-colors line-clamp-2 ${isRTL ? 'font-rubik' : 'font-outfit'}`}>
+                <h3 className={`text-center text-xs sm:text-sm font-medium text-gray-800 group-hover:text-green-600 transition-colors truncate ${isRTL ? 'font-rubik' : 'font-outfit'}`}>
                   {category.name}
                 </h3>
               </div>

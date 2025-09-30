@@ -32,15 +32,15 @@ const ProductCard = ({ product, dict, lang }) => {
                 />
             </div>
             <div className='flex justify-between gap-3 text-sm text-slate-800 pt-2 max-w-60'>
-                <div>
-                    <p>{productName}</p>
+                <div className='flex-1 min-w-0'>
+                    <p className='truncate'>{productName}</p>
                     <div className='flex'>
                         {Array(5).fill('').map((_, index) => (
                             <StarIcon key={index} size={14} className='text-transparent mt-0.5' fill={rating >= index + 1 ? "#00C950" : "#D1D5DB"} />
                         ))}
                     </div>
                 </div>
-                <p className='flex items-center gap-0.5'>
+                <p className='flex items-center gap-0.5 flex-shrink-0'>
                     <CurrencyIcon className="w-3.5 h-3.5" width={14} height={14} />
                     {product.price}
                 </p>
