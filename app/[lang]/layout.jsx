@@ -23,11 +23,6 @@ export async function generateMetadata({ params }) {
     return {
         title: dict.metadata.title,
         description: dict.metadata.description,
-        icons: {
-            icon: '/favicon.svg',
-            shortcut: '/favicon.svg',
-            apple: '/favicon.svg',
-        },
     };
 }
 
