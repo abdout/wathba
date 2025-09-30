@@ -144,47 +144,16 @@ async function main() {
     // Audio Equipment
     prisma.product.create({
       data: {
-        name: 'Smart Speaker Gray',
-        description: 'Smart speaker with voice assistant support. Crystal clear sound quality, modern design, and seamless connectivity with your smart home devices.',
-        mrp: 50,
-        price: 35,
-        images: [getImageKitUrl('/product/speaker-1.png')],
-        category: 'Speakers',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Premium Sound System',
-        description: 'High-fidelity audio system with multiple speakers. Perfect for home entertainment with deep bass and crystal-clear highs.',
-        mrp: 150,
-        price: 129,
-        images: [getImageKitUrl('/product/speaker-2.png')],
-        category: 'Speakers',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Portable Bluetooth Speaker',
-        description: 'Waterproof portable speaker with 360-degree sound. 20-hour battery life, perfect for outdoor activities.',
-        mrp: 80,
-        price: 65,
-        images: [getImageKitUrl('/product/speaker-3.png')],
-        category: 'Speakers',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Studio Monitor Speakers',
-        description: 'Professional studio monitors for music production. Accurate sound reproduction with balanced frequency response.',
+        name: 'Smart Speaker System',
+        description: 'Complete audio system with voice assistant support. High-fidelity sound, 360-degree coverage, perfect for home entertainment.',
         mrp: 450,
         price: 399,
-        images: [getImageKitUrl('/product/speaker-4.png')],
+        images: [
+          getImageKitUrl('/product/speaker-1.png'),
+          getImageKitUrl('/product/speaker-2.png'),
+          getImageKitUrl('/product/speaker-3.png'),
+          getImageKitUrl('/product/speaker-4.png')
+        ],
         category: 'Speakers',
         inStock: true,
         storeId: 'store_002'
@@ -207,22 +176,13 @@ async function main() {
     prisma.product.create({
       data: {
         name: 'Apple Watch Series 8',
-        description: 'Latest Apple Watch with comprehensive health tracking, ECG, blood oxygen monitoring, and seamless iPhone integration.',
-        mrp: 450,
-        price: 399,
-        images: [getImageKitUrl('/product/apple-watch-1.png')],
-        category: 'Watch',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Apple Watch Ultra',
-        description: 'Rugged Apple Watch designed for extreme sports and adventures. Titanium case, extended battery life, and advanced GPS.',
+        description: 'Latest Apple Watch with comprehensive health tracking, ECG, blood oxygen monitoring. Titanium and aluminum options available.',
         mrp: 800,
         price: 749,
-        images: [getImageKitUrl('/product/apple-watch-2.png')],
+        images: [
+          getImageKitUrl('/product/apple-watch-1.png'),
+          getImageKitUrl('/product/apple-watch-2.png')
+        ],
         category: 'Watch',
         inStock: true,
         storeId: 'store_002'
@@ -258,23 +218,14 @@ async function main() {
     // Security & Home
     prisma.product.create({
       data: {
-        name: 'HD Security Camera',
-        description: '1080p security camera with night vision and motion detection. Two-way audio, mobile app control, and cloud storage.',
-        mrp: 120,
-        price: 89,
-        images: [getImageKitUrl('/product/cctv-1.png')],
-        category: 'Electronics',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Smart Security System',
-        description: 'Complete home security system with 4 cameras, DVR, and mobile monitoring. 24/7 recording with AI motion detection.',
+        name: 'HD Security Camera System',
+        description: 'Complete home security system with 1080p cameras, night vision, motion detection, DVR, and mobile monitoring.',
         mrp: 550,
         price: 499,
-        images: [getImageKitUrl('/product/cctv-2.png')],
+        images: [
+          getImageKitUrl('/product/cctv-1.png'),
+          getImageKitUrl('/product/cctv-2.png')
+        ],
         category: 'Electronics',
         inStock: true,
         storeId: 'store_002'
@@ -378,23 +329,14 @@ async function main() {
     // Smart Home
     prisma.product.create({
       data: {
-        name: 'Robot Vacuum Cleaner',
-        description: 'Smart robotic vacuum with mapping technology, app control, and auto-charging. HEPA filter, works on all floor types.',
-        mrp: 250,
-        price: 199,
-        images: [getImageKitUrl('/product/product_img14.png')],
-        category: 'Electronics',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Smart Mop & Vacuum',
-        description: 'Advanced robot cleaner that vacuums and mops simultaneously. Self-cleaning station, obstacle avoidance, voice control.',
+        name: 'Robot Vacuum & Mop',
+        description: 'Smart robotic cleaner with vacuum and mop functions. Mapping technology, app control, self-cleaning station.',
         mrp: 450,
         price: 399,
-        images: [getImageKitUrl('/product/product_img15.png')],
+        images: [
+          getImageKitUrl('/product/product_img14.png'),
+          getImageKitUrl('/product/product_img15.png')
+        ],
         category: 'Electronics',
         inStock: true,
         storeId: 'store_002'
@@ -439,35 +381,15 @@ async function main() {
     // Tissue Products
     prisma.product.create({
       data: {
-        name: 'Fine Facial Tissues Box',
-        description: 'Soft and gentle facial tissues, 2-ply strength. Hypoallergenic and dermatologically tested. Box of 150 tissues.',
-        mrp: 8,
-        price: 6,
-        images: [getImageKitUrl('/product/fine-1.png')],
-        category: 'household',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Fine Tissue 6-Pack',
-        description: 'Value pack of Fine facial tissues. Extra soft, highly absorbent, suitable for sensitive skin. 6 boxes x 150 tissues.',
+        name: 'Fine Facial Tissues',
+        description: 'Premium quality facial tissues. Extra soft, highly absorbent, hypoallergenic. Available in multiple pack sizes.',
         mrp: 45,
         price: 35,
-        images: [getImageKitUrl('/product/fine-2.png')],
-        category: 'household',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Fine Kitchen Towels',
-        description: 'Super absorbent kitchen paper towels. Strong when wet, perfect for cleaning and wiping. Pack of 4 rolls.',
-        mrp: 25,
-        price: 19,
-        images: [getImageKitUrl('/product/fine-4.png')],
+        images: [
+          getImageKitUrl('/product/fine-1.png'),
+          getImageKitUrl('/product/fine-2.png'),
+          getImageKitUrl('/product/fine-4.png')
+        ],
         category: 'household',
         inStock: true,
         storeId: 'store_001'
@@ -477,35 +399,15 @@ async function main() {
     // Dairy Products
     prisma.product.create({
       data: {
-        name: 'Halabi White Cheese 250g',
-        description: 'Traditional Halabi cheese, low salt, made from fresh cow milk. Perfect for breakfast and sandwiches.',
-        mrp: 18,
-        price: 15,
-        images: [getImageKitUrl('/product/halabi-1.png')],
-        category: 'dairy',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Halabi Cheese 500g',
-        description: 'Authentic Syrian-style white cheese. Creamy texture, mild flavor, ideal for salads and pastries.',
-        mrp: 35,
-        price: 28,
-        images: [getImageKitUrl('/product/halabi-2.png')],
-        category: 'dairy',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Halabi Premium Cheese',
-        description: 'Premium quality Halabi cheese aged to perfection. Rich, creamy taste with authentic Middle Eastern flavor. 750g pack.',
+        name: 'Halabi White Cheese',
+        description: 'Authentic Syrian-style white cheese. Low salt, made from fresh cow milk. Perfect for breakfast, salads and pastries. Available in multiple sizes.',
         mrp: 50,
         price: 42,
-        images: [getImageKitUrl('/product/halabi-3.png')],
+        images: [
+          getImageKitUrl('/product/halabi-1.png'),
+          getImageKitUrl('/product/halabi-2.png'),
+          getImageKitUrl('/product/halabi-3.png')
+        ],
         category: 'dairy',
         inStock: true,
         storeId: 'store_001'
@@ -515,23 +417,14 @@ async function main() {
     // Snacks
     prisma.product.create({
       data: {
-        name: 'Lays Classic Chips',
-        description: 'Original salted potato chips. Crispy and delicious, made from fresh potatoes. Large 170g bag.',
-        mrp: 10,
-        price: 8,
-        images: [getImageKitUrl('/product/lays-1.png')],
-        category: 'snacks',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Lays Variety Pack',
-        description: 'Assorted flavors pack - Classic, BBQ, Sour Cream & Onion. Perfect for parties. 12 small bags.',
+        name: 'Lays Potato Chips',
+        description: 'Original salted potato chips. Crispy and delicious. Available in various flavors and pack sizes.',
         mrp: 35,
         price: 29,
-        images: [getImageKitUrl('/product/lays-2.png')],
+        images: [
+          getImageKitUrl('/product/lays-1.png'),
+          getImageKitUrl('/product/lays-2.png')
+        ],
         category: 'snacks',
         inStock: true,
         storeId: 'store_001'
@@ -541,23 +434,14 @@ async function main() {
     // Milk Products
     prisma.product.create({
       data: {
-        name: 'Nido Full Cream 900g',
-        description: 'Fortified full cream milk powder. Rich in vitamins A & D, instant formula. Perfect for the whole family.',
-        mrp: 45,
-        price: 38,
-        images: [getImageKitUrl('/product/nido-1.png')],
-        category: 'dairy',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Nido FortiGrow 2.25kg',
-        description: 'Growing up milk powder for children. Enhanced with prebiotics, vitamins, and minerals. Large economy tin.',
+        name: 'Nido Milk Powder',
+        description: 'Fortified full cream milk powder. Rich in vitamins A & D. Perfect for the whole family. Available in multiple sizes.',
         mrp: 120,
         price: 99,
-        images: [getImageKitUrl('/product/nido-2.png')],
+        images: [
+          getImageKitUrl('/product/nido-1.png'),
+          getImageKitUrl('/product/nido-2.png')
+        ],
         category: 'dairy',
         inStock: true,
         storeId: 'store_001'
@@ -567,23 +451,14 @@ async function main() {
     // Detergents
     prisma.product.create({
       data: {
-        name: 'OMO Active Clean 2.5kg',
-        description: 'Powerful laundry detergent with stain removal technology. Suitable for automatic washing machines.',
-        mrp: 35,
-        price: 28,
-        images: [getImageKitUrl('/product/omo-1.png')],
-        category: 'household',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'OMO Ultimate 5kg',
-        description: 'Premium washing powder with deep cleaning power. Removes 99% of tough stains, fresh fragrance. Economy pack.',
+        name: 'OMO Washing Powder',
+        description: 'Powerful laundry detergent with deep cleaning technology. Removes 99% of tough stains. Available in multiple sizes.',
         mrp: 65,
         price: 55,
-        images: [getImageKitUrl('/product/omo-2.png')],
+        images: [
+          getImageKitUrl('/product/omo-1.png'),
+          getImageKitUrl('/product/omo-2.png')
+        ],
         category: 'household',
         inStock: true,
         storeId: 'store_001'
@@ -593,47 +468,16 @@ async function main() {
     // Baby Products
     prisma.product.create({
       data: {
-        name: 'Pampers Baby-Dry Size 3',
-        description: 'Ultra-absorbent diapers for babies 6-10kg. Up to 12 hours of dryness protection. Pack of 46.',
-        mrp: 65,
-        price: 55,
-        images: [getImageKitUrl('/product/pampers-1.png')],
-        category: 'baby',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Pampers Premium Size 4',
-        description: 'Premium care diapers for babies 9-14kg. Soft like silk, wetness indicator. Mega pack of 64.',
+        name: 'Pampers Diapers',
+        description: 'Premium quality diapers for babies and toddlers. Ultra-absorbent with up to 12 hours protection. Available in all sizes from newborn to toddler.',
         mrp: 120,
         price: 95,
-        images: [getImageKitUrl('/product/pampers-2.png')],
-        category: 'baby',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Pampers Pants Size 5',
-        description: 'Easy to wear diaper pants for toddlers 12-17kg. 360° fit, easy change. Pack of 56.',
-        mrp: 110,
-        price: 89,
-        images: [getImageKitUrl('/product/pampers-3.png')],
-        category: 'baby',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Pampers New Baby Size 1',
-        description: 'Special diapers for newborns 2-5kg. Unique absorb-away liner, umbilical cord cut-out. Pack of 50.',
-        mrp: 55,
-        price: 45,
-        images: [getImageKitUrl('/product/pampers-4.png')],
+        images: [
+          getImageKitUrl('/product/pampers-1.png'),
+          getImageKitUrl('/product/pampers-2.png'),
+          getImageKitUrl('/product/pampers-3.png'),
+          getImageKitUrl('/product/pampers-4.png')
+        ],
         category: 'baby',
         inStock: true,
         storeId: 'store_001'
@@ -643,23 +487,15 @@ async function main() {
     // More Detergents
     prisma.product.create({
       data: {
-        name: 'Persil Color Protect 3kg',
-        description: 'Advanced formula for colored clothes. Maintains fabric brightness, removes stains without fading.',
-        mrp: 45,
-        price: 38,
-        images: [getImageKitUrl('/product/persil-1.png')],
-        category: 'household',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Persil Deep Clean 5kg',
-        description: 'Professional deep clean formula. Penetrates deep into fibers, long-lasting freshness. Value pack.',
+        name: 'Persil Detergent',
+        description: 'Professional deep clean laundry detergent. Advanced formula for all fabrics. Available in various scents and sizes.',
         mrp: 75,
         price: 62,
-        images: [getImageKitUrl('/product/persil-2.png')],
+        images: [
+          getImageKitUrl('/product/persil-1.png'),
+          getImageKitUrl('/product/persil-2.png'),
+          getImageKitUrl('/product/persil-3.png')
+        ],
         category: 'household',
         inStock: true,
         storeId: 'store_001'
@@ -667,35 +503,14 @@ async function main() {
     }),
     prisma.product.create({
       data: {
-        name: 'Persil Lavender Fresh',
-        description: 'Aromatic lavender scented detergent. Gentle on fabrics, tough on stains. 4kg pack.',
-        mrp: 55,
-        price: 46,
-        images: [getImageKitUrl('/product/persil-3.png')],
-        category: 'household',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Tide Original Scent 3kg',
-        description: 'Classic Tide cleaning power with original scent. HE compatible, works in all temperatures.',
-        mrp: 40,
-        price: 33,
-        images: [getImageKitUrl('/product/tide-1.png')],
-        category: 'household',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Tide Plus Downy 6kg',
-        description: 'Tide with Downy fabric softener built-in. Cleans and softens in one step. Mega value pack.',
+        name: 'Tide Laundry Detergent',
+        description: 'Classic Tide cleaning power with built-in fabric softener. HE compatible. Available in multiple sizes.',
         mrp: 95,
         price: 79,
-        images: [getImageKitUrl('/product/tide-3.png')],
+        images: [
+          getImageKitUrl('/product/tide-1.png'),
+          getImageKitUrl('/product/tide-3.png')
+        ],
         category: 'household',
         inStock: true,
         storeId: 'store_001'
@@ -706,23 +521,14 @@ async function main() {
 
     prisma.product.create({
       data: {
-        name: 'Luxury Eau de Parfum',
-        description: 'Elegant fragrance with floral and woody notes. Long-lasting scent for special occasions. 100ml bottle.',
-        mrp: 280,
-        price: 239,
-        images: [getImageKitUrl('/product/perfume-1.png')],
-        category: 'Beauty',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Designer Perfume Set',
-        description: 'Collection of 3 premium fragrances. Day, evening, and special occasion scents. 50ml each.',
+        name: 'Luxury Perfume Collection',
+        description: 'Premium fragrances with floral and woody notes. Long-lasting scents for all occasions.',
         mrp: 450,
         price: 389,
-        images: [getImageKitUrl('/product/perfume-2.png')],
+        images: [
+          getImageKitUrl('/product/perfume-1.png'),
+          getImageKitUrl('/product/perfume-2.png')
+        ],
         category: 'Beauty',
         inStock: true,
         storeId: 'store_001'
@@ -731,22 +537,13 @@ async function main() {
     prisma.product.create({
       data: {
         name: 'HD Liquid Foundation',
-        description: 'High-definition foundation with buildable coverage. SPF 30, suitable for all skin types. 30ml.',
-        mrp: 85,
-        price: 69,
-        images: [getImageKitUrl('/product/foundation-1.png')],
-        category: 'Beauty',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Matte Foundation Set',
-        description: 'Complete foundation kit with primer and setting powder. Oil-free formula, 12-hour wear.',
+        description: 'High-definition foundation with buildable coverage. SPF 30, oil-free formula. Complete with primer and setting powder.',
         mrp: 150,
         price: 125,
-        images: [getImageKitUrl('/product/foundation-2.png')],
+        images: [
+          getImageKitUrl('/product/foundation-1.png'),
+          getImageKitUrl('/product/foundation-2.png')
+        ],
         category: 'Beauty',
         inStock: true,
         storeId: 'store_001'
@@ -755,22 +552,13 @@ async function main() {
     prisma.product.create({
       data: {
         name: 'Professional Makeup Kit',
-        description: '48-piece makeup set including eyeshadows, blushes, lip colors, and brushes. Perfect for professionals.',
-        mrp: 220,
-        price: 189,
-        images: [getImageKitUrl('/product/makeup-1.png')],
-        category: 'Beauty',
-        inStock: true,
-        storeId: 'store_001'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Deluxe Cosmetic Set',
-        description: 'Luxury makeup collection with premium brushes, palettes, and accessories. Comes in elegant case.',
+        description: 'Complete makeup collection with eyeshadows, blushes, lip colors, brushes, and accessories. Perfect for professionals.',
         mrp: 350,
         price: 299,
-        images: [getImageKitUrl('/product/makeup-2.png')],
+        images: [
+          getImageKitUrl('/product/makeup-1.png'),
+          getImageKitUrl('/product/makeup-2.png')
+        ],
         category: 'Beauty',
         inStock: true,
         storeId: 'store_001'
