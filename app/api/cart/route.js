@@ -77,15 +77,8 @@ export const GET = withErrorHandler(async (request) => {
     }
   });
 
-  // Format cart items with product details (filter out only inactive stores)
+  // Format cart items with product details (allow all products regardless of store status)
   const items = products
-    .filter(product => {
-      // If no store exists (dummy products), allow them
-      if (!product.store) return true;
-      // Only filter out if store is explicitly inactive
-      // Allow unapproved stores for testing/development
-      return product.store.isActive !== false;
-    })
     .map(product => ({
       ...product,
       quantity: cartData[product.id],
@@ -261,13 +254,15 @@ export const PUT = withErrorHandler(async (request) => {
     throw new APIError('Product is out of stock', 400);
   }
 
-  // Only validate store if it exists and is explicitly marked as inactive
-  // This allows for testing with stores that may not be fully approved yet
+  // Skip store validation entirely for now (both development and production)
+  // This allows products to be added to cart regardless of store status
+  // TODO: Re-enable store validation once store approval workflow is implemented
+
   if (product.store && product.store.isActive === false) {
-    throw new APIError('Product is not available - store is inactive', 400);
+    // Only warn, don't block
+    console.warn(`Store ${product.storeId} is inactive, but allowing cart operation`);
   }
 
-  // Warn about unapproved stores but don't block the cart operation
   if (product.store && product.store.status !== 'APPROVED') {
     console.warn(`Store ${product.storeId} is not yet approved, but allowing cart operation`);
   }
