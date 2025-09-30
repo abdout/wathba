@@ -24,7 +24,7 @@ const ProductDetails = ({ product, dict, lang }) => {
     const router = useRouter()
 
     // Fallback image for products without images
-    const fallbackImage = 'https://ik.imagekit.io/osmanabdout/assets/product-placeholder.png';
+    const fallbackImage = '/assets/logo.svg';
     const [mainImage, setMainImage] = useState(product?.images?.[0] || fallbackImage);
 
     const addToCartHandler = () => {
