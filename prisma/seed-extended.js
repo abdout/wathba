@@ -300,19 +300,10 @@ async function main() {
         description: 'Latest iPhone with A18 Bionic chip, ProMotion display, advanced camera system with ProRAW. 256GB storage, 5G enabled.',
         mrp: 4500,
         price: 4299,
-        images: [getImageKitUrl('/product/iphone17-1.png')],
-        category: 'Electronics',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'iPhone 17 Pro Max',
-        description: 'Flagship iPhone with 6.7-inch display, A18 Bionic chip, titanium design, and 48MP camera system. 512GB storage.',
-        mrp: 5500,
-        price: 5299,
-        images: [getImageKitUrl('/product/iphone17-2.png')],
+        images: [
+          getImageKitUrl('/product/iphone17-1.png'),
+          getImageKitUrl('/product/iphone17-2.png')
+        ],
         category: 'Electronics',
         inStock: true,
         storeId: 'store_002'
@@ -322,35 +313,15 @@ async function main() {
     // Computers
     prisma.product.create({
       data: {
-        name: 'MacBook Pro 14-inch',
-        description: 'MacBook Pro with M3 Pro chip, 14-inch Liquid Retina XDR display, 18GB RAM, 512GB SSD. Perfect for creative professionals.',
-        mrp: 8000,
-        price: 7599,
-        images: [getImageKitUrl('/product/mckbook-pro-1.png')],
-        category: 'Electronics',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
         name: 'MacBook Pro 16-inch',
-        description: 'Powerful MacBook Pro with M3 Max chip, 16-inch display, 32GB RAM, 1TB SSD. Ultimate performance for demanding tasks.',
+        description: 'Powerful MacBook Pro with M3 Max chip, 16-inch Liquid Retina XDR display, 32GB RAM, 1TB SSD. Ultimate performance for demanding tasks.',
         mrp: 12000,
         price: 11499,
-        images: [getImageKitUrl('/product/macbook-pro-2.png')],
-        category: 'Electronics',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'MacBook Air 15-inch',
-        description: 'Thin and light MacBook Air with M3 chip, 15-inch Liquid Retina display, 16GB RAM, 512GB SSD. All-day battery life.',
-        mrp: 6000,
-        price: 5699,
-        images: [getImageKitUrl('/product/macbook-pro-3.png')],
+        images: [
+          getImageKitUrl('/product/mckbook-pro-1.png'),
+          getImageKitUrl('/product/macbook-pro-2.png'),
+          getImageKitUrl('/product/macbook-pro-3.png')
+        ],
         category: 'Electronics',
         inStock: true,
         storeId: 'store_002'
@@ -378,7 +349,10 @@ async function main() {
         description: 'Large 6L capacity air fryer with digital touch controls. Cook with 80% less oil, 8 preset programs, dishwasher safe.',
         mrp: 350,
         price: 289,
-        images: [getImageKitUrl('/product/fryer-1.png')],
+        images: [
+          getImageKitUrl('/product/fryer-1.png'),
+          getImageKitUrl('/product/fryer-2.png')
+        ],
         category: 'Electronics',
         inStock: true,
         storeId: 'store_002'
@@ -386,47 +360,15 @@ async function main() {
     }),
     prisma.product.create({
       data: {
-        name: 'Smart Air Fryer Pro',
-        description: 'WiFi-enabled air fryer with app control. 8L capacity, 12 cooking functions, keep warm feature, and recipe suggestions.',
-        mrp: 450,
-        price: 389,
-        images: [getImageKitUrl('/product/fryer-2.png')],
-        category: 'Electronics',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Front Load Washer 9kg',
+        name: 'Front Load Washing Machine',
         description: 'Energy-efficient front load washing machine with inverter motor. 9kg capacity, 14 wash programs, steam wash feature.',
         mrp: 2200,
         price: 1899,
-        images: [getImageKitUrl('/product/washer-1.png')],
-        category: 'Electronics',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Smart Washing Machine',
-        description: 'AI-powered washing machine with automatic detergent dispensing. 10kg capacity, WiFi control, and energy saving mode.',
-        mrp: 2800,
-        price: 2499,
-        images: [getImageKitUrl('/product/washer-2.png')],
-        category: 'Electronics',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'Washer Dryer Combo',
-        description: '2-in-1 washer and dryer with heat pump technology. 8kg wash, 5kg dry capacity, 15 programs, quiet operation.',
-        mrp: 3500,
-        price: 3199,
-        images: [getImageKitUrl('/product/washer-3.png')],
+        images: [
+          getImageKitUrl('/product/washer-1.png'),
+          getImageKitUrl('/product/washer-2.png'),
+          getImageKitUrl('/product/washer-3.png')
+        ],
         category: 'Electronics',
         inStock: true,
         storeId: 'store_002'
@@ -467,19 +409,10 @@ async function main() {
         description: '21-speed mountain bike with aluminum alloy frame, front suspension, disc brakes. Perfect for trails and rough terrain.',
         mrp: 850,
         price: 699,
-        images: [getImageKitUrl('/product/picycle-1.png')],
-        category: 'Sports',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'City Commuter Bike',
-        description: 'Lightweight urban bicycle with 7-speed gears, comfortable seat, basket included. Ideal for daily commuting.',
-        mrp: 550,
-        price: 449,
-        images: [getImageKitUrl('/product/picycle-2.png')],
+        images: [
+          getImageKitUrl('/product/picycle-1.png'),
+          getImageKitUrl('/product/picycle-2.png')
+        ],
         category: 'Sports',
         inStock: true,
         storeId: 'store_002'
@@ -491,19 +424,10 @@ async function main() {
         description: 'Foldable electric scooter with 30km range, LED display, dual braking system. Max speed 25km/h, app connectivity.',
         mrp: 1200,
         price: 999,
-        images: [getImageKitUrl('/product/scooter-1.png')],
-        category: 'Sports',
-        inStock: true,
-        storeId: 'store_002'
-      }
-    }),
-    prisma.product.create({
-      data: {
-        name: 'E-Scooter Deluxe',
-        description: 'Premium electric scooter with 45km range, suspension system, cruise control. Powerful motor for hill climbing.',
-        mrp: 1800,
-        price: 1599,
-        images: [getImageKitUrl('/product/scooter-2.png')],
+        images: [
+          getImageKitUrl('/product/scooter-1.png'),
+          getImageKitUrl('/product/scooter-2.png')
+        ],
         category: 'Sports',
         inStock: true,
         storeId: 'store_002'
@@ -940,7 +864,7 @@ async function main() {
   console.log('📊 Summary:');
   console.log(`   - ${users.length} users created`);
   console.log(`   - ${stores.length} stores created`);
-  console.log(`   - ${products.length} products created (ALL ImageKit assets included)`);
+  console.log(`   - ${products.length} products created with variant images`);
   console.log('   - 1 address created');
   console.log('   - 3 coupons created');
   console.log('   - Product ratings created');

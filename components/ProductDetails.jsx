@@ -1,6 +1,6 @@
 'use client'
 
-import { addToCart } from "@/lib/features/cart/cartSlice";
+import { addToCart, addToCartLocal } from "@/lib/features/cart/cartSlice";
 import { StarIcon, TagIcon, EarthIcon, CreditCardIcon, UserIcon, ShoppingCartIcon, CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
@@ -21,6 +21,7 @@ const ProductDetails = ({ product, dict, lang }) => {
 
     const cart = useSelector(state => state?.cart?.cartItems || {});
     const cartLoading = useSelector(state => state?.cart?.loading || false);
+    const user = useSelector(state => state?.auth?.user);
     const dispatch = useDispatch();
 
     const router = useRouter()
@@ -37,21 +38,34 @@ const ProductDetails = ({ product, dict, lang }) => {
         setIsAddingToCart(true);
 
         try {
-            await dispatch(addToCart(productId)).unwrap();
+            // For guest users, just update local state
+            if (!user) {
+                dispatch(addToCartLocal({ productId }));
 
-            // Show success feedback
-            toast.success(dict?.cart?.addedToCart || `${product.name} added to cart!`);
-            setJustAdded(true);
+                // Show success feedback
+                toast.success(dict?.cart?.addedToCart || `${product.name} added to cart!`);
+                setJustAdded(true);
 
-            // Reset the "just added" state after 2 seconds
-            setTimeout(() => setJustAdded(false), 2000);
+                // Reset the "just added" state after 2 seconds
+                setTimeout(() => setJustAdded(false), 2000);
+            } else {
+                // For logged-in users, sync with backend
+                await dispatch(addToCart(productId));
+
+                // Show success feedback
+                toast.success(dict?.cart?.addedToCart || `${product.name} added to cart!`);
+                setJustAdded(true);
+
+                // Reset the "just added" state after 2 seconds
+                setTimeout(() => setJustAdded(false), 2000);
+            }
         } catch (error) {
             console.error('Failed to add to cart:', error);
             toast.error(dict?.cart?.addToCartError || 'Failed to add to cart');
         } finally {
             setIsAddingToCart(false);
         }
-    }, [productId, product.name, isAddingToCart, dispatch, dict]);
+    }, [productId, product.name, isAddingToCart, dispatch, dict, user]);
 
     const averageRating = product.rating && product.rating.length > 0
         ? product.rating.reduce((acc, item) => acc + item.rating, 0) / product.rating.length

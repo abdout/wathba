@@ -14,6 +14,7 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
     const dispatch = useDispatch();
 
     const addressList = useSelector(state => state?.address?.list || []);
+    const user = useSelector(state => state?.auth?.user);
 
     const [paymentMethod, setPaymentMethod] = useState('COD');
     const [selectedAddress, setSelectedAddress] = useState(null);
@@ -29,6 +30,13 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
 
     const handlePlaceOrder = async (e) => {
         e.preventDefault();
+
+        // Check if user is logged in
+        if (!user) {
+            toast.error(dict?.auth?.loginRequired || 'Please sign in to place an order');
+            router.push('/sign-in');
+            return;
+        }
 
         // Validate address selection
         if (!selectedAddress) {
