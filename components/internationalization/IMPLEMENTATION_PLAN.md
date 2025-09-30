@@ -29,7 +29,7 @@ Create `middleware.js` in project root:
 import { localizationMiddleware } from './components/internationalization/middleware.js';
 
 export const config = {
-  matcher: ['/((?!api|_next|_static|favicon.ico|.*\\.[a-zA-Z0-9]+$).*)'],
+  matcher: ['/((?!api|_next|_static|favn.ico|.*\\.[a-zA-Z0-9]+$).*)'],
 };
 
 export function middleware(request) {

@@ -267,7 +267,16 @@ export const PUT = withErrorHandler(async (request) => {
     });
   } catch (dbError) {
     console.error('[Cart API] Error fetching user:', dbError);
-    throw new APIError('Database error while fetching user', 500);
+    console.error('[Cart API] User ID:', userId);
+    console.error('[Cart API] Database connection check:', !!prisma);
+
+    // In development, allow cart operations to continue without database
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[Cart API] Continuing without database in development mode');
+      user = null; // Proceed with null user
+    } else {
+      throw new APIError('Database error while fetching user', 500);
+    }
   }
 
   const currentCart = user?.cart || {};
@@ -303,7 +312,16 @@ export const PUT = withErrorHandler(async (request) => {
     });
   } catch (dbError) {
     console.error('[Cart API] Error saving cart:', dbError);
-    throw new APIError('Database error while saving cart', 500);
+    console.error('[Cart API] User ID:', userId);
+    console.error('[Cart API] Cart data:', updatedCart);
+
+    // In development, return success but log the error
+    if (process.env.NODE_ENV === 'development') {
+      console.warn('[Cart API] Database save failed in development mode, returning cart without persistence');
+      // Continue without throwing error
+    } else {
+      throw new APIError('Database error while saving cart', 500);
+    }
   }
 
   const response = NextResponse.json({

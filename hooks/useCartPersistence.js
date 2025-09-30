@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCart, fetchCart } from '@/lib/features/cart/cartSlice';
+import { setCart, fetchCart, cleanupCart } from '@/lib/features/cart/cartSlice';
 
 const CART_STORAGE_KEY = 'gocart_guest_cart';
 
@@ -19,6 +19,9 @@ export function useCartPersistence() {
 
     // Load cart from localStorage on mount (for guest users)
     useEffect(() => {
+        // Clean up any invalid cart entries on mount
+        dispatch(cleanupCart());
+
         if (!isAuthenticated) {
             try {
                 const savedCart = localStorage.getItem(CART_STORAGE_KEY);

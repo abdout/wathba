@@ -24,9 +24,9 @@ export async function generateMetadata({ params }) {
         title: dict.metadata.title,
         description: dict.metadata.description,
         icons: {
-            icon: '/assets/logo.svg',
-            shortcut: '/assets/logo.svg',
-            apple: '/assets/logo.svg',
+            icon: '/favicon.svg',
+            shortcut: '/favicon.svg',
+            apple: '/favicon.svg',
         },
     };
 }

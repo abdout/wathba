@@ -389,7 +389,7 @@ import { localizationMiddleware } from './components/internationalization/middle
 
 // Matcher ignoring `/_next/`, `/api/`, and static files
 export const config = {
-  matcher: ['/((?!api|_next|_static|favicon.ico|.*\\.[a-zA-Z0-9]+$).*)'],
+  matcher: ['/((?!api|_next|_static|favn.ico|.*\\.[a-zA-Z0-9]+$).*)'],
 };
 
 /**
