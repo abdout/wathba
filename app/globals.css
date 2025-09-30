@@ -72,10 +72,54 @@
     button {
         cursor: pointer;
     }
+
+    /* Custom Scrollbar Styles */
+
+    /* Scrollbar customization for WebKit browsers (Chrome, Safari, Edge, etc.) */
+    ::-webkit-scrollbar {
+        width: 10px; /* Width of the scrollbar */
+        height: 10px; /* Height for horizontal scrollbar */
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent; /* Background color of the scrollbar track */
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #d1d5db; /* Gray color for the scrollbar thumb */
+        border-radius: 5px; /* Rounded corners for the scrollbar thumb */
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af; /* Darker gray on hover */
+    }
+
+    /* Scrollbar customization for Firefox */
+    * {
+        scrollbar-width: thin; /* Makes the scrollbar thinner */
+        scrollbar-color: #d1d5db transparent; /* Thumb color and track background */
+    }
+
+    /* Smooth scrolling */
+    html {
+        @apply scroll-smooth; /* Applies smooth scrolling to the page */
+    }
+
+    /* Overscroll behavior (prevents "bounce" effects on scroll) */
+    body {
+        @apply overscroll-none;
+        /* Removed bg-background text-foreground to avoid conflicts with main layout */
+    }
 }
 
+/* Utility class to hide scrollbar while keeping scrollability */
 .no-scrollbar::-webkit-scrollbar {
     display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
 }
 
 /* Animated Gradient Banner */

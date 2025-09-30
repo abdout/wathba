@@ -55,24 +55,33 @@
     "title": "Latest News",
     "readMore": "Read More",
     "by": "By",
-    "category": "Food",
-    "author": "Admin",
     "months": {
       "jan": "JAN",
       "feb": "FEB",
       "nov": "NOV"
     },
+    "categories": {
+      "food": "Food",
+      "appliances": "Appliances"
+    },
     "articles": [
       {
-        "title": "Curabitur porttitor orci eget neque accumsan venenatis. Nunc fermentum."
+        "title": "Fresh Orange Season: Health Benefits and Seasonal Recipes",
+        "description": "Discover the amazing health benefits of fresh oranges and creative ways to incorporate them into your daily diet"
       },
       {
-        "title": "Eget lobortis lorem lacinia. Vivamus pharetra semper,"
+        "title": "Premium Olive Oil: Your Guide to Quality and Health",
+        "description": "Learn how to choose the best olive oil and understand its numerous health benefits for your family"
       },
       {
-        "title": "Maecenas blandit risus elementum mauris malesuada."
+        "title": "Smart Washing Machines: Save Water and Energy",
+        "description": "Explore the latest washing machine technologies that help you save on utility bills while protecting the environment"
       }
     ]
+  },
+  "blog": {
+    "share": "Share this article",
+    "relatedPosts": "Related Posts"
   },
   "promo": {
     "badge": "Only This Week",
