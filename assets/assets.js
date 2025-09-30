@@ -70,6 +70,9 @@ const {
     why,
 } = imagekitAssets;
 
+// Import local polygon image
+import polygon from './polygon.png';
+
 export const assets = {
     upload_area, hero_model_img,
     hero_product_img1, hero_product_img2, gs_logo,
@@ -87,6 +90,7 @@ export const assets = {
     persil_1, persil_2, persil_3,
     tide_1, tide_2, tide_3,
     who, why,
+    polygon, // Add polygon to assets
 }
 
 export const categories = ["Headphones", "Speakers", "Watch", "Earbuds", "Mouse", "Decoration"];
@@ -116,9 +120,9 @@ export const dummyStoreData = {
     updatedAt: "2025-09-04T09:04:44.273Z",
     user: {
         id: "user_31dOriXqC4TATvc0brIhlYbwwc5",
-        name: "Great Stack",
-        email: "user.greatstack@gmail.com",
-        image: gs_logo,
+        name: "Databayt Admin",
+        email: "user.databayt@gmail.com",
+        image: polygon,
     }
 }
 
@@ -365,9 +369,9 @@ export const couponDummyData = [
 
 export const dummyUserData = {
     id: "user_31dQbH27HVtovbs13X2cmqefddM",
-    name: "GreatStack",
-    email: "greatstack@example.com",
-    image: gs_logo,
+    name: "Databayt",
+    email: "sales@databayt.org",
+    image: polygon,
     cart: {}
 }
 
@@ -425,7 +429,7 @@ export const storesDummyData = [
         address: "Riyadh, Saudi Arabia",
         status: "approved",
         isActive: true,
-        logo: "/assets/polygon.png",
+        logo: polygon,
         email: "sales@databayt.org",
         contact: "+966557721603",
         createdAt: "2025-08-22T08:22:16.189Z",
@@ -441,7 +445,7 @@ export const storesDummyData = [
         address: "King Fahd Road, Olaya District, Riyadh, Saudi Arabia",
         status: "approved",
         isActive: true,
-        logo: "/assets/polygon.png",
+        logo: polygon,
         email: "info@saudidata.sa",
         contact: "+966 11 465 8888",
         createdAt: "2025-08-22T08:34:15.155Z",
