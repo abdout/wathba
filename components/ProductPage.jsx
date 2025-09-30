@@ -4,6 +4,9 @@ import ProductDetails from "@/components/ProductDetails";
 import ProductDataLoader from "@/components/ProductDataLoader";
 import ProductDetailsSkeleton from "@/components/skeletons/ProductDetailsSkeleton";
 import ProductDescriptionSkeleton from "@/components/skeletons/ProductDescriptionSkeleton";
+import RelatedProducts from "@/components/RelatedProducts";
+import ShopByStore from "@/components/ShopByStore";
+import ProductFeatures from "@/components/ProductFeatures";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -165,6 +168,32 @@ export default function ProductPage({ dict, lang }) {
                     {product && (
                         <ProductDescription
                             product={{...product, name: getProductName(product)}}
+                            dict={dict}
+                            lang={lang}
+                        />
+                    )}
+
+                    {/* Product Features */}
+                    {product && (
+                        <ProductFeatures
+                            dict={dict}
+                            lang={lang}
+                        />
+                    )}
+
+                    {/* Shop by Store Section */}
+                    {product && (
+                        <ShopByStore
+                            currentProduct={product}
+                            dict={dict}
+                            lang={lang}
+                        />
+                    )}
+
+                    {/* Related Products */}
+                    {product && (
+                        <RelatedProducts
+                            currentProduct={product}
                             dict={dict}
                             lang={lang}
                         />

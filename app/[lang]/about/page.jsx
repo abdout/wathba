@@ -140,30 +140,37 @@ export default async function AboutPage({ params }) {
                         </div>
 
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
-                            {dict.about.boardOfDirectors.members.map((member, index) => (
-                                <div key={index} className="text-center space-y-4">
-                                    <div className="relative">
-                                        <OptimizedImage
-                                            src={`/assets/${member.image}`}
-                                            alt={member.name}
-                                            width={200}
-                                            height={200}
-                                            className="w-48 h-48 object-cover rounded-full mx-auto"
-                                            transformation={[
-                                                { width: 400, height: 400, crop: 'at_max', quality: 85 }
-                                            ]}
-                                        />
+                            {dict.about.boardOfDirectors.members.map((member, index) => {
+                                // Use ImageKit URLs from 01 to 08
+                                const imageNumber = String(index + 1).padStart(2, '0');
+                                const imageSrc = `https://ik.imagekit.io/osmanabdout/about/${imageNumber}.png?updatedAt=1759212669637`;
+
+                                return (
+                                    <div key={index} className="text-center space-y-4">
+                                        <div className="relative w-48 h-48 mx-auto">
+                                            <div className="absolute inset-0 bg-orange-500 rounded-full"></div>
+                                            <OptimizedImage
+                                                src={imageSrc}
+                                                alt={member.name}
+                                                width={200}
+                                                height={200}
+                                                className="relative w-48 h-48 object-cover rounded-full"
+                                                transformation={[
+                                                    { width: 400, height: 400, crop: 'at_max', quality: 85 }
+                                                ]}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <h3 className={`font-semibold text-lg text-[#444444] ${lang === 'ar' ? 'font-arabic' : ''}`}>
+                                                {member.name}
+                                            </h3>
+                                            <p className={`text-[#e8563f] text-sm font-medium ${lang === 'ar' ? 'font-arabic' : ''}`}>
+                                                {member.position}
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div className="space-y-2">
-                                        <h3 className={`font-semibold text-lg text-[#444444] ${lang === 'ar' ? 'font-arabic' : ''}`}>
-                                            {member.name}
-                                        </h3>
-                                        <p className={`text-[#e8563f] text-sm font-medium ${lang === 'ar' ? 'font-arabic' : ''}`}>
-                                            {member.position}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </div>
                 </div>

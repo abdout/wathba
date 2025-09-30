@@ -45,7 +45,11 @@
     "kitchenEssentials": "Kitchen Essentials",
     "cleaningTools": "Cleaning Tools",
     "studyEssentials": "Study Essentials",
-    "notebooks": "Notebooks & Pens"
+    "notebooks": "Notebooks & Pens",
+    "discountPercent": "75%\nDiscount",
+    "bestProductsTitle": "Best\nProducts",
+    "summerSaleAlt": "Summer sale background",
+    "bestDealAlt": "Best deal background"
   },
   "news": {
     "title": "Latest News",
@@ -167,6 +171,11 @@
     "rightNow": "Right Now",
     "freeShippingWorldwide": "Free Shipping Worldwide",
     "securedPayment": "100% Secured Payment",
+    "relatedProducts": "Related Products",
+    "moreFrom": "More from",
+    "qualityProducts": "Quality products from trusted vendor",
+    "viewAllProducts": "View All Products",
+    "whyChooseUs": "Why Choose Alwathba Fresh Market",
     "trustedByBrands": "Trusted by Leading Brands",
     "writeReview": "Write Review (Optional)",
     "selectRating": "Please select a rating",
@@ -238,7 +247,15 @@
     "moneyBack": {
       "title": "Money-Back Guarantee",
       "description": "30 Days Money-Back Guarantee"
-    }
+    },
+    "freeDelivery": "Free Delivery",
+    "freeDeliveryDesc": "On orders above 100 AED",
+    "genuineProducts": "100% Genuine",
+    "genuineDesc": "Authentic products guaranteed",
+    "easyReturns": "Easy Returns",
+    "returnsDesc": "7-day return policy",
+    "support": "24/7 Support",
+    "supportDesc": "Dedicated customer service"
   },
   "general": {
     "all": "All",
@@ -388,43 +405,43 @@
       "description": "Meet our dedicated board members who guide Alwathba Cooperative Society with their expertise and commitment to community development.",
       "members": [
         {
-          "name": "Ali Yafor Al Mansouri",
+          "name": "Yafor Almansouri",
           "position": "Chairman",
           "image": "01.png"
         },
         {
-          "name": "Ali Tarish Al Mansouri",
+          "name": "Tarish Almansouri",
           "position": "Vice Chairman",
           "image": "02.png"
         },
         {
-          "name": "Mohammed Issa Al Mansouri",
+          "name": "Mohammed Almansouri",
           "position": "Treasurer",
           "image": "03.png"
         },
         {
-          "name": "Bukhait Saeed Al Ketbi",
+          "name": "Bukhait Alketbi",
           "position": "Secretary",
           "image": "04.png"
         },
         {
-          "name": "Mubarak Jeryo Al Mansouri",
+          "name": "Mubarak Almansouri",
           "position": "Member",
           "image": "05.png"
         },
         {
-          "name": "Nasser Saeed Al Mansouri",
+          "name": "Nasser Almansouri",
           "position": "Member",
           "image": "06.png"
         },
         {
-          "name": "Hamad Ali Al Mansouri",
+          "name": "Hamad Almansouri",
           "position": "Member",
           "image": "07.png"
         },
         {
-          "name": "Mohammed Al Taher Abdul Jalil",
-          "position": "Member",
+          "name": "Mohammed Abduljalil",
+          "position": "General Manager",
           "image": "08.png"
         }
       ]

@@ -45,7 +45,11 @@
     "kitchenEssentials": "أساسيات المطبخ",
     "cleaningTools": "أدوات التنظيف",
     "studyEssentials": "أساسيات الدراسة",
-    "notebooks": "دفاتر وأقلام"
+    "notebooks": "دفاتر\nوأقلام",
+    "discountPercent": "خصم\n75%",
+    "bestProductsTitle": "أفضل\nالمنتجات",
+    "summerSaleAlt": "خلفية تخفيضات الصيف",
+    "bestDealAlt": "خلفية أفضل عرض"
   },
   "news": {
     "title": "آخر الأخبار",
@@ -172,7 +176,12 @@
     "selectRating": "يرجى اختيار تقييم",
     "rateProduct": "قيم المنتج",
     "productBy": "منتج من",
-    "viewStore": "عرض المتجر"
+    "viewStore": "عرض المتجر",
+    "relatedProducts": "منتجات ذات صلة",
+    "moreFrom": "المزيد من",
+    "qualityProducts": "منتجات عالية الجودة من بائع موثوق",
+    "viewAllProducts": "عرض جميع المنتجات",
+    "whyChooseUs": "لماذا تختار سوق الوثبة الطازجة"
   },
   "forms": {
     "enterName": "أدخل اسمك",
@@ -235,7 +244,15 @@
     "moneyBack": {
       "title": "ضمان استرداد الأموال",
       "description": "ضمان استرداد الأموال لمدة 30 يومًا"
-    }
+    },
+    "freeDelivery": "توصيل مجاني",
+    "freeDeliveryDesc": "للطلبات فوق 100 درهم",
+    "genuineProducts": "منتجات أصلية 100%",
+    "genuineDesc": "منتجات أصلية مضمونة",
+    "easyReturns": "إرجاع سهل",
+    "returnsDesc": "سياسة إرجاع لمدة 7 أيام",
+    "support": "دعم 24/7",
+    "supportDesc": "خدمة عملاء مخصصة"
   },
   "general": {
     "all": "جميع",
@@ -385,43 +402,43 @@
       "description": "تعرف على أعضاء مجلس الإدارة المتفانين الذين يقودون جمعية الوثبة التعاونية بخبرتهم والتزامهم بتنمية المجتمع.",
       "members": [
         {
-          "name": "علي يافور المنصوري",
+          "name": "يافور المنصوري",
           "position": "رئيس مجلس الإدارة",
           "image": "01.png"
         },
         {
-          "name": "علي طارش المنصوري",
+          "name": "طارش المنصوري",
           "position": "نائب رئيس مجلس الإدارة",
           "image": "02.png"
         },
         {
-          "name": "محمد عيسى المنصوري",
+          "name": "محمد المنصوري",
           "position": "أمين الصندوق",
           "image": "03.png"
         },
         {
-          "name": "بخيت سعيد الكتبي",
+          "name": "بخيت الكتبي",
           "position": "أمين السر",
           "image": "04.png"
         },
         {
-          "name": "مبارك جريو المنصوري",
+          "name": "مبارك المنصوري",
           "position": "عضو",
           "image": "05.png"
         },
         {
-          "name": "ناصر سعيد المنصوري",
+          "name": "ناصر المنصوري",
           "position": "عضو",
           "image": "06.png"
         },
         {
-          "name": "حمد علي المنصوري",
+          "name": "حمد المنصوري",
           "position": "عضو",
           "image": "07.png"
         },
         {
-          "name": "محمد الطاهر عبد الجليل",
-          "position": "عضو",
+          "name": "محمد عبد الجليل",
+          "position": "المدير العام",
           "image": "08.png"
         }
       ]

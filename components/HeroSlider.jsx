@@ -223,7 +223,7 @@ const HeroSlider = ({ dict, lang }) => {
             </button>
 
             {/* Dots Indicator */}
-            <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            <div className="flex justify-center gap-2 py-8">
                 {slides.map((_, index) => (
                     <button
                         key={index}

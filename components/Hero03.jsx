@@ -99,7 +99,7 @@ const Hero03 = ({ dict, lang }) => {
                             </div>
                             {/* Content */}
                             <div className='relative z-10'>
-                                <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-white to-gray-300 bg-clip-text text-transparent max-w-40`}>
+                                <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-white to-gray-300 bg-clip-text text-transparent max-w-40 whitespace-pre-line`}>
                                     {dict?.hero?.notebooks || "Notebooks & Pens"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4 text-white'>

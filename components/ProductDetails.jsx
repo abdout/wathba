@@ -23,7 +23,9 @@ const ProductDetails = ({ product, dict, lang }) => {
 
     const router = useRouter()
 
-    const [mainImage, setMainImage] = useState(product?.images?.[0] || '');
+    // Fallback image for products without images
+    const fallbackImage = 'https://ik.imagekit.io/osmanabdout/assets/product-placeholder.png';
+    const [mainImage, setMainImage] = useState(product?.images?.[0] || fallbackImage);
 
     const addToCartHandler = () => {
         console.log('[ProductDetails] Add to Cart clicked');
@@ -41,12 +43,15 @@ const ProductDetails = ({ product, dict, lang }) => {
         ? product.rating.reduce((acc, item) => acc + item.rating, 0) / product.rating.length
         : 0;
     
+    // Use fallback if no images available
+    const displayImages = product?.images?.length > 0 ? product.images : [fallbackImage];
+
     return (
         <div className="flex max-lg:flex-col gap-12">
             <div className="flex max-sm:flex-col-reverse gap-3">
                 <div className="flex sm:flex-col gap-3">
-                    {product?.images?.map((image, index) => (
-                        <div key={index} onClick={() => setMainImage(product.images[index])} className="bg-slate-100 flex items-center justify-center size-26 rounded-lg group cursor-pointer">
+                    {displayImages.map((image, index) => (
+                        <div key={index} onClick={() => setMainImage(displayImages[index])} className="bg-slate-100 flex items-center justify-center size-26 rounded-lg group cursor-pointer">
                             <OptimizedImage
                                 src={image}
                                 className="group-hover:scale-103 group-active:scale-95 transition"

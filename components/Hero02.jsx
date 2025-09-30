@@ -59,7 +59,7 @@ const Hero02 = ({ dict, lang }) => {
                             <div className='absolute inset-0'>
                                 <OptimizedImage
                                     src='/assets/hero-05.png'
-                                    alt="Summer sale background"
+                                    alt={dict?.hero?.summerSaleAlt || "Summer sale background"}
                                     fill
                                     className='object-cover'
                                     quality={85}
@@ -68,10 +68,8 @@ const Hero02 = ({ dict, lang }) => {
                             </div>
                             {/* Content */}
                             <div className='relative z-10'>
-                                <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-800 to-[#FFD700] bg-clip-text text-transparent max-w-40`}>
-                                    75%
-                                    <br />
-                                    Discount
+                                <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-800 to-[#FFD700] bg-clip-text text-transparent max-w-40 whitespace-pre-line`}>
+                                    {dict?.hero?.discountPercent || "75%\nDiscount"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4'>
                                     {dict?.hero?.viewMore || "View more"}
@@ -90,7 +88,7 @@ const Hero02 = ({ dict, lang }) => {
                             <div className='absolute inset-0'>
                                 <OptimizedImage
                                     src='/assets/hero-06.png'
-                                    alt="Best deal background"
+                                    alt={dict?.hero?.bestDealAlt || "Best deal background"}
                                     fill
                                     className='object-cover'
                                     quality={85}
@@ -101,10 +99,8 @@ const Hero02 = ({ dict, lang }) => {
                             </div>
                             {/* Content */}
                             <div className='relative z-10'>
-                                <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-white to-[#7DE2FF] bg-clip-text text-transparent max-w-40`}>
-                                    Best
-                                    <br />
-                                    Products
+                                <p className={`text-2xl font-medium ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-white to-[#7DE2FF] bg-clip-text text-transparent max-w-40 whitespace-pre-line`}>
+                                    {dict?.hero?.bestProductsTitle || "Best\nProducts"}
                                 </p>
                                 <p className='flex items-center gap-1 mt-4 text-white'>
                                     {dict?.hero?.viewMore || "View more"}
