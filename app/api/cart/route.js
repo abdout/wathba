@@ -196,9 +196,7 @@ export const PUT = withErrorHandler(async (request) => {
   }
 
   if (!product) {
-    // For development, allow adding dummy products to cart
-    // In production, this should throw an error
-    console.warn(`Product ${productId} not found in database, allowing for development`);
+    // Allow adding products even if not found in database (for dummy products)
 
     // Get current cart
     const user = await prisma.user.findUnique({
@@ -257,15 +255,6 @@ export const PUT = withErrorHandler(async (request) => {
   // Skip store validation entirely for now (both development and production)
   // This allows products to be added to cart regardless of store status
   // TODO: Re-enable store validation once store approval workflow is implemented
-
-  if (product.store && product.store.isActive === false) {
-    // Only warn, don't block
-    console.warn(`Store ${product.storeId} is inactive, but allowing cart operation`);
-  }
-
-  if (product.store && product.store.status !== 'APPROVED') {
-    console.warn(`Store ${product.storeId} is not yet approved, but allowing cart operation`);
-  }
 
   // Get current cart
   const user = await prisma.user.findUnique({
