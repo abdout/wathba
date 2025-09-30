@@ -1,15 +1,17 @@
 import { PlusIcon, SquarePenIcon, XIcon } from 'lucide-react';
 import React, { useState } from 'react'
 import AddressModal from './AddressModal';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import CurrencyIcon from './CurrencyIcon';
+import { clearCart } from '@/lib/features/cart/cartSlice';
 
 const OrderSummary = ({ totalPrice, items, dict }) => {
 
 
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const addressList = useSelector(state => state?.address?.list || []);
 
@@ -18,16 +20,73 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
     const [showAddressModal, setShowAddressModal] = useState(false);
     const [couponCodeInput, setCouponCodeInput] = useState('');
     const [coupon, setCoupon] = useState('');
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
     const handleCouponCode = async (event) => {
         event.preventDefault();
-        
+        // TODO: Implement coupon validation
     }
 
     const handlePlaceOrder = async (e) => {
         e.preventDefault();
 
-        router.push('/orders')
+        // Validate address selection
+        if (!selectedAddress) {
+            toast.error(dict?.cart?.selectAddressError || 'Please select a delivery address');
+            return;
+        }
+
+        // Validate cart items
+        if (!items || items.length === 0) {
+            toast.error(dict?.cart?.emptyCartError || 'Your cart is empty');
+            return;
+        }
+
+        setIsPlacingOrder(true);
+
+        try {
+            // Prepare order data
+            const orderData = {
+                addressId: selectedAddress.id,
+                paymentMethod,
+                items: items.map(item => ({
+                    productId: item.id,
+                    quantity: item.quantity
+                }))
+            };
+
+            // Add coupon if applied
+            if (coupon && coupon.code) {
+                orderData.couponCode = coupon.code;
+            }
+
+            // Create order via API
+            const response = await fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                throw new Error(data.error || dict?.cart?.orderError || 'Failed to place order');
+            }
+
+            // Clear cart after successful order
+            dispatch(clearCart());
+
+            // Show success message
+            toast.success(dict?.cart?.orderSuccess || 'Order placed successfully!');
+
+            // Redirect to orders page
+            router.push('/orders');
+        } catch (error) {
+            console.error('Failed to place order:', error);
+            toast.error(error.message || dict?.cart?.orderError || 'Failed to place order. Please try again.');
+        } finally {
+            setIsPlacingOrder(false);
+        }
     }
 
     return (
@@ -101,7 +160,20 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
                 <p>{dict?.cart?.total || "Total"}:</p>
                 <p className='font-medium text-right flex items-center gap-0.5 justify-end'><CurrencyIcon className="w-3.5 h-3.5" width={14} height={14} />{coupon ? (totalPrice - (coupon.discount / 100 * totalPrice)).toFixed(2) : totalPrice.toLocaleString()}</p>
             </div>
-            <button onClick={e => toast.promise(handlePlaceOrder(e), { loading: 'placing Order...' })} className='w-full bg-slate-700 text-white py-2.5 rounded hover:bg-slate-900 active:scale-95 transition-all'>{dict?.cart?.placeOrder || "Place Order"}</button>
+            <button
+                onClick={handlePlaceOrder}
+                disabled={isPlacingOrder}
+                className={`w-full py-2.5 rounded transition-all ${
+                    isPlacingOrder
+                        ? 'bg-slate-400 cursor-not-allowed'
+                        : 'bg-slate-700 text-white hover:bg-slate-900 active:scale-95'
+                }`}
+            >
+                {isPlacingOrder
+                    ? (dict?.cart?.placingOrder || "Placing Order...")
+                    : (dict?.cart?.placeOrder || "Place Order")
+                }
+            </button>
 
             {showAddressModal && <AddressModal setShowAddressModal={setShowAddressModal} />}
 

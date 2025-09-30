@@ -81,29 +81,34 @@ export async function GET(request) {
       }
     });
 
-    // Add revenue statistics for each store
-    const storesWithStats = await Promise.all(
-      stores.map(async (store) => {
-        const revenue = await prisma.order.aggregate({
-          where: {
-            storeId: store.id,
-            status: 'DELIVERED'
-          },
-          _sum: {
-            total: true
-          }
-        });
+    // Get revenue statistics for all stores in a single query to avoid N+1
+    const storeIds = stores.map(store => store.id);
+    const revenueByStore = await prisma.order.groupBy({
+      by: ['storeId'],
+      where: {
+        storeId: { in: storeIds },
+        status: 'DELIVERED'
+      },
+      _sum: {
+        total: true
+      }
+    });
 
-        return {
-          ...store,
-          statistics: {
-            totalProducts: store._count.Product,
-            totalOrders: store._count.Order,
-            totalRevenue: revenue._sum.total || 0
-          }
-        };
-      })
-    );
+    // Create a map for quick revenue lookup
+    const revenueMap = revenueByStore.reduce((acc, item) => {
+      acc[item.storeId] = item._sum.total || 0;
+      return acc;
+    }, {});
+
+    // Combine stores with their revenue statistics
+    const storesWithStats = stores.map(store => ({
+      ...store,
+      statistics: {
+        totalProducts: store._count.Product,
+        totalOrders: store._count.Order,
+        totalRevenue: revenueMap[store.id] || 0
+      }
+    }));
 
     // Get summary statistics
     const summary = {

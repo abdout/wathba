@@ -62,7 +62,7 @@ export async function GET(request) {
     // Get total count
     const totalCount = await prisma.product.count({ where });
 
-    // Get products
+    // Get products with ratings included
     const products = await prisma.product.findMany({
       where,
       skip,
@@ -74,26 +74,31 @@ export async function GET(request) {
             orderItems: true,
             rating: true
           }
+        },
+        rating: {
+          select: {
+            rating: true
+          }
         }
       }
     });
 
-    // Calculate average ratings
-    const productsWithStats = await Promise.all(
-      products.map(async (product) => {
-        const ratings = await prisma.rating.aggregate({
-          where: { productId: product.id },
-          _avg: { rating: true }
-        });
+    // Calculate average ratings in memory (much faster than N+1 queries)
+    const productsWithStats = products.map(product => {
+      const averageRating = product.rating.length > 0
+        ? product.rating.reduce((sum, r) => sum + r.rating, 0) / product.rating.length
+        : 0;
 
-        return {
-          ...product,
-          averageRating: ratings._avg.rating || 0,
-          totalOrders: product._count.orderItems,
-          totalRatings: product._count.rating
-        };
-      })
-    );
+      // Remove the raw ratings from the response
+      const { rating, ...productWithoutRatings } = product;
+
+      return {
+        ...productWithoutRatings,
+        averageRating,
+        totalOrders: product._count.orderItems,
+        totalRatings: product._count.rating
+      };
+    });
 
     return NextResponse.json({
       success: true,

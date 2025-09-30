@@ -6,7 +6,7 @@ import CurrencyIcon from "@/components/CurrencyIcon";
 import { deleteItemFromCart } from "@/lib/features/cart/cartSlice";
 import { Trash2Icon } from "lucide-react";
 import OptimizedImage from "@/components/OptimizedImage";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function CartPage({ dict, lang }) {
@@ -14,34 +14,35 @@ export default function CartPage({ dict, lang }) {
     const products = useSelector(state => state?.product?.list || []);
     const dispatch = useDispatch();
 
-    const [cartArray, setCartArray] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0);
+    // Create a Map for O(1) product lookup and memoize cart calculations
+    const { cartArray, totalPrice } = useMemo(() => {
+        if (!products.length) {
+            return { cartArray: [], totalPrice: 0 };
+        }
 
-    const createCartArray = () => {
-        setTotalPrice(0);
+        // Create a Map for O(1) product lookup
+        const productMap = new Map(products.map(p => [p.id, p]));
+
         const cartArray = [];
-        for (const [key, value] of Object.entries(cartItems)) {
-            const product = products.find(product => product.id === key);
+        let totalPrice = 0;
+
+        for (const [productId, quantity] of Object.entries(cartItems)) {
+            const product = productMap.get(productId);
             if (product) {
                 cartArray.push({
                     ...product,
-                    quantity: value,
+                    quantity,
                 });
-                setTotalPrice(prev => prev + product.price * value);
+                totalPrice += product.price * quantity;
             }
         }
-        setCartArray(cartArray);
-    }
+
+        return { cartArray, totalPrice };
+    }, [cartItems, products]);
 
     const handleDeleteItemFromCart = (productId) => {
-        dispatch(deleteItemFromCart({ productId }))
+        dispatch(deleteItemFromCart(productId))
     }
-
-    useEffect(() => {
-        if (products.length > 0) {
-            createCartArray();
-        }
-    }, [cartItems, products]);
 
     // Get translated product name
     const getProductName = (product) => {

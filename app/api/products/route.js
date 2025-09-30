@@ -219,6 +219,10 @@ export const GET = withErrorHandler(async (request) => {
 
   const response = NextResponse.json(responseData);
 
+  // Add cache headers for frequently accessed endpoint
+  // Cache for 60 seconds on CDN, allow stale content for 2 minutes while revalidating
+  response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
+
   // Add rate limit headers
   if (rateLimitResult.headers) {
     Object.entries(rateLimitResult.headers).forEach(([key, value]) => {

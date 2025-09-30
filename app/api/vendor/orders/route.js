@@ -79,25 +79,35 @@ export async function GET(request) {
       }
     });
 
-    // Calculate summary statistics
-    const stats = {
-      totalOrders: totalCount,
-      pendingOrders: await prisma.order.count({
-        where: { storeId: store.id, status: 'ORDER_PLACED' }
+    // Calculate summary statistics with optimized queries
+    // Use Promise.all to run queries in parallel
+    const [orderStatusCounts, revenueData] = await Promise.all([
+      // Get all order counts by status in a single query
+      prisma.order.groupBy({
+        by: ['status'],
+        where: { storeId: store.id },
+        _count: true
       }),
-      processingOrders: await prisma.order.count({
-        where: { storeId: store.id, status: 'PROCESSING' }
-      }),
-      shippedOrders: await prisma.order.count({
-        where: { storeId: store.id, status: 'SHIPPED' }
-      }),
-      deliveredOrders: await prisma.order.count({
-        where: { storeId: store.id, status: 'DELIVERED' }
-      }),
-      totalRevenue: await prisma.order.aggregate({
+      // Get total revenue for delivered orders
+      prisma.order.aggregate({
         where: { storeId: store.id, status: 'DELIVERED' },
         _sum: { total: true }
-      }).then(result => result._sum.total || 0)
+      })
+    ]);
+
+    // Transform the grouped data into the stats object
+    const statusCountMap = orderStatusCounts.reduce((acc, item) => {
+      acc[item.status] = item._count;
+      return acc;
+    }, {});
+
+    const stats = {
+      totalOrders: totalCount,
+      pendingOrders: statusCountMap['ORDER_PLACED'] || 0,
+      processingOrders: statusCountMap['PROCESSING'] || 0,
+      shippedOrders: statusCountMap['SHIPPED'] || 0,
+      deliveredOrders: statusCountMap['DELIVERED'] || 0,
+      totalRevenue: revenueData._sum.total || 0
     };
 
     return NextResponse.json({

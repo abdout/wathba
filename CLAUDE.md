@@ -174,3 +174,4 @@ state = {
 2. **Cart Sync**: Backend sync attempts but fails gracefully if API unavailable
 3. **Rate Limiting**: Auto-disabled if Redis not configured
 4. **Search**: Currently filters client-side, not database queries
+5. **TypeScript**: Build errors ignored (`ignoreBuildErrors: true` in next.config.mjs)

@@ -6,8 +6,7 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit')) || 8;
 
-    // Get featured products (you can customize the criteria)
-    // For now, we'll get the most recent products that are in stock
+    // Get featured products with ratings included to avoid N+1 queries
     const featuredProducts = await prisma.product.findMany({
       where: {
         inStock: true,
@@ -34,26 +33,31 @@ export async function GET(request) {
             rating: true,
             orderItems: true
           }
+        },
+        rating: {
+          select: {
+            rating: true
+          }
         }
       }
     });
 
-    // Get products with ratings
-    const productsWithRatings = await Promise.all(
-      featuredProducts.map(async (product) => {
-        const ratings = await prisma.rating.aggregate({
-          where: { productId: product.id },
-          _avg: { rating: true }
-        });
+    // Calculate ratings in memory (much faster than N+1 queries)
+    const productsWithRatings = featuredProducts.map(product => {
+      const averageRating = product.rating.length > 0
+        ? product.rating.reduce((sum, r) => sum + r.rating, 0) / product.rating.length
+        : 0;
 
-        return {
-          ...product,
-          averageRating: ratings._avg.rating || 0,
-          totalRatings: product._count.rating,
-          totalSales: product._count.orderItems
-        };
-      })
-    );
+      // Remove raw ratings from response
+      const { rating, ...productWithoutRatings } = product;
+
+      return {
+        ...productWithoutRatings,
+        averageRating,
+        totalRatings: product._count.rating,
+        totalSales: product._count.orderItems
+      };
+    });
 
     // Also get best sellers (products with most orders)
     const bestSellers = await prisma.product.findMany({
@@ -81,12 +85,12 @@ export async function GET(request) {
       }
     });
 
-    // Get products by category
+    // Get products by category - parallelize queries for better performance
     const categories = ['Electronics', 'Fruits', 'Dairy', 'Vegetables'];
-    const productsByCategory = {};
 
-    for (const category of categories) {
-      const products = await prisma.product.findMany({
+    // Execute all category queries in parallel
+    const categoryPromises = categories.map(category =>
+      prisma.product.findMany({
         where: {
           category,
           inStock: true,
@@ -105,14 +109,20 @@ export async function GET(request) {
             }
           }
         }
-      });
+      })
+    );
 
-      if (products.length > 0) {
-        productsByCategory[category] = products;
+    const categoryResults = await Promise.all(categoryPromises);
+
+    // Build the productsByCategory object
+    const productsByCategory = {};
+    categories.forEach((category, index) => {
+      if (categoryResults[index].length > 0) {
+        productsByCategory[category] = categoryResults[index];
       }
-    }
+    });
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       data: {
         featured: productsWithRatings,
@@ -120,6 +130,11 @@ export async function GET(request) {
         byCategory: productsByCategory
       }
     });
+
+    // Add cache headers - featured products can be cached for 5 minutes
+    response.headers.set('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
+
+    return response;
   } catch (error) {
     console.error('Error fetching featured products:', error);
     return NextResponse.json(

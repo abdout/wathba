@@ -1,13 +1,14 @@
 'use client'
 
 import { addToCart } from "@/lib/features/cart/cartSlice";
-import { StarIcon, TagIcon, EarthIcon, CreditCardIcon, UserIcon } from "lucide-react";
+import { StarIcon, TagIcon, EarthIcon, CreditCardIcon, UserIcon, ShoppingCartIcon, CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Counter from "./Counter";
 import { useDispatch, useSelector } from "react-redux";
 import CurrencyIcon from "./CurrencyIcon";
 import OptimizedImage from "./OptimizedImage";
+import toast from 'react-hot-toast';
 
 const ProductDetails = ({ product, dict, lang }) => {
 
@@ -19,6 +20,7 @@ const ProductDetails = ({ product, dict, lang }) => {
     const productId = product.id;
 
     const cart = useSelector(state => state?.cart?.cartItems || {});
+    const cartLoading = useSelector(state => state?.cart?.loading || false);
     const dispatch = useDispatch();
 
     const router = useRouter()
@@ -26,18 +28,30 @@ const ProductDetails = ({ product, dict, lang }) => {
     // Fallback image for products without images
     const fallbackImage = '/assets/logo.svg';
     const [mainImage, setMainImage] = useState(product?.images?.[0] || fallbackImage);
+    const [isAddingToCart, setIsAddingToCart] = useState(false);
+    const [justAdded, setJustAdded] = useState(false);
 
-    const addToCartHandler = () => {
-        console.log('[ProductDetails] Add to Cart clicked');
-        console.log('[ProductDetails] Product ID:', productId);
-        console.log('[ProductDetails] Product object:', product);
-        console.log('[ProductDetails] Current cart state:', cart);
-        console.log('[ProductDetails] Dispatching addToCart action...');
+    const addToCartHandler = useCallback(async () => {
+        if (isAddingToCart) return; // Prevent multiple rapid clicks
 
-        dispatch(addToCart(productId));  // Fixed: Pass productId directly, not as an object
+        setIsAddingToCart(true);
 
-        console.log('[ProductDetails] addToCart action dispatched');
-    }
+        try {
+            await dispatch(addToCart(productId)).unwrap();
+
+            // Show success feedback
+            toast.success(dict?.cart?.addedToCart || `${product.name} added to cart!`);
+            setJustAdded(true);
+
+            // Reset the "just added" state after 2 seconds
+            setTimeout(() => setJustAdded(false), 2000);
+        } catch (error) {
+            console.error('Failed to add to cart:', error);
+            toast.error(dict?.cart?.addToCartError || 'Failed to add to cart');
+        } finally {
+            setIsAddingToCart(false);
+        }
+    }, [productId, product.name, isAddingToCart, dispatch, dict]);
 
     const averageRating = product.rating && product.rating.length > 0
         ? product.rating.reduce((acc, item) => acc + item.rating, 0) / product.rating.length
@@ -102,8 +116,40 @@ const ProductDetails = ({ product, dict, lang }) => {
                             </div>
                         )
                     }
-                    <button onClick={() => !cart[productId] ? addToCartHandler() : router.push('/cart')} className="bg-slate-800 text-white px-10 py-3 text-sm font-medium rounded hover:bg-slate-900 active:scale-95 transition">
-                        {!cart[productId] ? (dict?.product?.addToCart || 'Add to Cart') : (dict?.product?.viewCart || 'View Cart')}
+                    <button
+                        onClick={() => !cart[productId] ? addToCartHandler() : router.push(`/${lang}/cart`)}
+                        disabled={isAddingToCart}
+                        className={`px-10 py-3 text-sm font-medium rounded transition-all flex items-center gap-2 ${
+                            isAddingToCart
+                                ? 'bg-slate-500 cursor-wait'
+                                : justAdded
+                                ? 'bg-green-600 hover:bg-green-700 text-white'
+                                : cart[productId]
+                                ? 'bg-slate-800 hover:bg-slate-900 text-white active:scale-95'
+                                : 'bg-slate-800 hover:bg-slate-900 text-white active:scale-95'
+                        }`}
+                    >
+                        {isAddingToCart ? (
+                            <>
+                                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                                {dict?.product?.adding || 'Adding...'}
+                            </>
+                        ) : justAdded ? (
+                            <>
+                                <CheckIcon size={18} />
+                                {dict?.product?.added || 'Added!'}
+                            </>
+                        ) : cart[productId] ? (
+                            <>
+                                <ShoppingCartIcon size={18} />
+                                {dict?.product?.viewCart || 'View Cart'}
+                            </>
+                        ) : (
+                            <>
+                                <ShoppingCartIcon size={18} />
+                                {dict?.product?.addToCart || 'Add to Cart'}
+                            </>
+                        )}
                     </button>
                 </div>
                 <hr className="border-gray-300 my-5" />

@@ -270,8 +270,9 @@ export const DELETE = withErrorHandler(async (request) => {
     throw new APIError('Unauthorized', 401);
   }
 
-  const { searchParams } = new URL(request.url);
-  const productId = searchParams.get('productId');
+  // Read productId from request body instead of URL params
+  const body = await request.json();
+  const { productId } = body;
 
   if (!productId) {
     throw new APIError('Product ID is required', 400);

@@ -17,55 +17,58 @@ export async function GET(request) {
       });
     }
 
-    // Search products
-    const products = await prisma.product.findMany({
-      where: {
-        OR: [
-          { name: { contains: query, mode: 'insensitive' } },
-          { description: { contains: query, mode: 'insensitive' } },
-          { category: { contains: query, mode: 'insensitive' } }
-        ],
-        inStock: true
-      },
-      take: limit,
-      include: {
-        store: {
-          select: {
-            id: true,
-            name: true,
-            username: true,
-            isActive: true
+    // Execute all search queries in parallel for better performance
+    const [products, suggestions, categorySuggestions] = await Promise.all([
+      // Search products
+      prisma.product.findMany({
+        where: {
+          OR: [
+            { name: { contains: query, mode: 'insensitive' } },
+            { description: { contains: query, mode: 'insensitive' } },
+            { category: { contains: query, mode: 'insensitive' } }
+          ],
+          inStock: true
+        },
+        take: limit,
+        include: {
+          store: {
+            select: {
+              id: true,
+              name: true,
+              username: true,
+              isActive: true
+            }
           }
         }
-      }
-    });
+      }),
 
-    // Get search suggestions (product names and categories)
-    const suggestions = await prisma.product.findMany({
-      where: {
-        name: { contains: query, mode: 'insensitive' }
-      },
-      select: {
-        name: true,
-        category: true
-      },
-      take: 5,
-      distinct: ['name']
-    });
+      // Get search suggestions (product names)
+      prisma.product.findMany({
+        where: {
+          name: { contains: query, mode: 'insensitive' }
+        },
+        select: {
+          name: true,
+          category: true
+        },
+        take: 5,
+        distinct: ['name']
+      }),
 
-    // Get category suggestions
-    const categorySuggestions = await prisma.product.findMany({
-      where: {
-        category: { contains: query, mode: 'insensitive' }
-      },
-      select: {
-        category: true
-      },
-      distinct: ['category'],
-      take: 3
-    });
+      // Get category suggestions
+      prisma.product.findMany({
+        where: {
+          category: { contains: query, mode: 'insensitive' }
+        },
+        select: {
+          category: true
+        },
+        distinct: ['category'],
+        take: 3
+      })
+    ]);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       data: {
         products,
@@ -75,6 +78,11 @@ export async function GET(request) {
         ]
       }
     });
+
+    // Add cache headers - search results cached for 2 minutes
+    response.headers.set('Cache-Control', 'public, s-maxage=120, stale-while-revalidate=240');
+
+    return response;
   } catch (error) {
     console.error('Error searching products:', error);
     return NextResponse.json(

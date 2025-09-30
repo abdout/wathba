@@ -105,10 +105,15 @@ export async function GET(request, { params }) {
       relatedProducts
     };
 
-    return NextResponse.json({
+    const jsonResponse = NextResponse.json({
       success: true,
       data: response
     });
+
+    // Add cache headers - product details cached for 3 minutes
+    jsonResponse.headers.set('Cache-Control', 'public, s-maxage=180, stale-while-revalidate=360');
+
+    return jsonResponse;
   } catch (error) {
     console.error('Error fetching product:', error);
     return NextResponse.json(

@@ -5,6 +5,7 @@ import { getDictionary } from "@/components/internationalization/dictionaries";
 import { i18n, isRTL } from "@/components/internationalization/config";
 import { ClerkProvider } from '@clerk/nextjs';
 import AuthSync from "@/components/AuthSync";
+import CartPersistence from "@/components/CartPersistence";
 import ImageKitProvider from "@/components/ImageKitProvider";
 import "../globals.css";
 
@@ -43,8 +44,10 @@ export default async function LocaleLayout({ children, params }) {
                     <StoreProvider>
                         <ImageKitProvider>
                             <AuthSync>
-                                <Toaster />
-                                {children}
+                                <CartPersistence>
+                                    <Toaster />
+                                    {children}
+                                </CartPersistence>
                             </AuthSync>
                         </ImageKitProvider>
                     </StoreProvider>
