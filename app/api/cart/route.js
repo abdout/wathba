@@ -190,7 +190,9 @@ export const PUT = withErrorHandler(async (request) => {
       }
     });
   } catch (error) {
-    console.error('Database error when fetching product:', error);
+    console.error('[Cart API] Database error when fetching product:', error);
+    console.error('[Cart API] Product ID:', productId);
+    console.error('[Cart API] Error stack:', error.stack);
     // If database error, allow the operation to continue for development
     // In production, you might want to throw an error here
   }
@@ -257,10 +259,16 @@ export const PUT = withErrorHandler(async (request) => {
   // TODO: Re-enable store validation once store approval workflow is implemented
 
   // Get current cart
-  const user = await prisma.user.findUnique({
-    where: { clerkUserId: userId },
-    select: { cart: true }
-  });
+  let user;
+  try {
+    user = await prisma.user.findUnique({
+      where: { clerkUserId: userId },
+      select: { cart: true }
+    });
+  } catch (dbError) {
+    console.error('[Cart API] Error fetching user:', dbError);
+    throw new APIError('Database error while fetching user', 500);
+  }
 
   const currentCart = user?.cart || {};
 
@@ -281,17 +289,22 @@ export const PUT = withErrorHandler(async (request) => {
   }
 
   // Save updated cart
-  await prisma.user.upsert({
-    where: { clerkUserId: userId },
-    update: { cart: updatedCart },
-    create: {
-      clerkUserId: userId,
-      name: 'User',
-      email: 'user@example.com',
-      image: '',
-      cart: updatedCart
-    }
-  });
+  try {
+    await prisma.user.upsert({
+      where: { clerkUserId: userId },
+      update: { cart: updatedCart },
+      create: {
+        clerkUserId: userId,
+        name: 'User',
+        email: 'user@example.com',
+        image: '',
+        cart: updatedCart
+      }
+    });
+  } catch (dbError) {
+    console.error('[Cart API] Error saving cart:', dbError);
+    throw new APIError('Database error while saving cart', 500);
+  }
 
   const response = NextResponse.json({
     success: true,
