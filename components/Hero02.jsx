@@ -10,19 +10,8 @@ const Hero02 = ({ dict, lang }) => {
             <div className='relative overflow-hidden'>
                 <div className='flex max-lg:flex-col gap-8 max-w-7xl mx-auto my-6'>
                     {/* Main Hero Section */}
-                    <div className='relative flex-1 flex flex-col rounded-3xl lg:min-h-96 group transition-all duration-500 overflow-hidden'>
-                        {/* Background Image */}
-                        <div className='absolute inset-0'>
-                            <OptimizedImage
-                                src='https://ik.imagekit.io/osmanabdout/assets/hero-04.png?updatedAt=1759212331211'
-                                alt={dict?.hero?.organicAlt || "Fresh organic food background"}
-                                fill
-                                className='object-cover'
-                                quality={90}
-                                priority
-                            />
-                        </div>
-                        <div className='relative z-10 p-5 sm:px-12'>
+                    <div className='relative flex-1 flex flex-col bg-green-200 rounded-3xl lg:min-h-96 group transition-all duration-500'>
+                        <div className='p-5 sm:px-12'>
                             <div className='inline-flex items-center gap-3 bg-green-300 text-green-600 pr-4 p-1 rounded-full text-xs sm:text-sm'>
                                 <span className='bg-green-600 px-3 py-1 max-sm:ml-1 rounded-full text-white text-xs'>
                                     {dict?.hero?.news || "NEWS"}
@@ -48,10 +37,10 @@ const Hero02 = ({ dict, lang }) => {
                                 {dict?.hero?.learnMore || "LEARN MORE"}
                             </button>
                         </div>
-                        <div className={`relative z-10 sm:absolute bottom-0 w-full sm:w-80 max-w-sm ${lang === 'ar' ? 'left-0 md:left-5' : 'right-0 md:right-5'}`}>
+                        <div className={`sm:absolute bottom-0 w-full sm:w-80 max-w-sm ${lang === 'ar' ? 'left-0 md:left-5' : 'right-0 md:right-5'}`}>
                             <OptimizedImage
                                 className={`w-full h-auto object-contain ${lang === 'ar' ? 'scale-x-[-1]' : ''}`}
-                                src='/assets/hero-03.png'
+                                src='https://ik.imagekit.io/osmanabdout/assets/hero-04.png?updatedAt=1759212331211'
                                 alt={dict?.hero?.organicAlt || "Fresh organic food"}
                                 width={320}
                                 height={320}

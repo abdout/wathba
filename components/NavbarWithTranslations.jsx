@@ -106,7 +106,7 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                             />
                             {/* Mobile: Generic logo */}
                             <OptimizedImage
-                                src="/assets/logo.png"
+                                src="/assets/logo.svg"
                                 alt={dict?.navbar?.logoAlt || "Alwathba Coop Logo"}
                                 width={80}
                                 height={24}
@@ -206,7 +206,7 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                 {mobileMenuOpen && (
                     <div
                         ref={mobileMenuRef}
-                        className="sm:hidden absolute left-0 right-0 top-full bg-white shadow-lg border-t z-50"
+                        className="sm:hidden absolute left-0 right-0 top-full bg-white shadow-lg z-50"
                     >
                         <div className="flex flex-col p-4 gap-4">
                             {/* Search */}
@@ -223,7 +223,7 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                             </form>
 
                             {/* Navigation Links */}
-                            <div className="flex flex-col gap-3 text-slate-600 border-t pt-4">
+                            <div className="flex flex-col gap-3 text-slate-600 pt-4">
                                 <Link
                                     href={getLocalizedPath('/about')}
                                     onClick={() => setMobileMenuOpen(false)}
@@ -258,7 +258,7 @@ const NavbarWithTranslations = ({ dict, lang }) => {
 
                             {/* User Actions */}
                             {isLoaded && (
-                                <div className="border-t pt-4">
+                                <div className="pt-4">
                                     {isSignedIn ? (
                                         <div className="flex items-center gap-3">
                                             <UserButton

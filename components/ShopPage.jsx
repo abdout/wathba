@@ -2,7 +2,7 @@
 import { Suspense, useEffect, useState } from "react"
 import ProductCard from "@/components/ProductCard"
 import ProductCardSkeleton from "@/components/skeletons/ProductCardSkeleton"
-import { MoveLeftIcon, MoveRightIcon, Filter, ChevronDown } from "lucide-react"
+import { MoveLeftIcon, ChevronDown, ChevronUp } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useSelector, useDispatch } from "react-redux"
 import { fetchProducts, fetchCategories, setFilters } from "@/lib/features/product/productSlice"
@@ -17,17 +17,24 @@ function ShopContent({ dict, lang }) {
     const { list: products, loading, error, pagination, categories } = useSelector(state => state.product)
     const isRTL = lang === 'ar';
 
-    const [currentPage, setCurrentPage] = useState(1)
     const [selectedCategory, setSelectedCategory] = useState(category || '')
-    const [priceRange, setPriceRange] = useState({ min: '', max: '' })
+    const [priceRange, setPriceRange] = useState({ min: 50, max: 1500 })
+    const [selectedTags, setSelectedTags] = useState([])
     const [sortBy, setSortBy] = useState('createdAt')
     const [sortOrder, setSortOrder] = useState('desc')
+    const [displayCount, setDisplayCount] = useState(9)
+    const [allProducts, setAllProducts] = useState([])
+    const [isCategoryOpen, setIsCategoryOpen] = useState(true)
+    const [isPriceOpen, setIsPriceOpen] = useState(true)
+    const [isTagOpen, setIsTagOpen] = useState(true)
+
+    const popularTags = ['Healthy', 'Low fat', 'Vegetarian', 'Kid foods', 'Vitamins', 'Bread', 'Meat', 'Snacks', 'Tiffin', 'Launch', 'Dinner', 'Breakfast', 'Fruit']
 
     // Load products on mount and when filters change
     useEffect(() => {
         const params = {
-            page: currentPage,
-            limit: 12,
+            page: 1,
+            limit: 100, // Load all products
             ...(search && { search }),
             ...(selectedCategory && { category: selectedCategory }),
             ...(priceRange.min && { minPrice: priceRange.min }),
@@ -36,7 +43,14 @@ function ShopContent({ dict, lang }) {
             sortOrder
         }
         dispatch(fetchProducts(params))
-    }, [dispatch, currentPage, search, selectedCategory, priceRange, sortBy, sortOrder])
+    }, [dispatch, search, selectedCategory, priceRange, sortBy, sortOrder])
+
+    // Update all products when products load
+    useEffect(() => {
+        if (products && products.length > 0) {
+            setAllProducts(products)
+        }
+    }, [products])
 
     // Load categories on mount
     useEffect(() => {
@@ -45,7 +59,7 @@ function ShopContent({ dict, lang }) {
 
     const handleCategoryChange = (cat) => {
         setSelectedCategory(cat)
-        setCurrentPage(1)
+        setDisplayCount(9)
         if (cat) {
             router.push(`/${lang}/shop?category=${cat}`)
         } else {
@@ -64,12 +78,18 @@ function ShopContent({ dict, lang }) {
             setSortBy('createdAt')
             setSortOrder('desc')
         }
-        setCurrentPage(1)
+        setDisplayCount(9)
     }
 
-    const handlePageChange = (page) => {
-        setCurrentPage(page)
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+    const handleTagToggle = (tag) => {
+        setSelectedTags(prev =>
+            prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+        )
+        setDisplayCount(9)
+    }
+
+    const handleSeeMore = () => {
+        setDisplayCount(prev => prev + 9)
     }
 
     if (error) {
@@ -88,6 +108,12 @@ function ShopContent({ dict, lang }) {
         )
     }
 
+    const displayedProducts = allProducts.slice(0, displayCount)
+    const hasMore = displayCount < allProducts.length
+
+    // Calculate total count for All Categories
+    const totalCategoryCount = categories.reduce((sum, cat) => sum + (cat.count || 0), 0)
+
     return (
         <div className="min-h-[70vh] mx-6">
             <div className="max-w-7xl mx-auto">
@@ -96,131 +122,211 @@ function ShopContent({ dict, lang }) {
                         onClick={() => router.push(`/${lang}/shop`)}
                         className="text-2xl text-slate-500 flex items-center gap-2 cursor-pointer"
                     >
-                        {search && (isRTL ? <MoveRightIcon size={20} /> : <MoveLeftIcon size={20} />)}
+                        {search && <MoveLeftIcon size={20} />}
                         {dict?.general?.all || 'All'} <span className="text-slate-700 font-medium">{dict?.products?.products || 'Products'}</span>
                         {search && <span className="text-sm">({dict?.shop?.searchResults || 'Search results for'}: "{search}")</span>}
                     </h1>
 
-                    {/* Filters and Sort */}
-                    <div className="flex gap-4 items-center">
-                        {/* Category Filter */}
-                        <div className="relative">
-                            <select
-                                value={selectedCategory}
-                                onChange={(e) => handleCategoryChange(e.target.value)}
-                                className="appearance-none bg-white border rounded px-4 py-2 pr-8 focus:outline-none focus:border-blue-500"
-                            >
-                                <option value="">{dict?.shop?.allCategories || 'All Categories'}</option>
-                                {categories.map((cat) => (
-                                    <option key={cat.name || cat} value={cat.name || cat}>
-                                        {cat.name || cat} {cat.count && `(${cat.count})`}
-                                    </option>
-                                ))}
-                            </select>
-                            <ChevronDown className="absolute right-2 top-3 h-4 w-4 pointer-events-none" />
-                        </div>
-
-                        {/* Sort */}
-                        <div className="relative">
-                            <select
-                                onChange={(e) => handleSortChange(e.target.value)}
-                                className="appearance-none bg-white border rounded px-4 py-2 pr-8 focus:outline-none focus:border-blue-500"
-                            >
-                                <option value="newest">{dict?.shop?.newest || 'Newest'}</option>
-                                <option value="price-asc">{dict?.shop?.priceLowToHigh || 'Price: Low to High'}</option>
-                                <option value="price-desc">{dict?.shop?.priceHighToLow || 'Price: High to Low'}</option>
-                            </select>
-                            <ChevronDown className="absolute right-2 top-3 h-4 w-4 pointer-events-none" />
-                        </div>
+                    {/* Sort - Mobile friendly */}
+                    <div className="relative">
+                        <select
+                            onChange={(e) => handleSortChange(e.target.value)}
+                            className="appearance-none bg-white border rounded px-4 py-2 pr-8 focus:outline-none focus:border-blue-500 text-sm"
+                        >
+                            <option value="newest">{dict?.shop?.newest || 'Newest'}</option>
+                            <option value="price-asc">{dict?.shop?.priceLowToHigh || 'Price: Low to High'}</option>
+                            <option value="price-desc">{dict?.shop?.priceHighToLow || 'Price: High to Low'}</option>
+                        </select>
+                        <ChevronDown className="absolute right-2 top-3 h-4 w-4 pointer-events-none" />
                     </div>
                 </div>
 
-                {/* Products Grid */}
-                {loading ? (
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 xl:gap-12 mb-32">
-                        {[...Array(12)].map((_, i) => (
-                            <ProductCardSkeleton key={i} />
-                        ))}
-                    </div>
-                ) : (
-                    <>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 xl:gap-12 mb-8">
-                            {products.map((product) => (
-                                <ProductCard key={product.id} product={product} dict={dict} lang={lang} />
-                            ))}
-                        </div>
-
-                        {products.length === 0 && (
-                            <div className="text-center text-slate-500 py-20">
-                                <p className="text-xl">{dict?.shop?.noProductsFound || 'No products found'}</p>
-                            </div>
-                        )}
-
-                        {/* Pagination */}
-                        {pagination.totalPages > 1 && (
-                            <div className="flex justify-center items-center gap-2 mb-12">
-                                <button
-                                    onClick={() => handlePageChange(currentPage - 1)}
-                                    disabled={currentPage === 1}
-                                    className={`px-3 py-1 rounded ${
-                                        currentPage === 1
-                                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                            : 'bg-white border hover:bg-gray-100'
-                                    }`}
+                {/* Main Layout - Sidebar + Products */}
+                <div className="flex gap-6">
+                    {/* Sidebar Filter */}
+                    <div className="hidden lg:block w-[280px] flex-shrink-0">
+                        <div className="p-6 sticky top-6">
+                            {/* Category Filter */}
+                            <div className="mb-6">
+                                <div
+                                    className="flex items-center justify-between cursor-pointer mb-3"
+                                    onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                                 >
-                                    {isRTL ? <MoveRightIcon size={20} /> : <MoveLeftIcon size={20} />}
-                                </button>
+                                    <h3 className="font-medium text-slate-800">Filter</h3>
+                                    {isCategoryOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                                </div>
+                                {isCategoryOpen && (
+                                    <div className="space-y-2">
+                                        <label className="flex items-center gap-2 cursor-pointer">
+                                            <div className="relative">
+                                                <input
+                                                    type="radio"
+                                                    name="category"
+                                                    checked={selectedCategory === ''}
+                                                    onChange={() => handleCategoryChange('')}
+                                                    className="appearance-none w-4 h-4 border-2 border-gray-400 rounded-full cursor-pointer checked:border-gray-400 relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-2 before:h-2 before:rounded-full before:bg-green-500 before:scale-0 checked:before:scale-100 before:transition-transform"
+                                                />
+                                            </div>
+                                            <span className="text-sm text-slate-700">
+                                                All Categories <span className="text-gray-400">({totalCategoryCount})</span>
+                                            </span>
+                                        </label>
+                                        {categories.slice(0, 6).map((cat) => (
+                                            <label key={cat.name || cat} className="flex items-center gap-2 cursor-pointer">
+                                                <div className="relative">
+                                                    <input
+                                                        type="radio"
+                                                        name="category"
+                                                        checked={selectedCategory === (cat.name || cat)}
+                                                        onChange={() => handleCategoryChange(cat.name || cat)}
+                                                        className="appearance-none w-4 h-4 border-2 border-gray-400 rounded-full cursor-pointer checked:border-gray-400 relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-2 before:h-2 before:rounded-full before:bg-green-500 before:scale-0 checked:before:scale-100 before:transition-transform"
+                                                    />
+                                                </div>
+                                                <span className="text-sm text-slate-700">
+                                                    {cat.name || cat} <span className="text-gray-400">({cat.count || 0})</span>
+                                                </span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
 
-                                {[...Array(pagination.totalPages)].map((_, i) => {
-                                    const page = i + 1
-                                    // Show first page, last page, current page, and pages around current
-                                    if (
-                                        page === 1 ||
-                                        page === pagination.totalPages ||
-                                        (page >= currentPage - 1 && page <= currentPage + 1)
-                                    ) {
-                                        return (
+                            <div className="border-t border-gray-300 my-4"></div>
+
+                            {/* Price Range */}
+                            <div className="mb-6">
+                                <div
+                                    className="flex items-center justify-between cursor-pointer mb-3"
+                                    onClick={() => setIsPriceOpen(!isPriceOpen)}
+                                >
+                                    <h3 className="font-medium text-slate-800">Price</h3>
+                                    {isPriceOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                                </div>
+                                {isPriceOpen && (
+                                    <div>
+                                        <div className="relative h-1 bg-gray-200 rounded-full mb-6">
+                                            {/* Green bar between min and max */}
+                                            <div
+                                                className="absolute h-full bg-green-500 rounded-full"
+                                                style={{
+                                                    left: `${(priceRange.min / 2000) * 100}%`,
+                                                    right: `${100 - (priceRange.max / 2000) * 100}%`
+                                                }}
+                                            />
+                                            {/* Min slider */}
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max="2000"
+                                                value={priceRange.min}
+                                                onChange={(e) => {
+                                                    const value = parseInt(e.target.value);
+                                                    if (value < priceRange.max) {
+                                                        setPriceRange(prev => ({ ...prev, min: value }));
+                                                    }
+                                                }}
+                                                className="absolute w-full h-1 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-green-500 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-green-500 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:cursor-pointer"
+                                                style={{ zIndex: priceRange.min > 2000 - priceRange.max ? 5 : 3 }}
+                                            />
+                                            {/* Max slider */}
+                                            <input
+                                                type="range"
+                                                min="0"
+                                                max="2000"
+                                                value={priceRange.max}
+                                                onChange={(e) => {
+                                                    const value = parseInt(e.target.value);
+                                                    if (value > priceRange.min) {
+                                                        setPriceRange(prev => ({ ...prev, max: value }));
+                                                    }
+                                                }}
+                                                className="absolute w-full h-1 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-green-500 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-green-500 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:cursor-pointer"
+                                                style={{ zIndex: 4 }}
+                                            />
+                                        </div>
+                                        <div className="flex items-center justify-between text-sm text-slate-700">
+                                            <span>Price: {priceRange.min} — {priceRange.max}</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="border-t border-gray-300 my-4"></div>
+
+                            {/* Popular Tags */}
+                            <div>
+                                <div
+                                    className="flex items-center justify-between cursor-pointer mb-3"
+                                    onClick={() => setIsTagOpen(!isTagOpen)}
+                                >
+                                    <h3 className="font-medium text-slate-800">Popular Tag</h3>
+                                    {isTagOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                                </div>
+                                {isTagOpen && (
+                                    <div className="flex flex-wrap gap-2">
+                                        {popularTags.map((tag) => (
                                             <button
-                                                key={page}
-                                                onClick={() => handlePageChange(page)}
-                                                className={`px-3 py-1 rounded ${
-                                                    currentPage === page
-                                                        ? 'bg-blue-500 text-white'
-                                                        : 'bg-white border hover:bg-gray-100'
+                                                key={tag}
+                                                onClick={() => handleTagToggle(tag)}
+                                                className={`px-3 py-1 rounded-full text-sm transition ${
+                                                    selectedTags.includes(tag)
+                                                        ? 'bg-green-500 text-white'
+                                                        : 'bg-white text-slate-700 hover:bg-green-100'
                                                 }`}
                                             >
-                                                {page}
+                                                {tag}
                                             </button>
-                                        )
-                                    } else if (
-                                        page === currentPage - 2 ||
-                                        page === currentPage + 2
-                                    ) {
-                                        return <span key={page}>...</span>
-                                    }
-                                    return null
-                                })}
-
-                                <button
-                                    onClick={() => handlePageChange(currentPage + 1)}
-                                    disabled={currentPage === pagination.totalPages}
-                                    className={`px-3 py-1 rounded ${
-                                        currentPage === pagination.totalPages
-                                            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                            : 'bg-white border hover:bg-gray-100'
-                                    }`}
-                                >
-                                    {isRTL ? <MoveLeftIcon size={20} /> : <MoveRightIcon size={20} />}
-                                </button>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
-                        )}
-
-                        {/* Results Info */}
-                        <div className="text-center text-gray-500 text-sm mb-8">
-                            {dict?.shop?.showing || 'Showing'} {products.length} {dict?.shop?.of || 'of'} {pagination.totalCount} {dict?.shop?.products || 'products'}
                         </div>
-                    </>
-                )}
+                    </div>
+
+                    {/* Products Grid - 3 columns */}
+                    <div className="flex-1">
+                        {loading ? (
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-32">
+                                {[...Array(9)].map((_, i) => (
+                                    <ProductCardSkeleton key={i} />
+                                ))}
+                            </div>
+                        ) : (
+                            <>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8">
+                                    {displayedProducts.map((product) => (
+                                        <ProductCard key={product.id} product={product} dict={dict} lang={lang} />
+                                    ))}
+                                </div>
+
+                                {displayedProducts.length === 0 && (
+                                    <div className="text-center text-slate-500 py-20">
+                                        <p className="text-xl">{dict?.shop?.noProductsFound || 'No products found'}</p>
+                                    </div>
+                                )}
+
+                                {/* See More Button */}
+                                {hasMore && (
+                                    <div className="flex justify-center mb-12">
+                                        <button
+                                            onClick={handleSeeMore}
+                                            className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition font-medium"
+                                        >
+                                            {dict?.shop?.seeMore || 'See More'}
+                                        </button>
+                                    </div>
+                                )}
+
+                                {/* Results Info */}
+                                {displayedProducts.length > 0 && (
+                                    <div className="text-center text-gray-500 text-sm mb-8">
+                                        {dict?.shop?.showing || 'Showing'} {displayedProducts.length} {dict?.shop?.of || 'of'} {allProducts.length} {dict?.shop?.products || 'products'}
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     )

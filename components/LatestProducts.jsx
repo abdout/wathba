@@ -55,7 +55,7 @@ const LatestProducts = ({ dict, lang }) => {
 
     return (
         <div className='px-6 my-30 max-w-6xl mx-auto'>
-            <Title title={dict?.products?.title || 'Latest Products'} description={loading ? dict?.common?.loading || 'Loading...' : `${dict?.products?.showing || 'Showing'} ${products.length < displayQuantity ? products.length : displayQuantity} ${dict?.products?.of || 'of'} ${products.length} ${dict?.products?.products || 'products'}`} href='/shop' dict={dict} lang={lang} />
+            <Title title={dict?.products?.title || 'Latest Products'} description={loading ? dict?.common?.loading || 'Loading...' : `${dict?.products?.showing || 'Showing'} ${products.length < displayQuantity ? products.length : displayQuantity} ${dict?.products?.of || 'of'} ${products.length} ${dict?.products?.products || 'products'}`} href={`/${lang}/shop`} dict={dict} lang={lang} />
             <div className='mt-12 grid grid-cols-2 sm:flex flex-wrap gap-6 justify-between'>
                 {loading && products.length === 0 ? (
                     [...Array(displayQuantity)].map((_, index) => (

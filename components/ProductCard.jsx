@@ -40,7 +40,7 @@ const ProductCard = ({ product, dict, lang }) => {
                         ))}
                     </div>
                 </div>
-                <p className='flex items-start gap-0.5 flex-shrink-0'>
+                <p className='flex items-center gap-0.5 flex-shrink-0'>
                     <CurrencyIcon className="w-3.5 h-3.5" width={14} height={14} />
                     {product.price}
                 </p>
