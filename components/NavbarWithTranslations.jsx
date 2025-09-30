@@ -108,9 +108,9 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                             <OptimizedImage
                                 src="/assets/logo.png"
                                 alt={dict?.navbar?.logoAlt || "Alwathba Coop Logo"}
-                                width={120}
-                                height={32}
-                                className="h-8 w-auto sm:hidden"
+                                width={80}
+                                height={24}
+                                className="h-6 w-auto sm:hidden"
                                 priority
                             />
                         </Link>

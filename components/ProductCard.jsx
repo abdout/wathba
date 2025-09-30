@@ -18,12 +18,12 @@ const ProductCard = ({ product, dict, lang }) => {
     const productName = dict?.productNames?.[product.name] || product.name;
 
     return (
-        <Link href={`/${lang || 'en'}/product/${product.id}`} className=' group max-xl:mx-auto'>
-            <div className='bg-[#F5F5F5] h-40  sm:w-60 sm:h-68 rounded-lg flex items-center justify-center'>
+        <Link href={`/${lang || 'en'}/product/${product.id}`} className='group max-xl:mx-auto w-full max-w-[180px] sm:max-w-[240px]'>
+            <div className='bg-[#F5F5F5] h-52 sm:h-60 w-full rounded-lg flex items-center justify-center overflow-hidden'>
                 <OptimizedImage
                     width={500}
                     height={500}
-                    className='max-h-30 sm:max-h-40 w-auto group-hover:scale-115 transition duration-300'
+                    className='h-full w-full object-cover group-hover:scale-110 transition duration-300'
                     src={product.images[0]}
                     alt={productName}
                     transformation={[
@@ -31,12 +31,12 @@ const ProductCard = ({ product, dict, lang }) => {
                     ]}
                 />
             </div>
-            <div className='flex justify-between gap-3 text-sm text-slate-800 pt-2 max-w-60'>
+            <div className='flex justify-between gap-3 text-sm text-slate-800 pt-2 w-full'>
                 <div className='flex-1 min-w-0'>
                     <p className='truncate'>{productName}</p>
                     <div className='flex'>
                         {Array(5).fill('').map((_, index) => (
-                            <StarIcon key={index} size={14} className='text-transparent mt-0.5' fill={rating >= index + 1 ? "#00C950" : "#D1D5DB"} />
+                            <StarIcon key={index} size={14} className='text-transparent mt-0.5' fill={rating >= index + 1 ? "#FFA500" : "#D1D5DB"} />
                         ))}
                     </div>
                 </div>
