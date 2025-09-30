@@ -77,13 +77,14 @@ export const GET = withErrorHandler(async (request) => {
     }
   });
 
-  // Format cart items with product details (filter out inactive stores if store exists)
+  // Format cart items with product details (filter out only inactive stores)
   const items = products
     .filter(product => {
       // If no store exists (dummy products), allow them
       if (!product.store) return true;
-      // Otherwise check store is active and approved
-      return product.store.isActive && product.store.status === 'APPROVED';
+      // Only filter out if store is explicitly inactive
+      // Allow unapproved stores for testing/development
+      return product.store.isActive !== false;
     })
     .map(product => ({
       ...product,
@@ -260,10 +261,15 @@ export const PUT = withErrorHandler(async (request) => {
     throw new APIError('Product is out of stock', 400);
   }
 
-  // Only validate store if it exists (for database products)
-  // Skip validation for dummy products or products without stores
-  if (product.store && (!product.store.isActive || product.store.status !== 'APPROVED')) {
-    throw new APIError('Product is not available from this store', 400);
+  // Only validate store if it exists and is explicitly marked as inactive
+  // This allows for testing with stores that may not be fully approved yet
+  if (product.store && product.store.isActive === false) {
+    throw new APIError('Product is not available - store is inactive', 400);
+  }
+
+  // Warn about unapproved stores but don't block the cart operation
+  if (product.store && product.store.status !== 'APPROVED') {
+    console.warn(`Store ${product.storeId} is not yet approved, but allowing cart operation`);
   }
 
   // Get current cart

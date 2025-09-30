@@ -128,12 +128,10 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                                 {dict.navigation.seller || 'Seller'}
                             </Link>
 
-                            {/* Admin Link - Shows for admin */}
-                            {isSignedIn && isAdmin && (
-                                <Link href={`/${lang}/admin`}>
-                                    {dict.navigation.admin || 'Admin'}
-                                </Link>
-                            )}
+                            {/* Admin Link - Always visible */}
+                            <Link href={`/${lang}/admin`}>
+                                {dict.navigation.admin || 'Admin'}
+                            </Link>
                         </div>
 
                         {/* Search - Icon only on LG, full input on XL+ */}
@@ -245,15 +243,13 @@ const NavbarWithTranslations = ({ dict, lang }) => {
                                 >
                                     {dict.navigation.seller || 'Seller'}
                                 </Link>
-                                {isSignedIn && isAdmin && (
-                                    <Link
-                                        href={`/${lang}/admin`}
-                                        onClick={() => setMobileMenuOpen(false)}
-                                        className="py-2 hover:text-slate-800"
-                                    >
-                                        {dict.navigation.admin || 'Admin'}
-                                    </Link>
-                                )}
+                                <Link
+                                    href={`/${lang}/admin`}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className="py-2 hover:text-slate-800"
+                                >
+                                    {dict.navigation.admin || 'Admin'}
+                                </Link>
                             </div>
 
                             {/* User Actions */}
