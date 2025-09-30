@@ -3,6 +3,7 @@ import { ArrowRight, ArrowLeft, StarIcon } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 import OptimizedImage from "./OptimizedImage"
+import { imagekitAssets } from "@/lib/imagekit-urls"
 
 const ProductDescription = ({ product, dict, lang }) => {
 
@@ -62,7 +63,13 @@ const ProductDescription = ({ product, dict, lang }) => {
             {/* Store Page */}
             {product?.store && (
                 <div className="flex gap-3 mt-14">
-                    <OptimizedImage src={product.store.logo} alt="" className="size-11 rounded-full ring ring-slate-400" width={100} height={100} />
+                    <OptimizedImage
+                        src={imagekitAssets.logo_en}
+                        alt={product.store.name}
+                        className="size-11 rounded-full ring ring-slate-400 object-contain p-1 bg-white"
+                        width={100}
+                        height={100}
+                    />
                     <div>
                         <p className="font-medium text-slate-600">{dict?.product?.productBy || "Product by"} {product.store.name}</p>
                         <Link href={`/shop/${product.store.username}`} className="flex items-center gap-1.5 text-green-500">
