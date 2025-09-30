@@ -19,7 +19,7 @@ const ProductCard = ({ product, dict, lang }) => {
 
     return (
         <Link href={`/${lang || 'en'}/product/${product.id}`} className='group max-xl:mx-auto w-full max-w-[180px] sm:max-w-[240px]'>
-            <div className='bg-[#F5F5F5] h-44 sm:h-52 w-full rounded-lg flex items-center justify-center overflow-hidden p-4'>
+            <div className='bg-[#F5F5F5] h-44 sm:h-52 w-full rounded-lg flex items-center justify-center overflow-hidden p-6'>
                 <OptimizedImage
                     width={500}
                     height={500}
