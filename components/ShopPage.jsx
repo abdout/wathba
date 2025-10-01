@@ -156,33 +156,37 @@ function ShopContent({ dict, lang }) {
                                     {isCategoryOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                                 </div>
                                 {isCategoryOpen && (
-                                    <div className="space-y-2">
-                                        <label className="flex items-center gap-2 cursor-pointer">
-                                            <div className="relative">
+                                    <div className="space-y-3">
+                                        <label className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                            <div className="relative flex items-center justify-center">
                                                 <input
                                                     type="radio"
                                                     name="category"
                                                     checked={selectedCategory === ''}
                                                     onChange={() => handleCategoryChange('')}
-                                                    className="appearance-none w-4 h-4 border-2 border-gray-400 rounded-full cursor-pointer checked:border-gray-400 relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-2 before:h-2 before:rounded-full before:bg-green-500 before:scale-0 checked:before:scale-100 before:transition-transform"
+                                                    className="sr-only peer"
                                                 />
+                                                <div className="w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition-colors duration-200"></div>
+                                                <div className="absolute w-3 h-3 bg-green-500 rounded-full scale-0 peer-checked:scale-100 transition-transform duration-200"></div>
                                             </div>
-                                            <span className="text-sm text-slate-700">
+                                            <span className="text-sm text-slate-700 flex-1">
                                                 All Categories <span className="text-gray-400">({totalCategoryCount})</span>
                                             </span>
                                         </label>
                                         {categories.slice(0, 6).map((cat) => (
-                                            <label key={cat.name || cat} className="flex items-center gap-2 cursor-pointer">
-                                                <div className="relative">
+                                            <label key={cat.name || cat} className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                                                <div className="relative flex items-center justify-center">
                                                     <input
                                                         type="radio"
                                                         name="category"
                                                         checked={selectedCategory === (cat.name || cat)}
                                                         onChange={() => handleCategoryChange(cat.name || cat)}
-                                                        className="appearance-none w-4 h-4 border-2 border-gray-400 rounded-full cursor-pointer checked:border-gray-400 relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-2 before:h-2 before:rounded-full before:bg-green-500 before:scale-0 checked:before:scale-100 before:transition-transform"
+                                                        className="sr-only peer"
                                                     />
+                                                    <div className="w-5 h-5 border-2 border-gray-400 rounded-full peer-checked:border-green-500 transition-colors duration-200"></div>
+                                                    <div className="absolute w-3 h-3 bg-green-500 rounded-full scale-0 peer-checked:scale-100 transition-transform duration-200"></div>
                                                 </div>
-                                                <span className="text-sm text-slate-700">
+                                                <span className="text-sm text-slate-700 flex-1">
                                                     {cat.name || cat} <span className="text-gray-400">({cat.count || 0})</span>
                                                 </span>
                                             </label>

@@ -10,168 +10,235 @@ Alwathba Coop is a multi-vendor e-commerce platform built with Next.js 15, featu
 
 ```bash
 # Development
-npm run dev              # Start dev server with Turbopack on port 3001
+npm run dev              # Start dev server with Turbopack on port 3000
 npm run build           # Production build
-npm run start           # Start production server
+npm run start           # Start production server on port 3000
 npm run lint            # Run ESLint
 
 # Testing
 npm run test            # Run Vitest in watch mode
 npm run test:ui         # Vitest with UI interface
-npm run test:run        # Run tests once
+npm run test:run        # Run tests once (CI mode)
 npm run test:coverage   # Generate coverage report
 
-# Database (requires PostgreSQL configuration)
-npx prisma generate     # Generate Prisma Client
-npx prisma db push      # Push schema changes
-npx prisma studio       # Open database GUI
-npx prisma migrate dev  # Create migrations
-npx prisma db seed      # Seed with sample data
+# Database (requires PostgreSQL - Neon recommended)
+npx prisma generate     # Generate Prisma Client after schema changes
+npx prisma db push      # Push schema changes without migration (dev)
+npx prisma migrate dev  # Create and apply migrations
+npx prisma studio       # Open database GUI browser
+npx prisma db seed      # Seed database with sample data
 
 # Deployment
 npm run auto-deploy     # Unix/Mac deployment script
-npm run auto-deploy-win # Windows deployment script
+npm run auto-deploy-win # Windows deployment script (.bat)
 ```
 
 ## Critical Architecture Patterns
 
-### Redux Cart Management
-The cart system uses a **dual-action pattern** for immediate UI updates and backend sync:
+### Redux Store Architecture
+The app uses Redux Toolkit with a modular slice pattern. Key slices:
+- **cartSlice**: Manages cart state with optimistic UI updates
+- **productSlice**: Handles product list, pagination, and loading states
+- **addressSlice**: Manages user addresses with async thunks for API calls
+- **authSlice**: Stores authenticated user data from Clerk
+- **ratingSlice**: Manages product reviews and ratings
+
+### Cart Management Flow
 ```javascript
-// In cartSlice.js - addToCart expects productId directly, NOT an object
-dispatch(addToCart(productId))        // ✅ Correct
-dispatch(addToCart({ productId }))    // ❌ Wrong
+// CRITICAL: addToCart expects productId directly
+dispatch(addToCart(productId))        // ✅ Correct - adds single item
+dispatch(addToCart({ productId }))    // ❌ Wrong - will fail
+
+// Cart persists to User.cart (JSON) in database
+// Dual-action: Optimistic UI update + Backend sync
 ```
 
-### Product Data Loading Flow
-Products must be fetched before display:
-1. `ProductDataLoader` component wraps pages needing products
-2. Fetches from `/api/products` which tries database first, falls back to dummy data
-3. Stores in Redux: `state.product.list`
-4. Components access via: `useSelector(state => state?.product?.list || [])`
+### Order & Payment Architecture
+```
+1. Order Creation (POST /api/orders)
+   - Creates order with status: PENDING_PAYMENT (Stripe) or ORDER_PLACED (COD)
+   - Validates stock quantity (Product.quantity field)
+   - Decrements stock on order creation
+   - Cart cleared only for COD orders
 
-### Middleware Authentication Flow
+2. Stripe Payment Flow
+   - Order created first with PENDING_PAYMENT status
+   - Checkout session created via /api/stripe/checkout
+   - Webhook updates order to ORDER_PLACED on success
+   - Cart cleared only after payment confirmation
+   - Stock restored if payment fails
+
+3. Order Cancellation (POST /api/orders/cancel)
+   - Updates status to CANCELLED
+   - Restores product quantities
+   - Initiates refund for paid orders
+```
+
+### Address Management System
+```javascript
+// Addresses stored in database with isDefault flag
+// Redux thunks handle API calls:
+dispatch(fetchAddresses())       // GET /api/user/addresses
+dispatch(deleteAddress(id))      // DELETE /api/user/addresses?id=
+dispatch(setDefaultAddress(id))  // PUT /api/user/addresses
+
+// Address selection uses IDs, not array indices
+state.address.selectedAddressId  // Current selected address ID
+```
+
+### Product Data Loading Pattern
+```javascript
+// ProductDataLoader wraps pages needing products
+// Fetches from /api/products with fallback to dummy data
+// Access pattern:
+const products = useSelector(state => state?.product?.list || [])
+
+// API response caching via Redis/memory fallback
+// Products include quantity tracking for inventory
+```
+
+### Middleware & Authentication
 ```typescript
-// middleware.ts handles route protection
-1. API routes bypass middleware completely (return early)
-2. Uses Clerk's auth() for authentication
-3. redirectToSignIn requires: (await auth()).redirectToSignIn()
-4. Protected routes: /cart, /checkout, /orders, /account
-5. Public routes: /, /shop, /product/*, /about
+// middleware.ts route protection hierarchy:
+1. API routes: Skip middleware entirely (early return)
+2. Onboarding: Redirect if !onboardingComplete
+3. Admin routes: Require role === 'admin'
+4. Store routes: Require role === 'vendor' && storeApproved
+5. Protected routes: Require authentication
+6. Public routes: Allow all
+
+// Clerk auth pattern:
+const { userId } = await auth()  // Server components
+const user = await currentUser()  // Full user object
 ```
 
-### Internationalization Pattern
-All user-facing components require translation:
+### Internationalization (i18n) System
 ```jsx
-// Page component (server-side)
-const dict = await getDictionary(params.lang);
-return <Component dict={dict} lang={params.lang} />;
+// Server component pattern
+const dict = await getDictionary(params.lang) // en or ar
+<ClientComponent dict={dict} lang={params.lang} />
 
-// Component usage
-{dict?.section?.key || "Fallback Text"}
-{lang === 'ar' && /* RTL-specific code */}
+// Client component usage
+{dict?.section?.key || "Fallback"}
+{lang === 'ar' && /* RTL-specific */}
+
+// Translation files: /components/internationalization/{en,ar}.json
 ```
 
-### ImageKit Integration
-All images use OptimizedImage component:
+### Image Optimization with ImageKit
 ```jsx
+// OptimizedImage component handles CDN transformation
 <OptimizedImage
-    src="/path.jpg"  // Automatically prefixed with ImageKit URL
-    alt="Description"
+    src="/path.jpg"           // Auto-prefixed with ImageKit URL
     width={500}
     height={500}
-    transformation={[{ width: 500, quality: 85 }]}
+    quality={80}               // Default 80
+    placeholder="blur"         // Blur while loading
+    transformation={[...]}     // Custom transforms
 />
+// Base URL: https://ik.imagekit.io/osmanabdout
 ```
 
-## Common Development Tasks
+## Database Schema Highlights
 
-### Adding a New Page
-1. Create in `/app/[lang]/pagename/page.jsx`
-2. Import page component from `/components/PageNamePage.jsx`
-3. Pass `dict` and `lang` props
-4. Add translations to `/components/internationalization/{en,ar}.json`
+### Key Models & Relationships
+- **User**: Has cart (JSON), addresses (1:n), orders (1:n), single store (1:1)
+- **Product**: Tracks quantity (Int) and lowStockThreshold for inventory
+- **Order**: Status enum includes PENDING_PAYMENT, PAYMENT_FAILED, ORDER_PLACED, CANCELLED
+- **Store**: status must be 'approved' for vendor operations
+- **Address**: Has isDefault flag for primary address selection
 
-### Debugging Production Issues
-Check these in order:
-1. **Products not loading**: Verify ProductDataLoader wraps component
-2. **Add to Cart not working**: Ensure `addToCart(productId)` not `addToCart({ productId })`
-3. **API 307 redirects**: Check middleware.ts excludes API routes
-4. **Rate limiting errors**: Redis optional - skips if not configured
-5. **Authentication errors**: Verify Clerk environment variables
+### Recent Schema Updates
+```prisma
+// Product inventory tracking
+model Product {
+  quantity    Int @default(0)      // Available stock
+  lowStockThreshold Int @default(5) // Warning threshold
+}
 
-### Working with Skeleton Loaders
-Components have corresponding skeletons in `/components/skeletons/`:
-- `ProductDetailsSkeleton` - Product page loading
-- `ProductCardSkeleton` - Grid item loading
-- `ProductDescriptionSkeleton` - Description section loading
+// Order payment tracking
+model Order {
+  status OrderStatus // PENDING_PAYMENT, PAYMENT_FAILED, etc
+  cancelledAt DateTime?
+  cancellationReason String?
+}
+
+// Address management
+model Address {
+  isDefault Boolean @default(false)
+}
+```
+
+## API Endpoints Structure
+
+### User APIs
+- `/api/user/addresses` - CRUD operations for addresses
+- `/api/user/profile` - User profile management
+- `/api/cart` - Cart sync and management
+
+### Order APIs
+- `/api/orders` - Create and list orders
+- `/api/orders/cancel` - Cancel order with stock restoration
+- `/api/orders/[id]` - Get specific order
+- `/api/orders/[id]/status` - Update order status
+
+### Payment APIs
+- `/api/stripe/checkout` - Create Stripe session
+- `/api/stripe/webhook` - Handle payment events
+
+### Product APIs
+- `/api/products` - List with filtering, pagination, caching
+- `/api/products/[id]` - Get single product
+- `/api/products/[id]/reviews` - Product reviews
+
+### Vendor APIs
+- `/api/vendor/store` - Store management
+- `/api/vendor/products` - Product CRUD
+- `/api/vendor/orders` - Order management
+- `/api/vendor/analytics` - Sales analytics
+
+### Admin APIs
+- `/api/admin/stores` - Store approval/management
+- `/api/admin/coupons` - Coupon management
 
 ## Environment Configuration
 
 ### Required Variables
 ```env
-# Authentication
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_...
-CLERK_SECRET_KEY=sk_...
+# Authentication (Clerk)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_...
+CLERK_SECRET_KEY=sk_live_...
 CLERK_WEBHOOK_SECRET=whsec_...
 
-# Database (PostgreSQL)
+# Database (PostgreSQL - Neon recommended)
 DATABASE_URL=postgresql://...
-DIRECT_URL=postgresql://... # For migrations
+DIRECT_URL=postgresql://...  # For migrations
 
 # ImageKit CDN
 NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/osmanabdout
-NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY=public_...
 IMAGEKIT_PRIVATE_KEY=private_...
+
+# Stripe Payments
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
 ### Optional Services
-- **Rate Limiting**: Set UPSTASH_REDIS_* vars or it auto-disables
-- **Payments**: STRIPE_* variables
-- **Email**: RESEND_API_KEY
-- **Currency**: NEXT_PUBLIC_CURRENCY_SYMBOL (default: AED)
+- **Redis Cache**: UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN
+- **Email**: RESEND_API_KEY for transactional emails
+- **App URL**: NEXT_PUBLIC_APP_URL (defaults to http://localhost:3000)
 
-## Database Schema Key Points
+## Deployment & Production
 
-- **User.cart**: Stores cart as JSON field for persistence
-- **Store.status**: Must be 'approved' for vendor access
-- **Product.images**: Array of ImageKit URLs
-- **Order.status**: Enum (ORDER_PLACED, PROCESSING, SHIPPED, DELIVERED)
-- **Rating**: Linked to orders to verify purchases
-
-## Redux Store Structure
-
-```javascript
-state = {
-  cart: {
-    cartItems: { [productId]: quantity },
-    total: number,
-    loading: boolean,
-    error: string | null
-  },
-  product: {
-    list: Product[],
-    loading: boolean,
-    error: string | null,
-    pagination: {...}
-  },
-  auth: { user: User | null },
-  address: { list: Address[] },
-  rating: { list: Rating[] }
-}
-```
-
-## Deployment Notes
-
-- **Vercel**: Automatic deployments from main branch
+- **Platform**: Vercel (auto-deploy from main branch)
+- **Database**: Neon PostgreSQL with connection pooling
+- **CDN**: ImageKit for all product images
+- **Cache**: Redis (Upstash) with memory fallback
 - **Production URL**: https://wa.databayt.org
-- **Fallback Data**: API uses dummy data if database unavailable
-- **Image CDN**: All images served from ImageKit, not local storage
 
-## Current Limitations & Workarounds
+## Known Limitations
 
-1. **No Real Database in Dev**: Products load from `/assets/assets.js` dummy data
-2. **Cart Sync**: Backend sync attempts but fails gracefully if API unavailable
-3. **Rate Limiting**: Auto-disabled if Redis not configured
-4. **Search**: Currently filters client-side, not database queries
-5. **TypeScript**: Build errors ignored (`ignoreBuildErrors: true` in next.config.mjs)
+1. **TypeScript**: Project uses JavaScript with `ignoreBuildErrors: true`
+2. **Search**: Client-side filtering, not full-text database search
+3. **Stock**: No real-time stock updates across sessions
+4. **Multi-vendor Orders**: Creates separate orders per store from single checkout

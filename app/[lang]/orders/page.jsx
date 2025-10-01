@@ -2,15 +2,44 @@
 import PageTitle from "@/components/PageTitle"
 import { useEffect, useState } from "react";
 import OrderItem from "@/components/OrderItem";
-import { orderDummyData } from "@/assets/assets";
+import toast from 'react-hot-toast';
 
 export default function Orders() {
 
     const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setOrders(orderDummyData)
+        fetchOrders();
     }, []);
+
+    const fetchOrders = async () => {
+        try {
+            const response = await fetch('/api/orders');
+            const data = await response.json();
+
+            if (data.success) {
+                setOrders(data.orders || []);
+            } else {
+                // If no real orders, don't use dummy data
+                setOrders([]);
+            }
+        } catch (error) {
+            console.error('Failed to fetch orders:', error);
+            toast.error('Failed to load orders');
+            setOrders([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-[70vh] mx-6 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-slate-200 border-t-slate-800"></div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-[70vh] mx-6">

@@ -9,6 +9,7 @@ const {
     upload_area,
     logo_en,
     logo_ar,
+    polygon,
     dirham,
     googleplay,
     appstore,
@@ -70,9 +71,6 @@ const {
     why,
 } = imagekitAssets;
 
-// Import local polygon image
-import polygon from './polygon.png';
-
 export const assets = {
     upload_area, hero_model_img,
     hero_product_img1, hero_product_img2, gs_logo,
@@ -90,7 +88,7 @@ export const assets = {
     persil_1, persil_2, persil_3,
     tide_1, tide_2, tide_3,
     who, why,
-    polygon, // Add polygon to assets
+    polygon
 }
 
 export const categories = ["Headphones", "Speakers", "Watch", "Earbuds", "Mouse", "Decoration"];

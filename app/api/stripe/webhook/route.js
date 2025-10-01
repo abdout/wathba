@@ -71,98 +71,64 @@ export async function POST(request) {
 
 async function handleCheckoutSessionCompleted(session) {
   try {
-    const { userId, addressId, orderData } = session.metadata;
+    const { orderId, userId, storeId } = session.metadata;
 
-    if (!userId || !addressId || !orderData) {
-      console.error('Missing metadata in session:', session.id);
+    if (!orderId) {
+      console.error('Missing orderId in session metadata:', session.id);
       return;
     }
 
-    // Check if this session was already processed (idempotency)
-    const existingOrder = await prisma.order.findFirst({
-      where: {
-        userId,
-        isPaid: true,
-        createdAt: {
-          gte: new Date(Date.now() - 5 * 60 * 1000) // Last 5 minutes
-        }
-      }
-    });
-
-    if (existingOrder) {
-      console.log('Session already processed:', session.id);
-      return;
-    }
-
-    const parsedOrderData = JSON.parse(orderData);
-    const createdOrders = [];
+    console.log(`Processing payment for order ${orderId}`);
 
     // Use transaction to ensure all-or-nothing
     await prisma.$transaction(async (tx) => {
-      // Create orders for each store
-      for (const storeOrder of parsedOrderData.itemsByStore) {
-        const { storeId, items } = storeOrder;
-
-        // Calculate total for this store
-        const storeTotal = items.reduce(
-          (sum, item) => sum + (item.price * item.quantity),
-          0
-        );
-
-        // Create order
-        const order = await tx.order.create({
-          data: {
-            userId,
-            storeId,
-            addressId,
-            total: storeTotal,
-            paymentMethod: 'STRIPE',
-            status: 'ORDER_PLACED',
-            isPaid: true,
-            orderItems: {
-              create: items.map(item => ({
-                productId: item.productId,
-                quantity: item.quantity,
-                price: item.price
-              }))
+      // Update the existing order to mark as paid
+      const order = await tx.order.update({
+        where: { id: orderId },
+        data: {
+          isPaid: true,
+          paidAt: new Date(),
+          status: 'ORDER_PLACED',
+          stripePaymentId: session.payment_intent,
+        },
+        include: {
+          orderItems: {
+            include: {
+              product: true
             }
           },
-          include: {
-            orderItems: {
-              include: {
-                product: true
-              }
-            },
-            user: true,
-            address: true,
-            store: true
-          }
-        });
-
-        createdOrders.push(order);
-        console.log(`Order created: ${order.id} for store: ${storeId}`);
-      }
-
-      // Clear user's cart
-      await tx.user.update({
-        where: { id: userId },
-        data: { cart: {} }
+          user: true,
+          address: true,
+          store: true
+        }
       });
-    });
 
-    // Send order confirmation emails (after transaction succeeds)
-    for (const order of createdOrders) {
-      try {
-        await fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/emails/order-confirmation`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ orderId: order.id })
+      console.log(`Order ${order.id} marked as paid`);
+
+      // Clear user's cart after successful payment
+      if (userId) {
+        await tx.user.update({
+          where: { id: userId },
+          data: { cart: {} }
         });
-      } catch (emailError) {
-        console.error('Failed to send order email:', emailError);
-        // Don't fail the webhook if email fails
       }
-    }
+
+      // Send order confirmation email
+      if (order.user?.email) {
+        try {
+          const { sendOrderConfirmationEmail } = await import('@/lib/email/sendOrderEmail');
+          await sendOrderConfirmationEmail({
+            order,
+            userEmail: order.user.email,
+            userName: order.user.name
+          });
+          console.log(`Order confirmation email sent for order ${order.id}`);
+        } catch (emailError) {
+          console.error('Failed to send order email:', emailError);
+          // Don't fail the webhook if email fails
+        }
+      }
+    });
 
     console.log('Checkout session completed successfully:', session.id);
   } catch (error) {
@@ -175,6 +141,27 @@ async function handlePaymentFailed(paymentIntent) {
   // Log failed payment
   console.error('Payment failed for intent:', paymentIntent.id);
 
-  // You could update order status or notify user
-  // For now, just log it
+  try {
+    // Find order with this payment intent
+    const order = await prisma.order.findFirst({
+      where: {
+        stripePaymentId: paymentIntent.id
+      }
+    });
+
+    if (order) {
+      // Update order status to payment failed
+      await prisma.order.update({
+        where: { id: order.id },
+        data: {
+          status: 'PAYMENT_FAILED',
+          isPaid: false
+        }
+      });
+
+      console.log(`Order ${order.id} marked as payment failed`);
+    }
+  } catch (error) {
+    console.error('Error updating failed payment order:', error);
+  }
 }

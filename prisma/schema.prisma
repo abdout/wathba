@@ -38,6 +38,8 @@ model Product {
     images      String[]
     category    String
     inStock     Boolean  @default(true)
+    quantity    Int      @default(0)     // Available quantity in stock
+    lowStockThreshold Int @default(5)    // Threshold for low stock warnings
     storeId     String
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
@@ -55,10 +57,13 @@ model Product {
 }
 
 enum OrderStatus {
+    PENDING_PAYMENT
+    PAYMENT_FAILED
     ORDER_PLACED
     PROCESSING
     SHIPPED
     DELIVERED
+    CANCELLED
 }
 
 enum PaymentMethod {
@@ -68,19 +73,24 @@ enum PaymentMethod {
 
 // Required for creating an Order: total, userId, storeId, addressId, isPaid, paymentMethod, isCouponUsed, coupon (JSON), orderItems (nested)
 model Order {
-    id            String        @id @default(cuid())
-    total         Float
-    status        OrderStatus   @default(ORDER_PLACED)
-    userId        String
-    storeId       String
-    addressId     String
-    isPaid        Boolean       @default(false)
-    paymentMethod PaymentMethod
-    createdAt     DateTime      @default(now())
-    updatedAt     DateTime      @updatedAt
-    isCouponUsed  Boolean       @default(false)
-    coupon        Json          @default("{}")
-    orderItems    OrderItem[]
+    id              String        @id @default(cuid())
+    total           Float
+    status          OrderStatus   @default(ORDER_PLACED)
+    userId          String
+    storeId         String
+    addressId       String
+    isPaid          Boolean       @default(false)
+    paidAt          DateTime?
+    paymentMethod   PaymentMethod
+    stripeSessionId String?
+    stripePaymentId String?
+    cancelledAt     DateTime?
+    cancellationReason String?
+    createdAt       DateTime      @default(now())
+    updatedAt       DateTime      @updatedAt
+    isCouponUsed    Boolean       @default(false)
+    coupon          Json          @default("{}")
+    orderItems      OrderItem[]
 
     // Relations
     user    User    @relation("BuyerRelation", fields: [userId], references: [id])
@@ -141,6 +151,7 @@ model Address {
     zip       String
     country   String
     phone     String
+    isDefault Boolean  @default(false)
     createdAt DateTime @default(now())
 
     // Relations

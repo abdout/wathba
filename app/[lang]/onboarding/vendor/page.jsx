@@ -1,3 +1,13 @@
+import VendorOnboardingImproved from '@/components/VendorOnboardingImproved';
+import { getDictionary } from '@/components/internationalization/dictionaries';
+
+export default async function VendorOnboardingPage({ params }) {
+  const dict = await getDictionary(params.lang);
+  return <VendorOnboardingImproved dict={dict} lang={params.lang} />;
+}
+
+// Original component moved to backup file for reference
+/*
 'use client'
 
 import { useState } from 'react';
@@ -7,7 +17,7 @@ import { createVendorStore } from '../_actions';
 import toast from 'react-hot-toast';
 import { Store, Mail, Phone, MapPin, FileText, User } from 'lucide-react';
 
-export default function VendorOnboardingPage() {
+function VendorOnboardingPageOriginal() {
   const { user } = useUser();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -209,3 +219,4 @@ export default function VendorOnboardingPage() {
     </div>
   );
 }
+*/
