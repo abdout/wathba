@@ -1,33 +1,52 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import cache, { CACHE_TTL } from '@/lib/cache';
 import { productSchema, productFilterSchema } from '@/lib/validations/product';
 import { rateLimit, createRateLimitResponse } from '@/lib/middleware/rateLimit';
 import { withErrorHandler, APIError } from '@/lib/middleware/errorHandler';
 import { productDummyData } from '@/assets/assets';
 
 export const GET = withErrorHandler(async (request) => {
-  console.log('[API /api/products] GET request received');
-  console.log('[API /api/products] Request URL:', request.url);
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
+  if (isDevelopment) {
+    console.log('[API /api/products] GET request received');
+  }
 
   // Apply rate limiting
   const rateLimitResult = await rateLimit(request, 'api');
   if (!rateLimitResult.success) {
-    console.log('[API /api/products] Rate limit exceeded');
     return createRateLimitResponse(rateLimitResult.headers);
   }
 
   const { searchParams } = new URL(request.url);
-  console.log('[API /api/products] Search params:', searchParams.toString());
-
-  // Validate query parameters
   const queryParams = Object.fromEntries(searchParams.entries());
-  console.log('[API /api/products] Query params object:', queryParams);
-
   const validated = productFilterSchema.parse(queryParams);
-  console.log('[API /api/products] Validated params:', validated);
-
   const { page, limit, category, minPrice, maxPrice, storeId, inStock, search, sortBy, sortOrder } = validated;
-  console.log('[API /api/products] Destructured - page:', page, 'limit:', limit);
+
+  // Try to get from cache first
+  const cacheKey = cache.keys.products(validated);
+  const cachedData = await cache.get(cacheKey);
+
+  if (cachedData) {
+    if (isDevelopment) {
+      console.log('[API /api/products] Cache hit for:', cacheKey);
+    }
+
+    const response = NextResponse.json(cachedData);
+    // Add cache headers
+    response.headers.set('X-Cache', 'HIT');
+    response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=30');
+
+    // Add rate limit headers
+    if (rateLimitResult.headers) {
+      Object.entries(rateLimitResult.headers).forEach(([key, value]) => {
+        response.headers.set(key, value);
+      });
+    }
+
+    return response;
+  }
 
   const skip = (page - 1) * limit;
 
@@ -195,33 +214,33 @@ export const GET = withErrorHandler(async (request) => {
 
   const responseData = {
     success: true,
-    data: {
-      products: productsWithRatings,
-      pagination: {
-        page,
-        limit,
-        totalPages: Math.ceil(totalCount / limit),
-        totalCount
-      },
-      filters: {
-        categories: categories.map(c => c.category)
-      }
+    products: productsWithRatings,
+    pagination: {
+      page,
+      limit,
+      totalPages: Math.ceil(totalCount / limit),
+      totalCount
     },
-    usingDummyData // Include this flag for debugging
+    filters: {
+      categories: categories.map(c => c.category)
+    }
   };
 
-  console.log('[API /api/products] Response data prepared');
-  console.log('[API /api/products] Using dummy data:', usingDummyData);
-  console.log('[API /api/products] Success:', responseData.success);
-  console.log('[API /api/products] Products in response:', responseData.data.products.length);
-  console.log('[API /api/products] Pagination:', responseData.data.pagination);
-  console.log('[API /api/products] Categories:', responseData.data.filters.categories);
+  // Cache the response data if not using dummy data
+  if (!usingDummyData) {
+    await cache.set(cacheKey, responseData, CACHE_TTL.products);
+  }
+
+  if (isDevelopment) {
+    console.log('[API /api/products] Response data prepared');
+    console.log('[API /api/products] Products in response:', responseData.products.length);
+  }
 
   const response = NextResponse.json(responseData);
 
-  // Add cache headers for frequently accessed endpoint
-  // Cache for 60 seconds on CDN, allow stale content for 2 minutes while revalidating
-  response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=120');
+  // Add cache headers
+  response.headers.set('X-Cache', usingDummyData ? 'BYPASS' : 'MISS');
+  response.headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=30');
 
   // Add rate limit headers
   if (rateLimitResult.headers) {

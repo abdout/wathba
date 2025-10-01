@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 export default function OptimizedImage({
     src,
@@ -12,9 +12,42 @@ export default function OptimizedImage({
     quality = 80,
     transformation = [],
     fill,
-    placeholder,
+    placeholder = 'blur',
+    sizes,
+    onLoad,
     ...props
 }) {
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [isInView, setIsInView] = useState(false);
+    const imgRef = useRef(null);
+
+    // Use Intersection Observer for lazy loading
+    useEffect(() => {
+        if (priority || !imgRef.current) {
+            setIsInView(true);
+            return;
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setIsInView(true);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            },
+            { rootMargin: '50px' }
+        );
+
+        observer.observe(imgRef.current);
+
+        return () => {
+            if (imgRef.current) {
+                observer.unobserve(imgRef.current);
+            }
+        };
+    }, [priority]);
     // Handle different src formats
     let imageSrc = src;
 
@@ -39,8 +72,16 @@ export default function OptimizedImage({
     // Add quality
     transforms.push(`q-${quality}`);
 
-    // Add format auto for optimization
+    // Add format auto for optimization (WebP when supported)
     transforms.push('f-auto');
+
+    // Add progressive loading for better UX
+    transforms.push('pr-true');
+
+    // Add blur for placeholder effect
+    if (placeholder === 'blur' && !isLoaded) {
+        transforms.push('bl-20');
+    }
 
     // Apply custom transformations
     transformation.forEach(t => {
@@ -84,16 +125,53 @@ export default function OptimizedImage({
     delete imgProps.placeholder;
     delete imgProps.transformation;
 
+    // Generate low quality placeholder URL
+    const placeholderUrl = imageSrc && imageSrc.includes('ik.imagekit.io') && placeholder === 'blur'
+        ? imageSrc.replace('ik.imagekit.io/osmanabdout/', 'ik.imagekit.io/osmanabdout/tr:w-20,h-20,q-10,bl-10/')
+        : null;
+
+    const handleImageLoad = () => {
+        setIsLoaded(true);
+        if (onLoad) onLoad();
+    };
+
     return (
-        <img
-            src={finalUrl}
-            alt={alt || ''}
-            width={fill ? undefined : width}
-            height={fill ? undefined : height}
-            className={className}
-            loading={priority ? 'eager' : 'lazy'}
-            style={imgStyle}
-            {...imgProps}
-        />
+        <div
+            ref={imgRef}
+            className={`relative ${fill ? 'absolute inset-0' : ''}`}
+            style={fill ? {} : { width, height }}
+        >
+            {/* Placeholder blur image */}
+            {placeholder === 'blur' && !isLoaded && placeholderUrl && (
+                <img
+                    src={placeholderUrl}
+                    alt=""
+                    className={`absolute inset-0 w-full h-full object-cover ${className}`}
+                    style={{ filter: 'blur(20px)', transform: 'scale(1.1)' }}
+                    aria-hidden="true"
+                />
+            )}
+
+            {/* Main image */}
+            {isInView && (
+                <img
+                    src={finalUrl}
+                    alt={alt || ''}
+                    width={fill ? undefined : width}
+                    height={fill ? undefined : height}
+                    className={`${className} ${!isLoaded ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}
+                    loading={priority ? 'eager' : 'lazy'}
+                    style={imgStyle}
+                    onLoad={handleImageLoad}
+                    sizes={sizes}
+                    {...imgProps}
+                />
+            )}
+
+            {/* Loading skeleton if no placeholder */}
+            {!isInView && placeholder !== 'blur' && (
+                <div className={`${className} bg-gray-200 animate-pulse`} style={imgStyle} />
+            )}
+        </div>
     );
 }

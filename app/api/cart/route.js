@@ -254,9 +254,15 @@ export const PUT = withErrorHandler(async (request) => {
     throw new APIError('Product is out of stock', 400);
   }
 
-  // Skip store validation entirely for now (both development and production)
-  // This allows products to be added to cart regardless of store status
-  // TODO: Re-enable store validation once store approval workflow is implemented
+  // Validate store status
+  const store = await prisma.store.findUnique({
+    where: { id: product.storeId },
+    select: { status: true, isActive: true }
+  });
+
+  if (!store || store.status !== 'approved' || !store.isActive) {
+    throw new APIError('This product is not available for purchase (store not active)', 400);
+  }
 
   // Get current cart
   let user;

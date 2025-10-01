@@ -1,11 +1,12 @@
-import { PlusIcon, SquarePenIcon, XIcon } from 'lucide-react';
-import React, { useState } from 'react'
+import { PlusIcon, SquarePenIcon, XIcon, Trash2Icon, StarIcon } from 'lucide-react';
+import React, { useState, useEffect } from 'react'
 import AddressModal from './AddressModal';
 import { useSelector, useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import CurrencyIcon from './CurrencyIcon';
 import { clearCart } from '@/lib/features/cart/cartSlice';
+import { fetchAddresses, selectAddress, deleteAddress, setDefaultAddress } from '@/lib/features/address/addressSlice';
 
 const OrderSummary = ({ totalPrice, items, dict }) => {
 
@@ -14,14 +15,25 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
     const dispatch = useDispatch();
 
     const addressList = useSelector(state => state?.address?.list || []);
+    const selectedAddressId = useSelector(state => state?.address?.selectedAddressId);
+    const addressLoading = useSelector(state => state?.address?.loading);
     const user = useSelector(state => state?.auth?.user);
 
     const [paymentMethod, setPaymentMethod] = useState('COD');
-    const [selectedAddress, setSelectedAddress] = useState(null);
     const [showAddressModal, setShowAddressModal] = useState(false);
     const [couponCodeInput, setCouponCodeInput] = useState('');
     const [coupon, setCoupon] = useState('');
     const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+
+    // Get the selected address object
+    const selectedAddress = addressList.find(addr => addr.id === selectedAddressId);
+
+    // Fetch addresses when component mounts
+    useEffect(() => {
+        if (user && addressList.length === 0) {
+            dispatch(fetchAddresses());
+        }
+    }, [dispatch, user]);
 
     const handleCouponCode = async (event) => {
         event.preventDefault();
@@ -81,7 +93,33 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
                 throw new Error(data.error || dict?.cart?.orderError || 'Failed to place order');
             }
 
-            // Clear cart after successful order
+            // If payment method is Stripe, redirect to Stripe checkout
+            if (paymentMethod === 'STRIPE') {
+                // Create Stripe checkout session
+                const stripeResponse = await fetch('/api/stripe/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        orderId: data.order.id,
+                        returnUrl: `${window.location.origin}/orders/${data.order.id}`
+                    })
+                });
+
+                const stripeData = await stripeResponse.json();
+
+                if (!stripeResponse.ok || !stripeData.success) {
+                    throw new Error(stripeData.error || 'Failed to create payment session');
+                }
+
+                // Clear cart before redirecting
+                dispatch(clearCart());
+
+                // Redirect to Stripe Checkout
+                window.location.href = stripeData.data.checkoutUrl;
+                return;
+            }
+
+            // For COD, clear cart and redirect to orders
             dispatch(clearCart());
 
             // Show success message
@@ -113,25 +151,89 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
                 <p>{dict?.cart?.address || "Address"}</p>
                 {
                     selectedAddress ? (
-                        <div className='flex gap-2 items-center'>
-                            <p>{selectedAddress.name}, {selectedAddress.city}, {selectedAddress.state}, {selectedAddress.zip}</p>
-                            <SquarePenIcon onClick={() => setSelectedAddress(null)} className='cursor-pointer' size={18} />
+                        <div className='mt-2'>
+                            <div className='flex gap-2 items-center justify-between p-3 bg-white rounded-lg border border-slate-200'>
+                                <div className='flex-1'>
+                                    <p className='font-medium text-slate-700'>{selectedAddress.name}</p>
+                                    <p className='text-xs mt-0.5'>{selectedAddress.street}</p>
+                                    <p className='text-xs'>{selectedAddress.city}, {selectedAddress.state} {selectedAddress.zip}</p>
+                                    <p className='text-xs'>{selectedAddress.phone}</p>
+                                    {selectedAddress.isDefault && (
+                                        <span className='inline-flex items-center gap-0.5 text-xs text-amber-600 mt-1'>
+                                            <StarIcon size={10} fill="currentColor" />
+                                            Default
+                                        </span>
+                                    )}
+                                </div>
+                                <button onClick={() => dispatch(selectAddress(null))} className='text-slate-400 hover:text-slate-600'>
+                                    <SquarePenIcon size={16} />
+                                </button>
+                            </div>
+                            <button className='flex items-center gap-1 text-slate-600 mt-2 text-sm' onClick={() => dispatch(selectAddress(null))}>
+                                {dict?.cart?.changeAddress || "Change Address"}
+                            </button>
                         </div>
                     ) : (
                         <div>
-                            {
-                                addressList.length > 0 && (
-                                    <select className='border border-slate-400 p-2 w-full my-3 outline-none rounded' onChange={(e) => setSelectedAddress(addressList[e.target.value])} >
-                                        <option value="">{dict?.cart?.selectAddress || "Select Address"}</option>
-                                        {
-                                            addressList.map((address, index) => (
-                                                <option key={index} value={index}>{address.name}, {address.city}, {address.state}, {address.zip}</option>
-                                            ))
-                                        }
-                                    </select>
-                                )
-                            }
-                            <button className='flex items-center gap-1 text-slate-600 mt-1' onClick={() => setShowAddressModal(true)} >{dict?.cart?.addAddress || "Add Address"} <PlusIcon size={18} /></button>
+                            {addressLoading ? (
+                                <div className='py-3 text-center text-slate-400'>
+                                    Loading addresses...
+                                </div>
+                            ) : addressList.length > 0 ? (
+                                <div className='space-y-2 my-3'>
+                                    {addressList.map((address) => (
+                                        <div key={address.id} className='flex gap-2 items-center p-3 bg-white rounded-lg border border-slate-200 hover:border-slate-300 cursor-pointer'
+                                             onClick={() => dispatch(selectAddress(address.id))}>
+                                            <input
+                                                type="radio"
+                                                checked={selectedAddressId === address.id}
+                                                onChange={() => dispatch(selectAddress(address.id))}
+                                                className='accent-gray-500'
+                                            />
+                                            <div className='flex-1'>
+                                                <p className='font-medium text-slate-700 text-sm'>{address.name}</p>
+                                                <p className='text-xs text-slate-500'>{address.street}</p>
+                                                <p className='text-xs text-slate-500'>{address.city}, {address.state} {address.zip}</p>
+                                                {address.isDefault && (
+                                                    <span className='inline-flex items-center gap-0.5 text-xs text-amber-600 mt-0.5'>
+                                                        <StarIcon size={10} fill="currentColor" />
+                                                        Default
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className='flex gap-1'>
+                                                {!address.isDefault && (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            dispatch(setDefaultAddress(address.id));
+                                                        }}
+                                                        className='text-amber-500 hover:text-amber-600 p-1'
+                                                        title="Set as default"
+                                                    >
+                                                        <StarIcon size={14} />
+                                                    </button>
+                                                )}
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (confirm('Delete this address?')) {
+                                                            dispatch(deleteAddress(address.id));
+                                                        }
+                                                    }}
+                                                    className='text-red-500 hover:text-red-600 p-1'
+                                                    title="Delete address"
+                                                >
+                                                    <Trash2Icon size={14} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : null}
+                            <button type="button" className='flex items-center gap-1 text-slate-600 mt-1' onClick={() => setShowAddressModal(true)}>
+                                {dict?.cart?.addAddress || "Add Address"} <PlusIcon size={18} />
+                            </button>
                         </div>
                     )
                 }
@@ -183,7 +285,7 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
                 }
             </button>
 
-            {showAddressModal && <AddressModal setShowAddressModal={setShowAddressModal} />}
+            {showAddressModal && <AddressModal setShowAddressModal={setShowAddressModal} dict={dict} />}
 
         </div>
     )

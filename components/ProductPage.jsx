@@ -7,6 +7,7 @@ import ProductDescriptionSkeleton from "@/components/skeletons/ProductDescriptio
 import RelatedProducts from "@/components/RelatedProducts";
 import ShopByStore from "@/components/ShopByStore";
 import ProductFeatures from "@/components/ProductFeatures";
+import ProductReviews from "@/components/ProductReviews";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -170,6 +171,14 @@ export default function ProductPage({ dict, lang }) {
                             product={{...product, name: getProductName(product)}}
                             dict={dict}
                             lang={lang}
+                        />
+                    )}
+
+                    {/* Customer Reviews */}
+                    {product && (
+                        <ProductReviews
+                            productId={product.id}
+                            dict={dict}
                         />
                     )}
 

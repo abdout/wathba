@@ -76,6 +76,23 @@ export async function POST(req) {
             cart: {},
           },
         });
+
+        // Send welcome email to new users
+        if (email) {
+          import('@/lib/email/sendOrderEmail')
+            .then(({ sendWelcomeEmail }) => {
+              return sendWelcomeEmail({
+                userEmail: email,
+                userName: name
+              });
+            })
+            .then(() => {
+              console.log(`Welcome email sent to ${email}`);
+            })
+            .catch(error => {
+              console.error(`Failed to send welcome email to ${email}:`, error);
+            });
+        }
       }
 
       // If the user is a vendor with store data, create the store

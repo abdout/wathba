@@ -217,8 +217,12 @@ export const POST = withErrorHandler(async (request) => {
       throw new APIError(`Product ${item.productId} not found`, 400);
     }
 
-    if (!product.inStock) {
-      throw new APIError(`Product ${product.name} is out of stock`, 400);
+    // Check stock availability
+    if (!product.inStock || product.quantity < item.quantity) {
+      throw new APIError(
+        `Product ${product.name} has insufficient stock. Available: ${product.quantity}, Requested: ${item.quantity}`,
+        400
+      );
     }
 
     const storeId = product.storeId;
@@ -276,8 +280,8 @@ export const POST = withErrorHandler(async (request) => {
           addressId,
           total: orderTotal,
           paymentMethod,
-          status: 'ORDER_PLACED',
-          isPaid: paymentMethod === 'COD' ? false : true,
+          status: paymentMethod === 'STRIPE' ? 'PENDING_PAYMENT' : 'ORDER_PLACED',
+          isPaid: false, // Always false initially, will be updated after payment confirmation
           isCouponUsed: !!couponData,
           coupon: couponData || {},
           orderItems: {
@@ -313,20 +317,58 @@ export const POST = withErrorHandler(async (request) => {
         }
       });
 
+      // Decrement product quantities and update stock status
+      for (const item of storeData.items) {
+        const newQuantity = item.product.quantity - item.quantity;
+        const isInStock = newQuantity > 0;
+
+        await tx.product.update({
+          where: { id: item.product.id },
+          data: {
+            quantity: newQuantity,
+            inStock: isInStock
+          }
+        });
+
+        console.log(`Product ${item.product.id} stock updated: ${item.product.quantity} -> ${newQuantity}`);
+      }
+
       createdOrders.push(order);
     }
 
-    // Clear user's cart after successful order
-    await tx.user.update({
-      where: { id: user.id },
-      data: { cart: {} }
-    });
+    // Only clear cart for COD orders, Stripe orders clear cart after payment confirmation
+    if (paymentMethod === 'COD') {
+      await tx.user.update({
+        where: { id: user.id },
+        data: { cart: {} }
+      });
+    }
 
     return createdOrders;
   });
 
+  // Send order confirmation emails asynchronously
+  // Import at the top of the file: import { sendOrderConfirmationEmail } from '@/lib/email/sendOrderEmail';
+  Promise.all(orders.map(async (order) => {
+    try {
+      const { sendOrderConfirmationEmail } = await import('@/lib/email/sendOrderEmail');
+      await sendOrderConfirmationEmail({
+        order,
+        userEmail: user.email,
+        userName: user.name
+      });
+      console.log(`Order confirmation email sent for order ${order.id}`);
+    } catch (emailError) {
+      console.error(`Failed to send email for order ${order.id}:`, emailError);
+      // Don't fail the request if email fails
+    }
+  })).catch(error => {
+    console.error('Failed to send order confirmation emails:', error);
+  });
+
   const response = NextResponse.json({
     success: true,
+    order: orders[0], // Return single order for backward compatibility
     data: {
       orders,
       message: `Successfully created ${orders.length} order(s)`

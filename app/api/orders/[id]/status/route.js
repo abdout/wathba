@@ -107,9 +107,33 @@ export async function PUT(request, { params }) {
           }
         },
         store: true,
-        address: true
+        address: true,
+        user: {
+          select: {
+            email: true,
+            name: true
+          }
+        }
       }
     });
+
+    // Send status update email asynchronously
+    import('@/lib/email/sendOrderEmail')
+      .then(({ sendOrderStatusUpdateEmail }) => {
+        return sendOrderStatusUpdateEmail({
+          order: updatedOrder,
+          userEmail: updatedOrder.user.email,
+          userName: updatedOrder.user.name,
+          newStatus: status
+        });
+      })
+      .then(() => {
+        console.log(`Status update email sent for order ${id}`);
+      })
+      .catch(error => {
+        console.error(`Failed to send status update email for order ${id}:`, error);
+        // Don't fail the request if email fails
+      });
 
     return NextResponse.json({
       success: true,

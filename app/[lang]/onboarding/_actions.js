@@ -1,6 +1,7 @@
 'use server'
 
 import { auth, clerkClient } from '@clerk/nextjs/server';
+import { sendWelcomeEmail } from '@/lib/email/sendWelcomeEmail';
 
 export async function completeOnboarding(data) {
   const { isAuthenticated, userId } = await auth();
@@ -12,6 +13,9 @@ export async function completeOnboarding(data) {
   const client = await clerkClient();
 
   try {
+    // Get user info
+    const user = await client.users.getUser(userId);
+
     // Update user's public metadata with role and onboarding status
     const result = await client.users.updateUser(userId, {
       publicMetadata: {
@@ -21,6 +25,17 @@ export async function completeOnboarding(data) {
         ...data.additionalData,
       },
     });
+
+    // Send welcome email asynchronously
+    if (data.onboardingComplete) {
+      sendWelcomeEmail({
+        userEmail: user.emailAddresses[0]?.emailAddress,
+        userName: user.firstName || user.username,
+        role: data.role
+      }).catch(error => {
+        console.error('Failed to send welcome email:', error);
+      });
+    }
 
     return {
       success: true,
@@ -71,6 +86,15 @@ export async function createVendorStore(storeData) {
           createdAt: new Date().toISOString(),
         },
       },
+    });
+
+    // Send vendor welcome email
+    sendWelcomeEmail({
+      userEmail: storeData.email || user.emailAddresses[0]?.emailAddress,
+      userName: storeData.name || user.firstName || user.username,
+      role: 'vendor'
+    }).catch(error => {
+      console.error('Failed to send vendor welcome email:', error);
     });
 
     return {
