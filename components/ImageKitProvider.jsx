@@ -6,8 +6,8 @@ export default function ImageKitProvider({ children }) {
     const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT;
     const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY;
 
+    // Silently pass through if ImageKit is not configured
     if (!urlEndpoint || !publicKey) {
-        console.error('ImageKit configuration is incomplete:', { urlEndpoint: !!urlEndpoint, publicKey: !!publicKey });
         return children;
     }
 

@@ -34,7 +34,7 @@ const securityHeaders = [
         key: 'Content-Security-Policy',
         value: process.env.NODE_ENV === 'production'
             ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://clerk.accounts.dev https://*.clerk.accounts.dev https://js.stripe.com https://checkout.stripe.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://ik.imagekit.io https://img.clerk.com https://*.stripe.com; connect-src 'self' https://clerk.accounts.dev https://*.clerk.accounts.dev https://api.stripe.com https://checkout.stripe.com wss://*.pusher.com https://*.pusher.com; frame-src 'self' https://checkout.stripe.com https://js.stripe.com https://hooks.stripe.com; object-src 'none';"
-            : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: wss:;"
+            : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.clerk.accounts.dev https://clerk.accounts.dev; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https: wss:; frame-src 'self' https:; worker-src 'self' blob:;"
     }
 ];
 
