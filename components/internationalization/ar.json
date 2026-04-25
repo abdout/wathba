@@ -94,7 +94,8 @@
     "featuredCategories": "الفئات المميزة",
     "categoriesSubtitle": "تسوق من مجموعتنا الواسعة من الفئات",
     "grocery": "البقالة",
-    "grocerySubtitle": "احتياجاتك اليومية تصل إلى باب منزلك"
+    "grocerySubtitle": "احتياجاتك اليومية تصل إلى باب منزلك",
+    "grocerySubtitleShort": "احتياجاتك اليومية"
   },
   "products": {
     "title": "أحدث المنتجات",
@@ -244,7 +245,9 @@
     "addAddress": "أضف عنوان جديد",
     "couponSuccess": "تم نسخ الكوبون إلى الحافظة!",
     "emptyCart": "السلة فارغة",
-    "continueShopping": "متابعة التسوق"
+    "continueShopping": "متابعة التسوق",
+    "checkingCoupon": "جارٍ التحقق من الكوبون...",
+    "couponLabel": "الرمز"
   },
   "features": {
     "freeShipping": {
@@ -276,6 +279,7 @@
     "all": "جميع",
     "loading": "جاري التحميل...",
     "viewMore": "عرض المزيد",
+    "more": "المزيد",
     "showMore": "إظهار المزيد",
     "loadMore": "تحميل المزيد",
     "search": "بحث",

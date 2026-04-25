@@ -94,7 +94,8 @@
     "featuredCategories": "Featured Categories",
     "categoriesSubtitle": "Shop from our wide range of categories",
     "grocery": "Grocery",
-    "grocerySubtitle": "Your daily needs delivered to your doorstep"
+    "grocerySubtitle": "Your daily needs delivered to your doorstep",
+    "grocerySubtitleShort": "Daily needs at doorstep"
   },
   "products": {
     "title": "Latest Products",
@@ -247,7 +248,9 @@
     "addAddress": "Add New Address",
     "couponSuccess": "Coupon copied to clipboard!",
     "emptyCart": "Cart is Empty",
-    "continueShopping": "Continue Shopping"
+    "continueShopping": "Continue Shopping",
+    "checkingCoupon": "Checking Coupon...",
+    "couponLabel": "Code"
   },
   "features": {
     "freeShipping": {
@@ -279,6 +282,7 @@
     "all": "All",
     "loading": "Loading...",
     "viewMore": "View More",
+    "more": "More",
     "showMore": "Show More",
     "loadMore": "Load More",
     "search": "Search",
