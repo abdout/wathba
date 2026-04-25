@@ -45,7 +45,7 @@ export default function StoreOrders() {
                 <p>No orders found</p>
             ) : (
                 <div className="overflow-x-auto max-w-4xl rounded-md shadow border border-gray-200">
-                    <table className="w-full text-sm text-left text-gray-600">
+                    <table className="w-full text-sm text-start text-gray-600">
                         <thead className="bg-gray-50 text-gray-700 text-xs uppercase tracking-wider">
                             <tr>
                                 {["Sr. No.", "Customer", "Total", "Payment", "Coupon", "Status", "Date"].map((heading, i) => (
@@ -60,7 +60,7 @@ export default function StoreOrders() {
                                     className="hover:bg-gray-50 transition-colors duration-150 cursor-pointer"
                                     onClick={() => openModal(order)}
                                 >
-                                    <td className="pl-6 text-green-600" >
+                                    <td className="ps-6 text-green-600" >
                                         {index + 1}
                                     </td>
                                     <td className="px-4 py-3">{order.user?.name}</td>

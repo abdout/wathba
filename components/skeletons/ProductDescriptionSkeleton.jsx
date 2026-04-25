@@ -3,7 +3,7 @@ const ProductDescriptionSkeleton = () => {
         <div className="my-18 animate-pulse">
             {/* Tabs Skeleton */}
             <div className="flex border-b border-slate-200 mb-6 max-w-2xl">
-                <div className="h-8 bg-gray-200 rounded w-24 mr-4"></div>
+                <div className="h-8 bg-gray-200 rounded w-24 me-4"></div>
                 <div className="h-8 bg-gray-200 rounded w-20"></div>
             </div>
 

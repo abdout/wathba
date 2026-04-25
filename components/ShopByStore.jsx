@@ -35,7 +35,7 @@ export default function ShopByStore({ currentProduct, dict, lang }) {
                     <div className="flex-1 min-w-0">
                         <h3 className="text-base sm:text-xl font-semibold text-slate-800 break-words">
                             {dict?.product?.moreFrom || "More from"}
-                            <span className="block sm:inline sm:ml-1">{currentProduct.store.name}</span>
+                            <span className="block sm:inline sm:ms-1">{currentProduct.store.name}</span>
                         </h3>
                         <p className="text-xs sm:text-sm text-slate-600 mt-1 hidden sm:block">
                             {dict?.product?.qualityProducts || "Quality products from trusted vendor"}

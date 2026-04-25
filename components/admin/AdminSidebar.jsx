@@ -27,7 +27,7 @@ const AdminSidebar = ({ dict, lang }) => {
                 {
                     sidebarLinks.map((link, index) => (
                         <Link key={index} href={link.href} className={`relative flex items-center gap-3 text-slate-500 hover:bg-slate-50 p-2.5 transition ${pathname === link.href && 'bg-slate-100 sm:text-slate-600'} ${isRTL ? 'flex-row-reverse' : ''}`}>
-                            <link.icon size={18} className={isRTL ? 'sm:mr-5' : 'sm:ml-5'} />
+                            <link.icon size={18} className={isRTL ? 'sm:me-5' : 'sm:ms-5'} />
                             <p className={`max-sm:hidden ${isRTL ? 'font-arabic' : ''}`}>
                                 {dict?.admin?.sidebar?.[link.nameKey] || link.nameKey}
                             </p>

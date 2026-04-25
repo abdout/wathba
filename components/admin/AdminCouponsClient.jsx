@@ -53,7 +53,7 @@ export default function AdminCouponsClient({ dict, lang }) {
     }, [])
 
     return (
-        <div className={`text-slate-500 mb-40 ${isRTL ? 'text-right' : ''}`}>
+        <div className={`text-slate-500 mb-40 text-start`}>
 
             {/* Page Header */}
             <h1 className={`text-3xl font-semibold mb-8 text-slate-800 ${isRTL ? 'font-arabic' : ''}`}>
@@ -134,7 +134,7 @@ export default function AdminCouponsClient({ dict, lang }) {
                             <input
                                 type="text"
                                 placeholder={dict?.admin?.couponsPage?.enterCode || "Enter code"}
-                                className={`w-full p-2.5 border border-slate-200 outline-slate-400 rounded-lg ${isRTL ? 'text-right font-arabic' : ''}`}
+                                className={`w-full p-2.5 border border-slate-200 outline-slate-400 rounded-lg text-start `}
                                 name="code"
                                 value={newCoupon.code}
                                 onChange={handleChange}
@@ -150,7 +150,7 @@ export default function AdminCouponsClient({ dict, lang }) {
                                 placeholder={dict?.admin?.couponsPage?.enterDiscount || "Enter discount"}
                                 min={1}
                                 max={100}
-                                className={`w-full p-2.5 border border-slate-200 outline-slate-400 rounded-lg ${isRTL ? 'text-right' : ''}`}
+                                className={`w-full p-2.5 border border-slate-200 outline-slate-400 rounded-lg text-start`}
                                 name="discount"
                                 value={newCoupon.discount}
                                 onChange={handleChange}
@@ -166,7 +166,7 @@ export default function AdminCouponsClient({ dict, lang }) {
                         <input
                             type="text"
                             placeholder={dict?.admin?.couponsPage?.enterDescription || "Enter description"}
-                            className={`w-full p-2.5 border border-slate-200 outline-slate-400 rounded-lg ${isRTL ? 'text-right font-arabic' : ''}`}
+                            className={`w-full p-2.5 border border-slate-200 outline-slate-400 rounded-lg text-start `}
                             name="description"
                             value={newCoupon.description}
                             onChange={handleChange}
@@ -180,7 +180,7 @@ export default function AdminCouponsClient({ dict, lang }) {
                         </label>
                         <input
                             type="date"
-                            className={`w-full p-2.5 border border-slate-200 outline-slate-400 rounded-lg ${isRTL ? 'text-right' : ''}`}
+                            className={`w-full p-2.5 border border-slate-200 outline-slate-400 rounded-lg text-start`}
                             name="expiresAt"
                             value={format(newCoupon.expiresAt, 'yyyy-MM-dd')}
                             onChange={handleChange}
@@ -236,28 +236,28 @@ export default function AdminCouponsClient({ dict, lang }) {
                     </h2>
                 </div>
                 <div className="overflow-x-auto">
-                    <table className={`min-w-full text-sm ${isRTL ? 'text-right' : ''}`}>
+                    <table className={`min-w-full text-sm text-start`}>
                         <thead className="bg-slate-50">
                             <tr>
-                                <th className={`py-3 px-4 font-semibold text-slate-600 ${isRTL ? 'text-right font-arabic' : 'text-left'}`}>
+                                <th className={`py-3 px-4 font-semibold text-slate-600 text-start `}>
                                     {dict?.admin?.couponsPage?.code || 'Code'}
                                 </th>
-                                <th className={`py-3 px-4 font-semibold text-slate-600 ${isRTL ? 'text-right font-arabic' : 'text-left'}`}>
+                                <th className={`py-3 px-4 font-semibold text-slate-600 text-start `}>
                                     {dict?.admin?.couponsPage?.description || 'Description'}
                                 </th>
-                                <th className={`py-3 px-4 font-semibold text-slate-600 ${isRTL ? 'text-right font-arabic' : 'text-left'}`}>
+                                <th className={`py-3 px-4 font-semibold text-slate-600 text-start `}>
                                     {dict?.admin?.couponsPage?.discount || 'Discount'}
                                 </th>
-                                <th className={`py-3 px-4 font-semibold text-slate-600 ${isRTL ? 'text-right font-arabic' : 'text-left'}`}>
+                                <th className={`py-3 px-4 font-semibold text-slate-600 text-start `}>
                                     {dict?.admin?.couponsPage?.expiresAt || 'Expires At'}
                                 </th>
-                                <th className={`py-3 px-4 font-semibold text-slate-600 ${isRTL ? 'text-right font-arabic' : 'text-left'}`}>
+                                <th className={`py-3 px-4 font-semibold text-slate-600 text-start `}>
                                     {dict?.admin?.couponsPage?.newUser || 'New User'}
                                 </th>
-                                <th className={`py-3 px-4 font-semibold text-slate-600 ${isRTL ? 'text-right font-arabic' : 'text-left'}`}>
+                                <th className={`py-3 px-4 font-semibold text-slate-600 text-start `}>
                                     {dict?.admin?.couponsPage?.member || 'Member'}
                                 </th>
-                                <th className={`py-3 px-4 font-semibold text-slate-600 ${isRTL ? 'text-right font-arabic' : 'text-left'}`}>
+                                <th className={`py-3 px-4 font-semibold text-slate-600 text-start `}>
                                     {dict?.admin?.storesPage?.actions || 'Actions'}
                                 </th>
                             </tr>
@@ -281,7 +281,7 @@ export default function AdminCouponsClient({ dict, lang }) {
                                         <td className="py-3 px-4 text-slate-800">
                                             {format(coupon.expiresAt, lang === 'ar' ? 'yyyy/MM/dd' : 'yyyy-MM-dd')}
                                             {isExpired && (
-                                                <span className={`ml-2 text-xs text-red-500 ${isRTL ? 'font-arabic' : ''}`}>
+                                                <span className={`ms-2 text-xs text-red-500 ${isRTL ? 'font-arabic' : ''}`}>
                                                     ({dict?.admin?.couponsPage?.expired || 'Expired'})
                                                 </span>
                                             )}

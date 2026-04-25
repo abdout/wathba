@@ -114,7 +114,7 @@ const ProductReviews = ({ productId, dict }) => {
                                 style={{ width: `${percentage}%` }}
                             />
                         </div>
-                        <span className="text-sm text-slate-600 w-8 text-right">{count}</span>
+                        <span className="text-sm text-slate-600 w-8 text-end">{count}</span>
                     </div>
                 ))}
             </div>
@@ -144,7 +144,7 @@ const ProductReviews = ({ productId, dict }) => {
             {/* Rating Summary */}
             <div className="grid md:grid-cols-3 gap-8 mb-8">
                 <div className="md:col-span-1">
-                    <div className="text-center md:text-left">
+                    <div className="text-center md:text-start">
                         <div className="text-4xl font-bold text-slate-800">
                             {averageRating.toFixed(1)}
                         </div>

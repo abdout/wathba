@@ -56,7 +56,7 @@ export default function AdminDashboard({ dict, lang }) {
 
     return (
         <div className="text-slate-500">
-            <h1 className={`text-2xl ${lang === 'ar' ? 'text-right font-arabic' : ''}`}>
+            <h1 className={`text-2xl ${lang === 'ar' ? 'text-end font-arabic' : ''}`}>
                 {dict?.admin?.admin || 'Admin'} <span className="text-slate-800 font-medium">{dict?.admin?.dashboard || 'Dashboard'}</span>
             </h1>
 
@@ -65,7 +65,7 @@ export default function AdminDashboard({ dict, lang }) {
                 {
                     dashboardCardsData.map((card, index) => (
                         <div key={index} className="flex items-center gap-10 border border-slate-200 p-3 px-6 rounded-lg">
-                            <div className={`flex flex-col gap-3 text-xs ${lang === 'ar' ? 'text-right font-arabic' : ''}`}>
+                            <div className={`flex flex-col gap-3 text-xs ${lang === 'ar' ? 'text-end font-arabic' : ''}`}>
                                 <p>{card.title}</p>
                                 <b className={`text-2xl font-medium text-slate-700 flex items-center gap-1 ${lang === 'ar' ? 'flex-row-reverse' : ''}`}>
                                     {card.showCurrency && <CurrencyIcon className="w-5 h-5" width={20} height={20} />}

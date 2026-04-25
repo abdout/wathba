@@ -255,7 +255,7 @@ export default function VendorOnboardingImproved({ dict, lang }) {
             <div className="space-y-4">
               <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                  <Store className="w-4 h-4 mr-2" />
+                  <Store className="w-4 h-4 me-2" />
                   Store Name
                 </label>
                 <input
@@ -277,9 +277,9 @@ export default function VendorOnboardingImproved({ dict, lang }) {
 
               <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                  <User className="w-4 h-4 mr-2" />
+                  <User className="w-4 h-4 me-2" />
                   Store Username
-                  <span className="ml-2 text-xs text-gray-500">
+                  <span className="ms-2 text-xs text-gray-500">
                     (This will be your store URL)
                   </span>
                 </label>
@@ -325,7 +325,7 @@ export default function VendorOnboardingImproved({ dict, lang }) {
             <div className="space-y-4">
               <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                  <Mail className="w-4 h-4 mr-2" />
+                  <Mail className="w-4 h-4 me-2" />
                   Business Email
                 </label>
                 <input
@@ -347,7 +347,7 @@ export default function VendorOnboardingImproved({ dict, lang }) {
 
               <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                  <Phone className="w-4 h-4 mr-2" />
+                  <Phone className="w-4 h-4 me-2" />
                   Contact Number
                 </label>
                 <input
@@ -369,7 +369,7 @@ export default function VendorOnboardingImproved({ dict, lang }) {
 
               <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                  <MapPin className="w-4 h-4 mr-2" />
+                  <MapPin className="w-4 h-4 me-2" />
                   Business Address
                 </label>
                 <input
@@ -407,7 +407,7 @@ export default function VendorOnboardingImproved({ dict, lang }) {
             <div className="space-y-4">
               <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                  <FileText className="w-4 h-4 mr-2" />
+                  <FileText className="w-4 h-4 me-2" />
                   Store Description
                 </label>
                 <textarea
@@ -432,9 +432,9 @@ export default function VendorOnboardingImproved({ dict, lang }) {
 
               <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                  <Camera className="w-4 h-4 mr-2" />
+                  <Camera className="w-4 h-4 me-2" />
                   Store Logo
-                  <span className="ml-2 text-xs text-gray-500">(Optional)</span>
+                  <span className="ms-2 text-xs text-gray-500">(Optional)</span>
                 </label>
                 <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#1D77B6] transition-colors">
                   <Image className="w-12 h-12 text-gray-400 mx-auto mb-2" />
@@ -454,9 +454,9 @@ export default function VendorOnboardingImproved({ dict, lang }) {
 
               <div>
                 <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                  <Globe className="w-4 h-4 mr-2" />
+                  <Globe className="w-4 h-4 me-2" />
                   Social Links
-                  <span className="ml-2 text-xs text-gray-500">(Optional)</span>
+                  <span className="ms-2 text-xs text-gray-500">(Optional)</span>
                 </label>
                 <div className="space-y-2">
                   <input
@@ -573,7 +573,7 @@ export default function VendorOnboardingImproved({ dict, lang }) {
                 <button
                   type="button"
                   onClick={handleNext}
-                  className="ml-auto flex items-center gap-2 px-6 py-3 bg-[#1D77B6] text-white rounded-lg hover:bg-[#1a6aa3] transition-colors"
+                  className="ms-auto flex items-center gap-2 px-6 py-3 bg-[#1D77B6] text-white rounded-lg hover:bg-[#1a6aa3] transition-colors"
                 >
                   Continue
                   <ArrowRight className="w-4 h-4" />
@@ -583,7 +583,7 @@ export default function VendorOnboardingImproved({ dict, lang }) {
                   type="button"
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="ml-auto flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="ms-auto flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading ? (
                     <>

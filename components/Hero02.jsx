@@ -12,15 +12,15 @@ const Hero02 = ({ dict, lang }) => {
                     {/* Main Hero Section */}
                     <div className='relative flex-1 flex flex-col bg-green-200 rounded-3xl lg:min-h-96 group transition-all duration-500'>
                         <div className='p-5 sm:px-12'>
-                            <div className='inline-flex items-center gap-3 bg-green-300 text-green-600 pr-4 p-1 rounded-full text-xs sm:text-sm'>
-                                <span className='bg-green-600 px-3 py-1 max-sm:ml-1 rounded-full text-white text-xs'>
+                            <div className='inline-flex items-center gap-3 bg-green-300 text-green-600 pe-4 p-1 rounded-full text-xs sm:text-sm'>
+                                <span className='bg-green-600 px-3 py-1 max-sm:ms-1 rounded-full text-white text-xs'>
                                     {dict?.hero?.news || "NEWS"}
                                 </span>
                                 {dict?.hero?.freeShipping || "Free Shipping on Orders Above AED 50!"}
                                 {lang === 'ar' ? (
-                                    <ChevronLeftIcon className='group-hover:mr-2 transition-all' size={16} />
+                                    <ChevronLeftIcon className='group-hover:me-2 transition-all' size={16} />
                                 ) : (
-                                    <ChevronRightIcon className='group-hover:ml-2 transition-all' size={16} />
+                                    <ChevronRightIcon className='group-hover:ms-2 transition-all' size={16} />
                                 )}
                             </div>
                             <h2 className={`text-3xl sm:text-5xl leading-[1.2] my-3 font-semibold ${lang === 'ar' ? 'bg-gradient-to-l' : 'bg-gradient-to-r'} from-slate-600 to-[#A0FF74] bg-clip-text text-transparent max-w-xs sm:max-w-md whitespace-pre-line`}>
@@ -75,9 +75,9 @@ const Hero02 = ({ dict, lang }) => {
                                     <span className="hidden sm:inline">{dict?.hero?.viewMore || "View more"}</span>
                                     <span className="sm:hidden">More</span>
                                     {lang === 'ar' ? (
-                                        <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
+                                        <ArrowLeftIcon className='group-hover:me-2 transition-all' size={18} />
                                     ) : (
-                                        <ArrowRightIcon className='group-hover:ml-2 transition-all' size={18} />
+                                        <ArrowRightIcon className='group-hover:ms-2 transition-all' size={18} />
                                     )}
                                 </p>
                             </div>
@@ -107,9 +107,9 @@ const Hero02 = ({ dict, lang }) => {
                                     <span className="hidden sm:inline">{dict?.hero?.viewMore || "View more"}</span>
                                     <span className="sm:hidden">More</span>
                                     {lang === 'ar' ? (
-                                        <ArrowLeftIcon className='group-hover:mr-2 transition-all' size={18} />
+                                        <ArrowLeftIcon className='group-hover:me-2 transition-all' size={18} />
                                     ) : (
-                                        <ArrowRightIcon className='group-hover:ml-2 transition-all' size={18} />
+                                        <ArrowRightIcon className='group-hover:ms-2 transition-all' size={18} />
                                     )}
                                 </p>
                             </div>

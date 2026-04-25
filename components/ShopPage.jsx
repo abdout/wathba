@@ -131,7 +131,7 @@ function ShopContent({ dict, lang }) {
                     <div className="relative">
                         <select
                             onChange={(e) => handleSortChange(e.target.value)}
-                            className="appearance-none bg-white border rounded px-4 py-2 pr-8 focus:outline-none focus:border-blue-500 text-sm"
+                            className="appearance-none bg-white border rounded px-4 py-2 pe-8 focus:outline-none focus:border-blue-500 text-sm"
                         >
                             <option value="newest">{dict?.shop?.newest || 'Newest'}</option>
                             <option value="price-asc">{dict?.shop?.priceLowToHigh || 'Price: Low to High'}</option>

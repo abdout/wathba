@@ -86,7 +86,7 @@ const ReviewForm = ({ productId, orderId, onSuccess, dict, existingReview = null
                     />
                 </button>
             ))}
-            <span className="ml-2 text-sm text-slate-600">
+            <span className="ms-2 text-sm text-slate-600">
                 {rating > 0 && `(${rating} ${dict?.review?.stars || 'stars'})`}
             </span>
         </div>
@@ -115,7 +115,7 @@ const ReviewForm = ({ productId, orderId, onSuccess, dict, existingReview = null
                     className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent resize-none"
                     placeholder={dict?.review?.placeholder || 'Share your experience with this product...'}
                 />
-                <div className="mt-1 text-sm text-slate-500 text-right">
+                <div className="mt-1 text-sm text-slate-500 text-end">
                     {review.length}/1000 {dict?.review?.characters || 'characters'}
                 </div>
             </div>

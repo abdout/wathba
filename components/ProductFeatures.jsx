@@ -42,7 +42,7 @@ export default function ProductFeatures({ dict, lang }) {
                         <div className="p-2 bg-white rounded-lg text-green-600">
                             {feature.icon}
                         </div>
-                        <div className={isRTL ? 'text-right' : ''}>
+                        <div className='text-start'>
                             <h4 className="font-medium text-slate-800">
                                 {feature.title}
                             </h4>

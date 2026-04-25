@@ -37,17 +37,17 @@ export default function StoreShop() {
                         width={200}
                         height={200}
                     />
-                    <div className="text-center md:text-left">
+                    <div className="text-center md:text-start">
                         <h1 className="text-3xl font-semibold text-slate-800">{storeInfo.name}</h1>
                         <p className="text-sm text-slate-600 mt-2 max-w-lg">{storeInfo.description}</p>
                         <div className="text-xs text-slate-500 mt-4 space-y-1"></div>
                         <div className="space-y-2 text-sm text-slate-500">
                             <div className="flex items-center">
-                                <MapPinIcon className="w-4 h-4 text-gray-500 mr-2" />
+                                <MapPinIcon className="w-4 h-4 text-gray-500 me-2" />
                                 <span>{storeInfo.address}</span>
                             </div>
                             <div className="flex items-center">
-                                <MailIcon className="w-4 h-4 text-gray-500 mr-2" />
+                                <MailIcon className="w-4 h-4 text-gray-500 me-2" />
                                 <span>{storeInfo.email}</span>
                             </div>
                            

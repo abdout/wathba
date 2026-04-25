@@ -113,7 +113,7 @@ export default function ProductPage({ dict, lang }) {
             <div className="mx-6">
                 <div className="max-w-7xl mx-auto">
                     {/* Breadcrumbs */}
-                    <div className={`text-gray-600 text-sm mt-8 mb-5 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <div className={`text-gray-600 text-sm mt-8 mb-5 text-start`}>
                         <span>{dict?.navigation?.home || "Home"}</span>
                         <span className="mx-2">/</span>
                         <span>{dict?.products?.title || "Latest Products"}</span>

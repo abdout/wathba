@@ -44,7 +44,7 @@ export default function StorePendingApprovalPage() {
             </p>
 
             {storeData && (
-              <div className="bg-gray-50 rounded-lg p-6 text-left mb-6">
+              <div className="bg-gray-50 rounded-lg p-6 text-start mb-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Store Details</h3>
                 <dl className="space-y-2">
                   <div>

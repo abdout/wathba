@@ -77,7 +77,7 @@ function VendorOnboardingPageOriginal() {
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <div>
                   <label htmlFor="name" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-                    <Store className="w-4 h-4 mr-2" />
+                    <Store className="w-4 h-4 me-2" />
                     Store Name
                   </label>
                   <input
@@ -94,7 +94,7 @@ function VendorOnboardingPageOriginal() {
 
                 <div>
                   <label htmlFor="username" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-                    <User className="w-4 h-4 mr-2" />
+                    <User className="w-4 h-4 me-2" />
                     Store Username
                   </label>
                   <input
@@ -113,7 +113,7 @@ function VendorOnboardingPageOriginal() {
 
                 <div>
                   <label htmlFor="email" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-                    <Mail className="w-4 h-4 mr-2" />
+                    <Mail className="w-4 h-4 me-2" />
                     Business Email
                   </label>
                   <input
@@ -130,7 +130,7 @@ function VendorOnboardingPageOriginal() {
 
                 <div>
                   <label htmlFor="contact" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-                    <Phone className="w-4 h-4 mr-2" />
+                    <Phone className="w-4 h-4 me-2" />
                     Contact Number
                   </label>
                   <input
@@ -148,7 +148,7 @@ function VendorOnboardingPageOriginal() {
 
               <div>
                 <label htmlFor="address" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-                  <MapPin className="w-4 h-4 mr-2" />
+                  <MapPin className="w-4 h-4 me-2" />
                   Business Address
                 </label>
                 <input
@@ -165,7 +165,7 @@ function VendorOnboardingPageOriginal() {
 
               <div>
                 <label htmlFor="description" className="flex items-center text-sm font-medium text-gray-700 mb-1">
-                  <FileText className="w-4 h-4 mr-2" />
+                  <FileText className="w-4 h-4 me-2" />
                   Store Description
                 </label>
                 <textarea

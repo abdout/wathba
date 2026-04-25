@@ -104,7 +104,7 @@ const HeroSlider = ({ dict, lang }) => {
                                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
 
                                     {/* Left Content */}
-                                    <div className={`lg:col-span-1 space-y-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+                                    <div className={`lg:col-span-1 space-y-6 text-start`}>
                                         <div className="space-y-4">
                                             <span className={`inline-block px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium ${isRTL ? 'font-rubik' : 'font-outfit'}`}>
                                                 {slide.badge}
@@ -161,7 +161,7 @@ const HeroSlider = ({ dict, lang }) => {
                                                         ]}
                                                     />
                                                 </div>
-                                                <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                                                <div className={`flex-1 text-start`}>
                                                     <p className={`text-sm font-medium text-gray-900 ${isRTL ? 'font-rubik' : 'font-outfit'}`}>
                                                         {slide.sideText1}
                                                     </p>
@@ -187,7 +187,7 @@ const HeroSlider = ({ dict, lang }) => {
                                                         ]}
                                                     />
                                                 </div>
-                                                <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                                                <div className={`flex-1 text-start`}>
                                                     <p className={`text-sm font-medium text-gray-900 ${isRTL ? 'font-rubik' : 'font-outfit'}`}>
                                                         {slide.sideText2}
                                                     </p>

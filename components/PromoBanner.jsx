@@ -14,7 +14,7 @@ const PromoBanner = ({ dict, lang }) => {
         <div className="bg-gradient-to-r from-orange-400 to-orange-500 rounded-2xl overflow-hidden">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             {/* Text Content */}
-            <div className={`p-8 lg:p-12 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className={`p-8 lg:p-12 text-start`}>
               <div className="space-y-4">
                 <span className={`inline-block px-4 py-1 bg-orange-600/30 text-white rounded-full text-sm font-medium ${isRTL ? 'font-rubik' : 'font-outfit'}`}>
                   {dict?.promo?.badge || 'Only This Week'}

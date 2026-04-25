@@ -16,7 +16,7 @@ const OrderItem = ({ order }) => {
     return (
         <>
             <tr className="text-sm">
-                <td className="text-left">
+                <td className="text-start">
                     <div className="flex flex-col gap-6">
                         {order.orderItems.map((item, index) => (
                             <div key={index} className="flex items-center gap-4">
@@ -47,13 +47,13 @@ const OrderItem = ({ order }) => {
 
                 <td className="text-center max-md:hidden"><span className="inline-flex items-center gap-0.5"><CurrencyIcon className="w-3.5 h-3.5" width={14} height={14} />{order.total}</span></td>
 
-                <td className="text-left max-md:hidden">
+                <td className="text-start max-md:hidden">
                     <p>{order.address.name}, {order.address.street},</p>
                     <p>{order.address.city}, {order.address.state}, {order.address.zip}, {order.address.country},</p>
                     <p>{order.address.phone}</p>
                 </td>
 
-                <td className="text-left space-y-2 text-sm max-md:hidden">
+                <td className="text-start space-y-2 text-sm max-md:hidden">
                     <div
                         className={`flex items-center justify-center gap-1 rounded-full p-1 ${order.status === 'confirmed'
                             ? 'text-yellow-500 bg-yellow-100'

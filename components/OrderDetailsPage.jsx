@@ -114,7 +114,7 @@ const OrderDetailsPage = ({ orderId, dict, lang }) => {
                 {paymentStatus === 'success' && (
                     <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
                         <div className="flex items-center">
-                            <CheckCircleIcon className="w-6 h-6 text-green-600 mr-3" />
+                            <CheckCircleIcon className="w-6 h-6 text-green-600 me-3" />
                             <div>
                                 <h3 className="text-lg font-semibold text-green-800">
                                     {dict?.orders?.orderConfirmed || "Order Confirmed!"}
@@ -196,7 +196,7 @@ const OrderDetailsPage = ({ orderId, dict, lang }) => {
                                         {dict?.orders?.quantity || "Quantity"}: {item.quantity}
                                     </p>
                                 </div>
-                                <div className="text-right">
+                                <div className="text-end">
                                     <p className="font-medium text-slate-900 flex items-center gap-0.5">
                                         <CurrencyIcon className="w-4 h-4" width={16} height={16} />
                                         {(item.price * item.quantity).toFixed(2)}

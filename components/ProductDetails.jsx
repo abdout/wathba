@@ -111,7 +111,7 @@ const ProductDetails = ({ product, dict, lang }) => {
                     {Array(5).fill('').map((_, index) => (
                         <StarIcon key={index} size={14} className='text-transparent mt-0.5' fill={averageRating >= index + 1 ? "#FFA500" : "#D1D5DB"} />
                     ))}
-                    <p className="text-sm ml-3 text-slate-500">{product.rating?.length || 0} {dict?.product?.reviews || "Reviews"}</p>
+                    <p className="text-sm ms-3 text-slate-500">{product.rating?.length || 0} {dict?.product?.reviews || "Reviews"}</p>
                 </div>
                 <div className="flex items-start my-6 gap-3 text-2xl font-semibold text-slate-800">
                     <p className="flex items-center gap-1"> <CurrencyIcon className="w-5 h-5" width={20} height={20} />{product.price} </p>

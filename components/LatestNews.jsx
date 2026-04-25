@@ -92,12 +92,12 @@ const LatestNews = ({ dict, lang }) => {
                 </div>
 
                 <h3
-                  className={`text-xl font-semibold mb-3 leading-tight text-gray-800 group-hover:text-green-600 transition-colors line-clamp-2 ${isRTL ? 'font-rubik text-right' : 'font-outfit text-left'}`}
+                  className={`text-xl font-semibold mb-3 leading-tight text-gray-800 group-hover:text-green-600 transition-colors line-clamp-2 text-start `}
                 >
                   {news.title}
                 </h3>
 
-                <p className={`text-gray-600 mb-4 line-clamp-2 ${isRTL ? 'font-rubik text-right' : 'font-outfit text-left'}`}>
+                <p className={`text-gray-600 mb-4 line-clamp-2 text-start `}>
                   {news.description}
                 </p>
 

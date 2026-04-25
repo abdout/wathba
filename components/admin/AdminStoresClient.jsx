@@ -39,7 +39,7 @@ export default function AdminStoresClient({ dict, lang }) {
     }, [])
 
     return !loading ? (
-        <div className={`text-slate-500 mb-28 ${isRTL ? 'text-right' : ''}`}>
+        <div className={`text-slate-500 mb-28 text-start`}>
             <h1 className={`text-3xl font-semibold mb-6 ${isRTL ? 'font-arabic' : ''}`}>
                 {dict?.admin?.storesPage?.title || 'Manage Stores'}
             </h1>
@@ -51,12 +51,12 @@ export default function AdminStoresClient({ dict, lang }) {
                     placeholder={dict?.admin?.storesPage?.searchPlaceholder || "Search stores..."}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className={`flex-1 px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-green-500 ${isRTL ? 'text-right font-arabic' : ''}`}
+                    className={`flex-1 px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-green-500 text-start `}
                 />
                 <select
                     value={filterStatus}
                     onChange={(e) => setFilterStatus(e.target.value)}
-                    className={`px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-green-500 ${isRTL ? 'text-right font-arabic' : ''}`}
+                    className={`px-4 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-green-500 text-start `}
                 >
                     <option value="all">{dict?.admin?.storesPage?.allStores || "All Stores"}</option>
                     <option value="active">{dict?.admin?.storesPage?.approved || "Active"}</option>

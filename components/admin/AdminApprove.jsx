@@ -28,7 +28,7 @@ export default function AdminApprove({ dict, lang }) {
 
     return !loading ? (
         <div className="text-slate-500 mb-28">
-            <h1 className={`text-2xl ${lang === 'ar' ? 'text-right font-arabic' : ''}`}>
+            <h1 className={`text-2xl ${lang === 'ar' ? 'text-end font-arabic' : ''}`}>
                 {dict?.admin?.approve || 'Approve'} <span className="text-slate-800 font-medium">{dict?.admin?.stores || 'Stores'}</span>
             </h1>
 

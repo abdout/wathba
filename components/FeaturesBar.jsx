@@ -57,7 +57,7 @@ const FeaturesBar = ({ dict, lang }) => {
                   />
                 </div>
               </div>
-              <div className={`flex-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <div className={`flex-1 text-start`}>
                 <h3 className={`text-[10px] sm:text-xs font-semibold text-gray-900 mb-0.5 sm:mb-1 ${isRTL ? 'font-rubik' : 'font-outfit'}`}>
                   {feature.title}
                 </h3>

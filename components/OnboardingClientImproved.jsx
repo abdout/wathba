@@ -104,7 +104,7 @@ export default function OnboardingClientImproved({ dict, lang }) {
         onClick={() => handleRoleSelection(role)}
         disabled={loading}
         className={`
-          relative w-full text-left p-6 rounded-2xl border-2 transition-all duration-300 transform
+          relative w-full text-start p-6 rounded-2xl border-2 transition-all duration-300 transform
           ${animateCards ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}
           ${isSelected
             ? 'border-[#1D77B6] bg-gradient-to-br from-blue-50 to-blue-100 shadow-lg scale-[1.02]'

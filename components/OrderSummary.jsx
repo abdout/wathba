@@ -245,7 +245,7 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
                         <p>{dict?.cart?.shipping || "Shipping"}:</p>
                         {coupon && <p>{dict?.forms?.couponCode || "Coupon"}:</p>}
                     </div>
-                    <div className='flex flex-col gap-1 font-medium text-right'>
+                    <div className='flex flex-col gap-1 font-medium text-end'>
                         <p className='flex items-center gap-0.5 justify-end'><CurrencyIcon className="w-3.5 h-3.5" width={14} height={14} />{totalPrice.toLocaleString()}</p>
                         <p>{dict?.cart?.free || "Free"}</p>
                         {coupon && <p className='flex items-center gap-0.5 justify-end'>-<CurrencyIcon className="w-3.5 h-3.5" width={14} height={14} />{(coupon.discount / 100 * totalPrice).toFixed(2)}</p>}
@@ -259,7 +259,7 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
                         </form>
                     ) : (
                         <div className='w-full flex items-center justify-center gap-2 text-xs mt-2'>
-                            <p>Code: <span className='font-semibold ml-1'>{coupon.code.toUpperCase()}</span></p>
+                            <p>Code: <span className='font-semibold ms-1'>{coupon.code.toUpperCase()}</span></p>
                             <p>{coupon.description}</p>
                             <XIcon size={18} onClick={() => setCoupon('')} className='hover:text-red-700 transition cursor-pointer' />
                         </div>
@@ -268,7 +268,7 @@ const OrderSummary = ({ totalPrice, items, dict }) => {
             </div>
             <div className='flex justify-between py-4'>
                 <p>{dict?.cart?.total || "Total"}:</p>
-                <p className='font-medium text-right flex items-center gap-0.5 justify-end'><CurrencyIcon className="w-3.5 h-3.5" width={14} height={14} />{coupon ? (totalPrice - (coupon.discount / 100 * totalPrice)).toFixed(2) : totalPrice.toLocaleString()}</p>
+                <p className='font-medium text-end flex items-center gap-0.5 justify-end'><CurrencyIcon className="w-3.5 h-3.5" width={14} height={14} />{coupon ? (totalPrice - (coupon.discount / 100 * totalPrice)).toFixed(2) : totalPrice.toLocaleString()}</p>
             </div>
             <button
                 onClick={handlePlaceOrder}

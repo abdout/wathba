@@ -20,7 +20,7 @@ const StoreInfo = ({ store, dict, lang }) => {
     }
 
     return (
-        <div className={`flex-1 space-y-3 text-sm ${isRTL ? 'text-right' : ''}`}>
+        <div className={`flex-1 space-y-3 text-sm text-start`}>
             <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} gap-4 items-start`}>
                 <OptimizedImage
                     width={80}
@@ -89,7 +89,7 @@ const StoreInfo = ({ store, dict, lang }) => {
                             alt={store.user.name}
                             className="w-9 h-9 rounded-full"
                         />
-                        <div className={isRTL ? 'text-right' : ''}>
+                        <div className='text-start'>
                             <p className={`text-slate-700 font-medium ${isRTL ? 'font-arabic' : ''}`}>
                                 {store.user.name}
                             </p>

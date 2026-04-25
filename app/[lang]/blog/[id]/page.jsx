@@ -312,11 +312,11 @@ export default async function BlogDetailPage({ params }) {
               {dict?.general?.back || 'Back'}
             </Link>
 
-            <h1 className={`text-3xl sm:text-4xl font-bold text-gray-800 mb-4 ${isRTL ? 'text-right font-rubik' : 'text-left font-outfit'}`}>
+            <h1 className={`text-3xl sm:text-4xl font-bold text-gray-800 mb-4 text-start `}>
               {post.title[lang]}
             </h1>
 
-            <p className={`text-lg text-gray-600 mb-6 ${isRTL ? 'text-right font-rubik' : 'text-left font-outfit'}`}>
+            <p className={`text-lg text-gray-600 mb-6 text-start `}>
               {post.description[lang]}
             </p>
 
@@ -348,7 +348,7 @@ export default async function BlogDetailPage({ params }) {
 
           {/* Content */}
           <div
-            className={`prose prose-lg max-w-none ${isRTL ? 'prose-rtl text-right' : ''}`}
+            className={`prose prose-lg max-w-none text-start `}
             dangerouslySetInnerHTML={{ __html: post.content[lang] }}
             style={{
               fontFamily: isRTL ? 'Rubik, sans-serif' : 'Outfit, sans-serif'
@@ -356,7 +356,7 @@ export default async function BlogDetailPage({ params }) {
           />
 
           {/* Share Section */}
-          <div className={`border-t border-gray-200 mt-12 pt-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <div className={`border-t border-gray-200 mt-12 pt-8 text-start`}>
             <h3 className={`text-xl font-semibold mb-4 ${isRTL ? 'font-rubik' : 'font-outfit'}`}>
               {dict?.blog?.share || 'Share this article'}
             </h3>

@@ -27,7 +27,7 @@ const AdminLayout = ({ children, dict, lang }) => {
             <AdminNavbar dict={dict} lang={lang} />
             <div className="flex flex-1 items-start h-full overflow-y-scroll no-scrollbar">
                 <AdminSidebar dict={dict} lang={lang} />
-                <div className="flex-1 h-full p-5 lg:pl-12 lg:pt-12 overflow-y-scroll">
+                <div className="flex-1 h-full p-5 lg:ps-12 lg:pt-12 overflow-y-scroll">
                     {children}
                 </div>
             </div>

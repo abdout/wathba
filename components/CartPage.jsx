@@ -64,7 +64,7 @@ export default function CartPage({ dict, lang }) {
                     <table className="w-full max-w-4xl text-slate-600 table-auto">
                         <thead>
                             <tr className="max-sm:text-sm">
-                                <th className="text-left">{dict?.cart?.product || "Product"}</th>
+                                <th className="text-start">{dict?.cart?.product || "Product"}</th>
                                 <th>{dict?.product?.quantity || "Quantity"}</th>
                                 <th>{dict?.cart?.totalPrice || "Total Price"}</th>
                                 <th className="max-md:hidden">{dict?.general?.remove || "Remove"}</th>

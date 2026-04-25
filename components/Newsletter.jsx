@@ -9,7 +9,7 @@ const Newsletter = ({ dict, lang }) => {
             <Title title={dict?.newsletter?.title || "Join Newsletter"} description={dict?.newsletter?.description || "Subscribe to get exclusive deals, new arrivals, and insider updates delivered straight to your inbox every week."} visibleButton={false} />
             <div className='flex bg-slate-100 text-sm p-1 rounded-full w-full max-w-xl my-10 border-2 border-white ring ring-slate-200'>
                 <input
-                    className={`flex-1 outline-none bg-transparent ${isRTL ? 'pr-5 pl-2' : 'pl-5 pr-2'}`}
+                    className={`flex-1 outline-none bg-transparent ${isRTL ? 'pe-5 ps-2' : 'ps-5 pe-2'}`}
                     type="text"
                     placeholder={dict?.newsletter?.placeholder || 'Enter your email address'}
                     dir={isRTL ? 'rtl' : 'ltr'}
