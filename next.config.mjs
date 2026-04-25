@@ -54,13 +54,9 @@ const nextConfig = {
         // Ignore TypeScript errors since this is primarily a JS project
         ignoreBuildErrors: true,
     },
-    eslint: {
-        // Enable ESLint checks during builds
-        ignoreDuringBuilds: false,
-    },
+    // ESLint config moved out of next.config in Next 16 — controlled via package.json/eslintrc.
     images:{
         unoptimized: true,
-        domains: ['ik.imagekit.io'],
         remotePatterns: [
             {
                 protocol: 'https',
