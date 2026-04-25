@@ -1,5 +1,21 @@
 import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/prisma';
+
+// Verify caller owns the product's store. Returns the product or null.
+async function assertProductOwner(productId, clerkUserId) {
+  const product = await prisma.product.findUnique({
+    where: { id: productId },
+    include: { store: true }
+  });
+  if (!product) return { product: null, ownerOk: false };
+  const user = await prisma.user.findUnique({
+    where: { clerkUserId },
+    select: { id: true }
+  });
+  const ownerOk = !!user && product.store?.userId === user.id;
+  return { product, ownerOk };
+}
 
 // GET single product by ID
 export async function GET(request, { params }) {
@@ -131,17 +147,21 @@ export async function GET(request, { params }) {
 export async function PUT(request, { params }) {
   try {
     const { id } = await params;
-    const body = await request.json();
 
-    // TODO: Add authentication and authorization check
-    // const user = await getCurrentUser();
-    // const product = await prisma.product.findUnique({
-    //   where: { id },
-    //   include: { store: true }
-    // });
-    // if (!product || product.store.userId !== user.id) {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
+    const { userId: clerkUserId } = await auth();
+    if (!clerkUserId) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { product, ownerOk } = await assertProductOwner(id, clerkUserId);
+    if (!product) {
+      return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
+    }
+    if (!ownerOk) {
+      return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
+    }
+
+    const body = await request.json();
 
     // Update product
     const updatedProduct = await prisma.product.update({
@@ -182,15 +202,18 @@ export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
 
-    // TODO: Add authentication and authorization check
-    // const user = await getCurrentUser();
-    // const product = await prisma.product.findUnique({
-    //   where: { id },
-    //   include: { store: true }
-    // });
-    // if (!product || product.store.userId !== user.id) {
-    //   return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // }
+    const { userId: clerkUserId } = await auth();
+    if (!clerkUserId) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { product, ownerOk } = await assertProductOwner(id, clerkUserId);
+    if (!product) {
+      return NextResponse.json({ success: false, error: 'Product not found' }, { status: 404 });
+    }
+    if (!ownerOk) {
+      return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
+    }
 
     await prisma.product.delete({
       where: { id }

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import prisma from '@/lib/prisma';
 import cache, { CACHE_TTL } from '@/lib/cache';
 import { productSchema, productFilterSchema } from '@/lib/validations/product';
@@ -260,19 +261,30 @@ export const POST = withErrorHandler(async (request) => {
     return createRateLimitResponse(rateLimitResult.headers);
   }
 
+  // Authenticate user
+  const { userId } = await auth();
+  if (!userId) {
+    throw new APIError('Unauthorized', 401);
+  }
+
   const body = await request.json();
 
   // Validate input
   const validated = productSchema.parse(body);
 
-  // TODO: Add authentication and authorization check
-  // const user = await getCurrentUser();
-  // const store = await prisma.store.findUnique({ where: { userId: user.id } });
-  // if (!store || store.status !== 'APPROVED') {
-  //   throw new APIError('Unauthorized - Store approval required', 401);
-  // }
+  // Authorize: caller must own an APPROVED store. Ignore client-supplied storeId.
+  const user = await prisma.user.findUnique({
+    where: { clerkUserId: userId },
+    include: { store: true }
+  });
+  if (!user?.store) {
+    throw new APIError('Forbidden - no store associated with this account', 403);
+  }
+  if (user.store.status !== 'APPROVED') {
+    throw new APIError('Forbidden - store approval required', 403);
+  }
 
-  // Create product
+  // Create product scoped to the caller's store
   const product = await prisma.product.create({
     data: {
       name: validated.name,
@@ -281,7 +293,7 @@ export const POST = withErrorHandler(async (request) => {
       price: validated.price,
       images: validated.images,
       category: validated.category,
-      storeId: validated.storeId,
+      storeId: user.store.id,
       inStock: validated.inStock
     },
     include: {

@@ -51,7 +51,7 @@ const nextConfig = {
     },
 
     typescript: {
-        // Ignore TypeScript errors since this is primarily a JS project
+        // Suppression removed in Stage 4 once tsconfig.json + TS migration land.
         ignoreBuildErrors: true,
     },
     eslint: {
@@ -74,10 +74,11 @@ const nextConfig = {
         dangerouslyAllowSVG: true,
         contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     },
+    // CLERK_SECRET_KEY removed — secrets must never be inlined into the bundle.
+    // The publishable key is public-by-design (pk_*) so a dev fallback is safe;
+    // production env should still set it explicitly.
     env: {
-        // Fallback values for build time when .env.local is not present
         NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_Y2hhcm1pbmctcmVkYmlyZC02LmNsZXJrLmFjY291bnRzLmRldiQ',
-        CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY || 'sk_test_q6l6MdnOymV51kNPeWzrzYvJItKT48DH9Cf2OdkBaI',
         NEXT_PUBLIC_CLERK_SIGN_IN_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL || '/sign-in',
         NEXT_PUBLIC_CLERK_SIGN_UP_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL || '/sign-up',
         NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL: process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL || '/',
