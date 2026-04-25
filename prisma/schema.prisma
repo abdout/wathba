@@ -157,6 +157,8 @@ model Address {
     // Relations
     Order Order[]
     user  User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 // Required for creating a Coupon: code, description, discount, forNewUser, isPublic, expiresAt
@@ -169,6 +171,8 @@ model Coupon {
     isPublic    Boolean
     expiresAt   DateTime
     createdAt   DateTime @default(now())
+
+    @@index([expiresAt])
 }
 
 // Required for creating a Store: userId, name, username, email, contact, logo, description, address (optional: , status, isActive)
@@ -190,4 +194,6 @@ model Store {
     Product Product[]
     Order   Order[]
     user    User      @relation(fields: [userId], references: [id])
+
+    @@index([status])
 }
